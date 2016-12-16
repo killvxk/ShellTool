@@ -1,0 +1,67 @@
+
+[Defines]
+  INF_VERSION                    = 0x00010005
+  BASE_NAME                      = LegacyBootManagerLib
+  FILE_GUID                      = F1B87BE4-0ACC-409A-A52B-7BFFABCC96A0
+  MODULE_TYPE                    = DXE_DRIVER
+  VERSION_STRING                 = 1.0
+  LIBRARY_CLASS                  = NULL|DXE_DRIVER UEFI_APPLICATION
+  CONSTRUCTOR                    = LegacyBootManagerConstructor
+
+#
+# The following information is for reference only and not required by the build tools.
+#
+#  VALID_ARCHITECTURES           = IA32 X64 EBC
+#
+
+[Packages]
+  MdePkg/MdePkg.dec
+  MdeModulePkg/MdeModulePkg.dec
+  IntelFrameworkPkg/IntelFrameworkPkg.dec
+  IntelFrameworkModulePkg/IntelFrameworkModulePkg.dec
+  ByoModulePkg/ByoModulePkg.dec
+  PlatformPkg/PlatformPkg.dec
+  
+  
+[Sources]
+  LegacyBootManagerLib.c
+
+
+[LibraryClasses]
+  BaseLib
+  BaseMemoryLib
+  UefiBootServicesTableLib
+  UefiRuntimeServicesTableLib
+  DevicePathLib
+  MemoryAllocationLib
+  UefiLib
+  DebugLib
+  PrintLib
+  PerformanceLib
+  UefiBootManagerLib
+  HobLib
+
+[Guids]
+  gEfiGlobalVariableGuid                        ## SOMETIMES_PRODUCES ## Variable:L"BootCurrent" (The boot option of current boot)
+                                                ## SOMETIMES_CONSUMES ## Variable:L"BootXX" (Boot option variable)
+                                                ## CONSUMES           ## Variable:L"Timeout" (The time out value in second of showing progress bar)
+                                                ## SOMETIMES_CONSUMES ## Variable:L"BootOrder" (The boot option array)
+                                                ## SOMETIMES_CONSUMES ## Variable:L"DriverOrder" (The driver order list)
+                                                ## SOMETIMES_CONSUMES ## Variable:L"ConIn" (The device path of console in device)
+                                                ## SOMETIMES_CONSUMES ## Variable:L"ConOut" (The device path of console out device)
+                                                ## SOMETIMES_CONSUMES ## Variable:L"ErrOut" (The device path of error out device)
+  gEfiLegacyDevOrderVariableGuid
+
+[Protocols]
+  gEfiLegacyBiosProtocolGuid                    # PROTOCOL SOMETIMES_CONSUMES
+
+[FeaturePcd]
+
+[Pcd]
+  gEfiByoModulePkgTokenSpaceGuid.PcdBootDeviceGroupDefaultPriority
+  gEfiByoModulePkgTokenSpaceGuid.PcdBootDeviceGroupDefaultCount
+  gPlatformModuleTokenSpaceGuid.PcdBiosBootModeType
+
+
+
+  

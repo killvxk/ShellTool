@@ -1,0 +1,102 @@
+## @file  
+#
+# Copyright (c) 2006 - 2011, Byosoft Corporation.<BR> 
+# All rights reserved.This software and associated documentation (if any)
+# is furnished under a license and may only be used or copied in 
+# accordance with the terms of the license. Except as permitted by such
+# license, no part of this software or documentation may be reproduced, 
+# stored in a retrieval system, or transmitted in any form or by any 
+# means without the express written consent of Byosoft Corporation.
+#
+# File Name:
+#   SmiVariable.inf
+#
+# Abstract: 
+#   Component description file for the SMI Variable Module.
+#
+# Revision History:
+#
+##
+
+[Defines]
+  INF_VERSION                    = 0x00010005
+  BASE_NAME                      = SmiFlash
+  FILE_GUID                      = 758631C0-DA96-4251-85D2-3A4F7541DAAE
+  MODULE_TYPE                    = DXE_SMM_DRIVER
+  VERSION_STRING                 = 1.0
+  PI_SPECIFICATION_VERSION       = 0x0001000A
+  ENTRY_POINT                    = SmiFlashEntryPoint
+
+#
+# The following information is for reference only and not required by the build tools.
+#
+#  VALID_ARCHITECTURES           = IA32 X64 IPF
+#
+
+[Sources.common]
+  SmiFlash.c
+  SmiFlash.h
+  
+[Sources.Ia32]
+
+[Sources.X64]
+
+[Sources.IPF]
+
+[Packages]
+  PlatformPkg/PlatformPkg.dec
+  MdePkg/MdePkg.dec
+  MdeModulePkg/MdeModulePkg.dec
+  ByoNvMediaPkg/ByoNvMediaPkg.dec
+  IntelFrameworkPkg/IntelFrameworkPkg.dec
+  EdkCompatibilityPkg/EdkCompatibilityPkg.dec
+  ByoModulePkg/ByoModulePkg.dec
+  CryptoPkg/CryptoPkg.dec
+  
+[LibraryClasses]
+  UefiDriverEntryPoint
+  UefiBootServicesTableLib
+  UefiRuntimeServicesTableLib
+  SmmServicesTableLib
+  BaseLib
+  BaseMemoryLib
+  DebugLib
+  PcdLib
+  SetMemAttributeSmmLib
+
+[LibraryClasses.IA32]
+
+[LibraryClasses.X64]
+
+[Protocols]
+  gEfiSmmSwDispatch2ProtocolGuid        # PROTOCOL ALWAYS_CONSUME  
+  gEfiSmmCpuProtocolGuid                # PROTOCOL ALWAYS_CONSUME
+  gEfiSmmNvMediaAccessProtocolGuid      # PROTOCOL ALWAYS_CONSUME
+  gEfiSmmBaseHelperReadyProtocolGuid    # PROTOCOL ALWAYS_CONSUME
+
+[Guids]
+  gEfiSmbiosTableGuid
+  gSignCapsuleHeaderGuild
+
+[Pcd]
+  gEfiByoModulePkgTokenSpaceGuid.PcdFlashFvMainBase
+  gEfiByoModulePkgTokenSpaceGuid.PcdFlashFvMainSize
+  gEfiMdeModulePkgTokenSpaceGuid.PcdFlashNvStorageVariableBase
+  gEfiMdeModulePkgTokenSpaceGuid.PcdFlashNvStorageVariableSize
+  gEfiByoModulePkgTokenSpaceGuid.PcdFlashNvStorageMicrocodeBase
+  gEfiByoModulePkgTokenSpaceGuid.PcdFlashNvStorageMicrocodeSize
+  gEfiByoModulePkgTokenSpaceGuid.PcdFlashFvRecoveryBase
+  gEfiByoModulePkgTokenSpaceGuid.PcdFlashFvRecoverySize
+  gEfiByoModulePkgTokenSpaceGuid.PcdFlashAreaBaseAddress
+  gEfiByoModulePkgTokenSpaceGuid.PcdFlashAreaSize
+  gEfiByoModulePkgTokenSpaceGuid.PcdFlashNvStorageSmbiosBase
+  gEfiByoModulePkgTokenSpaceGuid.PcdFlashNvStorageSmbiosSize
+  
+[Depex]
+  gEfiSmmNvMediaAccessProtocolGuid AND
+  gEfiSmmSwDispatch2ProtocolGuid AND
+  gEfiSmmCpuProtocolGuid
+
+[BuildOptions]
+  *_*_IA32_CC_FLAGS      = $(EDK_EDKII_DSC_FEATURE_BUILD_OPTIONS) /Od
+  *_*_X64_CC_FLAGS       = $(EDK_EDKII_DSC_FEATURE_BUILD_OPTIONS) /Od

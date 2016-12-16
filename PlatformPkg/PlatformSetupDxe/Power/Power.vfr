@@ -1,0 +1,413 @@
+// /*++
+// Copyright (c) 2010 Intel Corporation. All rights reserved.
+// This software and associated documentation (if any) is furnished
+// under a license and may only be used or copied in accordance
+// with the terms of the license. Except as permitted by such
+// license, no part of this software or documentation may be
+// reproduced, stored in a retrieval system, or transmitted in any
+// form or by any means without the express written consent of
+// Intel Corporation.
+//
+// Module Name: Power.vfr
+//
+// Abstract: Power manager.
+// --*/
+
+#include "VfrExtension.h"
+#include "SetupItemId.h"
+#include "PlatformSetupDxeStrDefs.h"
+
+#define POWER_FORM_SET
+
+
+formset guid = POWER_FORM_SET_GUID,
+  title     = STRING_TOKEN(STR_POWER),
+  help      = STRING_TOKEN(STR_POWER_HELP),
+  classguid = EFI_IFR_FRONT_PAGE_GUID,
+  class     = DEVICES_FORM_SET_CLASS,
+  subclass  = NON_FRONT_PAGE_SUBCLASS,
+
+  #define FORM_SET_VARSTORE
+    #include <SetupDefinitions.h>
+  #undef FORM_SET_VARSTORE
+
+  form formid = POWER_MAIN_FORM_ID,
+    title = STRING_TOKEN(STR_POWER);
+
+    oneof varid = SETUP_DATA.AcpiSleepStatus,
+      prompt    = STRING_TOKEN(STR_SLEEP_STATUS),
+      help      = STRING_TOKEN(STR_SLEEP_STATUS_HELP),
+      option text = STRING_TOKEN(STR_SLEEP_STATUS_DIS),   value = 0, flags = RESET_REQUIRED;
+      option text = STRING_TOKEN(STR_SLEEP_STATUS_S1),    value = 1, flags = RESET_REQUIRED;
+      option text = STRING_TOKEN(STR_SLEEP_STATUS_S3),    value = 2, flags = DEFAULT | MANUFACTURING | RESET_REQUIRED;
+      option text = STRING_TOKEN(STR_SLEEP_STATUS_BOTH),  value = 3, flags = RESET_REQUIRED;
+    endoneof;
+
+     oneof varid  = SETUP_DATA.AfterPowerLoss,
+      prompt      = STRING_TOKEN(STR_AFTER_POWER_LOSS),
+      help        = STRING_TOKEN(STR_AFTER_POWER_LOSS_HELP),
+      option text = STRING_TOKEN(STR_POWER_OFF),      value = AFTER_POWER_LOSS_OFF,      flags = RESET_REQUIRED | DEFAULT | MANUFACTURING;
+      option text = STRING_TOKEN(STR_POWER_PREVIOUS), value = AFTER_POWER_LOSS_PREVIOUS, flags = RESET_REQUIRED;
+      option text = STRING_TOKEN(STR_POWER_ON),       value = AFTER_POWER_LOSS_ON,       flags = RESET_REQUIRED;
+     endoneof;    
+    
+    goto POWER_AUTO_POWER_ON_FORM_ID,
+      prompt = STRING_TOKEN(STR_AUTO_POWER_ON),
+      help = STRING_TOKEN(STR_AUTO_POWER_ON_HELP);
+   
+    goto CX_STATE_CTRL_FORM_ID,
+      prompt = STRING_TOKEN(STR_CX_STATE_CTRL),
+      help = STRING_TOKEN(STR_EMPTY);
+   
+    goto POWER_CX_LATENCY_FORM_ID,
+      prompt = STRING_TOKEN(STR_CX_LATENCY_CTRL),
+      help = STRING_TOKEN(STR_EMPTY);
+   
+   
+      
+    goto POWER_DYNAMIC_CLK_CTRL_FORM_ID,
+      prompt = STRING_TOKEN(STR_DYNAMIC_CLK_CTRL),
+      help = STRING_TOKEN(STR_EMPTY);
+
+    goto INTERRUPT_CTRL_FORM_ID,
+      prompt = STRING_TOKEN(STR_INTERRUPT_CTRL),
+      help = STRING_TOKEN(STR_EMPTY);
+   
+
+    goto POWER_GATING_CTRL_FORM_ID,
+      prompt = STRING_TOKEN(STR_POWER_GATING_CTRL),
+      help = STRING_TOKEN(STR_EMPTY);
+   
+    goto POWER_LEGACY_SEL_CTRL_FORM_ID,
+      prompt = STRING_TOKEN(STR_LEGACY_SEL_CTRL),
+      help = STRING_TOKEN(STR_EMPTY);
+           
+    goto POWER_OTHER_CTRL_FORM_ID,
+      prompt = STRING_TOKEN(STR_OTHER_CTRL),
+      help = STRING_TOKEN(STR_EMPTY);
+      
+  endform;//end POWER_MAIN_FORM_ID
+
+  form formid = POWER_AUTO_POWER_ON_FORM_ID,
+     title = STRING_TOKEN(STR_AUTO_POWER_ON);
+
+     oneof varid = SETUP_DATA.WakeOnLan,
+      prompt   = STRING_TOKEN(STR_WAKE_ON_LAN),
+      help     = STRING_TOKEN(STR_WAKE_ON_LAN_HELP),
+      option text = STRING_TOKEN(STR_ENABLE),  value = 1, flags = RESET_REQUIRED;
+      option text = STRING_TOKEN(STR_DISABLE), value = 0, flags = RESET_REQUIRED | DEFAULT | MANUFACTURING;
+     endoneof;
+
+     oneof varid = SETUP_DATA.WakeOnRTC,
+      prompt   = STRING_TOKEN(STR_WAKE_FROM_RTC),
+      help     = STRING_TOKEN(STR_WAKE_FROM_RTC_HELP),
+      option text = STRING_TOKEN(STR_SINGLE_EVENT), value = RTC_WAKE_VAL_SINGLE_EVENT, flags = RESET_REQUIRED;
+      option text = STRING_TOKEN(STR_DAILY_EVENT),  value = RTC_WAKE_VAL_DAILY_EVENT,  flags = RESET_REQUIRED;
+      option text = STRING_TOKEN(STR_WEEKLY_EVENT), value = RTC_WAKE_VAL_WEEKLY_EVENT, flags = RESET_REQUIRED;
+      option text = STRING_TOKEN(STR_USER_DEFINED), value = RTC_WAKE_VAL_USER_DEFINED, flags = RESET_REQUIRED;
+      option text = STRING_TOKEN(STR_DISABLE),      value = RTC_WAKE_VAL_DISABLE,      flags = RESET_REQUIRED | DEFAULT | MANUFACTURING;
+     endoneof;
+
+     grayoutif ideqval SETUP_DATA.WakeOnRTC == RTC_WAKE_VAL_DISABLE;
+
+      grayoutif ideqval SETUP_DATA.WakeOnRTC == RTC_WAKE_VAL_USER_DEFINED;
+       time
+        varid   = SETUP_DATA.RTCWakeupTime,
+        prompt  = STRING_TOKEN(STR_ALARM_TIME),
+        help    = STRING_TOKEN(STR_ALARM_TIME_HELP),
+        flags   = STORAGE_NORMAL,
+        default = 00:00:00,
+       endtime;
+      endif;
+
+      grayoutif NOT ideqval SETUP_DATA.WakeOnRTC == RTC_WAKE_VAL_SINGLE_EVENT;
+        date
+          varid = SETUP_DATA.RTCWakeupDate,
+          prompt = STRING_TOKEN(STR_ALARM_DATE),
+          help = STRING_TOKEN(STR_ALARM_DATE_HELP),
+          flags = STORAGE_NORMAL,
+          default = 1999/01/01,
+        enddate;
+      endif;
+
+      grayoutif NOT ideqval SETUP_DATA.WakeOnRTC == RTC_WAKE_VAL_WEEKLY_EVENT;
+        oneof varid = SETUP_DATA.AlarmWeekDay,
+          prompt   = STRING_TOKEN(STR_ALARM_WEEK_DAY),
+          help     = STRING_TOKEN(STR_ALARM_WEEK_DAY_HELP),
+          option text = STRING_TOKEN(STR_SUNDAY),    value = 6, flags = DEFAULT | MANUFACTURING | RESET_REQUIRED;
+          option text = STRING_TOKEN(STR_MONDAY),    value = 0, flags = RESET_REQUIRED;
+          option text = STRING_TOKEN(STR_TUESDAY),   value = 1, flags = RESET_REQUIRED;
+          option text = STRING_TOKEN(STR_WEDNESDAY), value = 2, flags = RESET_REQUIRED;
+          option text = STRING_TOKEN(STR_THURSDAY),  value = 3, flags = RESET_REQUIRED;
+          option text = STRING_TOKEN(STR_FRIDAY),    value = 4, flags = RESET_REQUIRED;
+          option text = STRING_TOKEN(STR_SATURDAY),  value = 5, flags = RESET_REQUIRED;
+        endoneof;
+      endif;
+
+      grayoutif NOT ideqval SETUP_DATA.WakeOnRTC == RTC_WAKE_VAL_USER_DEFINED;
+        goto POWER_USER_DEF_ALARM_FORM_ID,
+        prompt = STRING_TOKEN(STR_USER_DEF_ALARM),
+        help = STRING_TOKEN(STR_COM_EMPTY);
+      endif;
+
+    endif;
+  endform;//end POWER_AUTO_POWER_ON_FORM_ID
+
+  form formid = POWER_USER_DEF_ALARM_FORM_ID,
+    title = STRING_TOKEN(STR_USER_DEF_ALARM);
+
+     oneof varid = SETUP_DATA.UserDefSun,
+      prompt   = STRING_TOKEN(STR_SUNDAY),
+      help     = STRING_TOKEN(STR_USER_DEF_ALARM_WEEKDAY_HELP),
+      option text = STRING_TOKEN(STR_ENABLE),  value = 1, flags = RESET_REQUIRED;
+      option text = STRING_TOKEN(STR_DISABLE), value = 0, flags = DEFAULT | MANUFACTURING |RESET_REQUIRED;
+     endoneof;
+
+     oneof varid = SETUP_DATA.UserDefMon,
+      prompt   = STRING_TOKEN(STR_MONDAY),
+      help     = STRING_TOKEN(STR_USER_DEF_ALARM_WEEKDAY_HELP),
+      option text = STRING_TOKEN(STR_ENABLE),  value = 1, flags = RESET_REQUIRED;
+      option text = STRING_TOKEN(STR_DISABLE), value = 0, flags = DEFAULT | MANUFACTURING |RESET_REQUIRED;
+     endoneof;
+
+    oneof varid = SETUP_DATA.UserDefTue,
+      prompt   = STRING_TOKEN(STR_TUESDAY),
+      help     = STRING_TOKEN(STR_USER_DEF_ALARM_WEEKDAY_HELP),
+      option text = STRING_TOKEN(STR_ENABLE),  value = 1, flags = RESET_REQUIRED;
+      option text = STRING_TOKEN(STR_DISABLE), value = 0, flags = DEFAULT | MANUFACTURING |RESET_REQUIRED;
+     endoneof;
+
+     oneof varid = SETUP_DATA.UserDefWed,
+      prompt   = STRING_TOKEN(STR_WEDNESDAY),
+      help     = STRING_TOKEN(STR_USER_DEF_ALARM_WEEKDAY_HELP),
+      option text = STRING_TOKEN(STR_ENABLE),  value = 1, flags = RESET_REQUIRED;
+      option text = STRING_TOKEN(STR_DISABLE), value = 0, flags = DEFAULT | MANUFACTURING |RESET_REQUIRED;
+     endoneof;
+
+     oneof varid = SETUP_DATA.UserDefThu,
+      prompt   = STRING_TOKEN(STR_THURSDAY),
+      help     = STRING_TOKEN(STR_USER_DEF_ALARM_WEEKDAY_HELP),
+      option text = STRING_TOKEN(STR_ENABLE),  value = 1, flags = RESET_REQUIRED;
+      option text = STRING_TOKEN(STR_DISABLE), value = 0, flags = DEFAULT | MANUFACTURING |RESET_REQUIRED;
+     endoneof;
+
+     oneof varid = SETUP_DATA.UserDefFri,
+      prompt   = STRING_TOKEN(STR_FRIDAY),
+      help     = STRING_TOKEN(STR_USER_DEF_ALARM_WEEKDAY_HELP),
+      option text = STRING_TOKEN(STR_ENABLE),  value = 1, flags = RESET_REQUIRED;
+      option text = STRING_TOKEN(STR_DISABLE), value = 0, flags = DEFAULT | MANUFACTURING |RESET_REQUIRED;
+     endoneof;
+
+     oneof varid = SETUP_DATA.UserDefSat,
+      prompt   = STRING_TOKEN(STR_SATURDAY),
+      help     = STRING_TOKEN(STR_USER_DEF_ALARM_WEEKDAY_HELP),
+      option text = STRING_TOKEN(STR_ENABLE),  value = 1, flags = RESET_REQUIRED;
+      option text = STRING_TOKEN(STR_DISABLE), value = 0, flags = DEFAULT | MANUFACTURING |RESET_REQUIRED;
+     endoneof;
+
+    grayoutif ideqval SETUP_DATA.UserDefSun == 0 AND ideqval SETUP_DATA.UserDefMon == 0 AND ideqval SETUP_DATA.UserDefTue == 0 \
+        AND ideqval SETUP_DATA.UserDefWed == 0 AND ideqval SETUP_DATA.UserDefThu == 0 AND ideqval SETUP_DATA.UserDefFri == 0 AND ideqval SETUP_DATA.UserDefSat == 0;
+    time
+      varid   = SETUP_DATA.RTCWakeupTime,
+      prompt  = STRING_TOKEN(STR_USER_ALARM_TIME),
+      help    = STRING_TOKEN(STR_COM_EMPTY),
+      flags   = STORAGE_NORMAL,
+      default = 00:00:00,
+    endtime;
+   endif;
+  endform;//end POWER_USER_DEF_ALARM_FORM_ID
+  
+
+  
+  form formid = POWER_CX_LATENCY_FORM_ID,
+      title = STRING_TOKEN(STR_CX_LATENCY_CTRL);
+      
+  // suppressif  ideqval SETUP_DATA.CpuCState==0;
+     oneof varid = SETUP_DATA.FixedFreeCxLatency,
+      prompt   = STRING_TOKEN(STR_FIXEDDREE_CX_LATENCY),
+      help     = STRING_TOKEN(STR_FIXEDDREE_CX_LATENCY_HELP),
+      option text = STRING_TOKEN(STR_FIXED),  value = 0, flags = RESET_REQUIRED;
+      option text = STRING_TOKEN(STR_FREE), value = 1, flags = RESET_REQUIRED| DEFAULT | MANUFACTURING ;
+      option text = STRING_TOKEN(STR_FIXED_FREE),  value = 2, flags = RESET_REQUIRED;
+     endoneof;
+  //  endif;
+     
+   suppressif  NOT ideqval SETUP_DATA.FixedFreeCxLatency==0;
+      suppressif   ideqval SETUP_DATA.CpuCState==0  OR ideqval  SETUP_DATA.CpuCState==1;      
+ 
+      oneof varid = SETUP_DATA.ShortC3C4Mode,
+       prompt   = STRING_TOKEN(STR_SHORT_C3C4_MODE),
+       help     = STRING_TOKEN(STR_SHORT_C3C4_MODE_HELP),
+       option text = STRING_TOKEN(STR_DISABLED),  value = 0, flags = RESET_REQUIRED;
+       option text = STRING_TOKEN(STR_ENABLED), value = 1, flags = RESET_REQUIRED| DEFAULT | MANUFACTURING ;
+      endoneof;
+    endif;
+     
+   
+      oneof varid = SETUP_DATA.DPSLPtoSLP,
+       prompt   = STRING_TOKEN(STR_DPSLP_TO_SLP),
+       help     = STRING_TOKEN(STR_DPSLP_TO_SLP_HELP),
+       option text = STRING_TOKEN(STR_00),  value = 0, flags = RESET_REQUIRED;
+       option text = STRING_TOKEN(STR_01), value = 1, flags = RESET_REQUIRED ;
+       option text = STRING_TOKEN(STR_10),  value = 2, flags = RESET_REQUIRED| DEFAULT | MANUFACTURING;
+       option text = STRING_TOKEN(STR_11),  value = 3, flags = RESET_REQUIRED;
+      endoneof;
+         
+      oneof varid = SETUP_DATA.VRDSLPtoDPSLP,
+       prompt   = STRING_TOKEN(STR_VRDSLP_TO_DPSLP),
+       help     = STRING_TOKEN(STR_VRDSLP_TO_DPSLP_HELP),
+       option text = STRING_TOKEN(STR_00),  value = 0, flags = RESET_REQUIRED| DEFAULT | MANUFACTURING;
+       option text = STRING_TOKEN(STR_01), value = 1, flags = RESET_REQUIRED ;
+       option text = STRING_TOKEN(STR_10),  value = 2, flags = RESET_REQUIRED;
+       option text = STRING_TOKEN(STR_11),  value = 3, flags = RESET_REQUIRED;
+      endoneof;
+   endif;
+ 
+    suppressif   ideqval SETUP_DATA.FixedFreeCxLatency==0;
+      oneof varid = SETUP_DATA.DynamicT05,
+      prompt   = STRING_TOKEN(STR_DYNAMIC_T05),
+      help     = STRING_TOKEN(STR_DYNAMIC_T05_HELP),
+      option text = STRING_TOKEN(STR_DISABLED),  value = 0, flags = RESET_REQUIRED;
+      option text = STRING_TOKEN(STR_ENABLED), value = 1, flags = RESET_REQUIRED| DEFAULT | MANUFACTURING ;
+     endoneof;  
+    endif;
+   endform;//end POWER_CX_LATENCY_FORM_ID
+  
+  form formid = POWER_DYNAMIC_CLK_CTRL_FORM_ID,
+     title = STRING_TOKEN(STR_DYNAMIC_CLK_CTRL);
+     
+     oneof varid = SETUP_DATA.SBDynamicClkControl,
+      prompt   = STRING_TOKEN(STR_SB_DYNAMIC_CLK_CTRL),
+      help     = STRING_TOKEN(STR_SB_DYNAMIC_CLK_CTRL_HELP),
+      option text = STRING_TOKEN(STR_DISABLED),  value = 0, flags = RESET_REQUIRED;
+      option text = STRING_TOKEN(STR_ENABLED), value = 1, flags = RESET_REQUIRED| DEFAULT | MANUFACTURING ;
+     endoneof;
+  endform;//end POWER_DYNAMIC_CLK_CTRL_FORM_ID
+  
+  form formid = POWER_OTHER_CTRL_FORM_ID,
+     title = STRING_TOKEN(STR_OTHER_CTRL);     
+  
+   
+    oneof varid = SETUP_DATA.MobileCenterControl,
+      prompt   = STRING_TOKEN(STR_MOBILE_CENTER_CTRL),
+      help     = STRING_TOKEN(STR_MOBILE_CENTER_CTRL_HELP),
+      option text = STRING_TOKEN(STR_DISABLED),  value = 0, flags = RESET_REQUIRED;
+      option text = STRING_TOKEN(STR_ENABLED), value = 1, flags = RESET_REQUIRED| DEFAULT | MANUFACTURING ;
+     endoneof;
+     
+     oneof varid = SETUP_DATA.ACAdapterControl,
+      prompt   = STRING_TOKEN(STR_ACA_ADAPTER_CTRL),
+      help     = STRING_TOKEN(STR_ACA_ADAPTER_CTRL_HELP),
+      option text = STRING_TOKEN(STR_DISABLED),  value = 0, flags = RESET_REQUIRED;
+      option text = STRING_TOKEN(STR_ENABLED), value = 1, flags = RESET_REQUIRED| DEFAULT | MANUFACTURING ;
+     endoneof;
+     
+     oneof varid = SETUP_DATA.AfterPowerLoss,
+      prompt    = STRING_TOKEN(STR_AFTER_POWER_LOSS),
+      help      = STRING_TOKEN(STR_AFTER_POWER_LOSS_HELP),
+      option text = STRING_TOKEN(STR_POWER_OFF),       value = 0, flags = DEFAULT | MANUFACTURING |RESET_REQUIRED;
+      option text = STRING_TOKEN(STR_POWER_PREVIOUS),  value = 1, flags = RESET_REQUIRED;
+      option text = STRING_TOKEN(STR_POWER_ON),  value = 2, flags =  RESET_REQUIRED;
+     endoneof;
+  endform;//end POWER_DYNAMIC_CLK_CTRL_FORM_ID
+  
+  form formid = POWER_GATING_CTRL_FORM_ID,
+    title = STRING_TOKEN(STR_POWER_GATING_CTRL);    
+   
+       oneof varid = SETUP_DATA.PowerCtrleBMC,
+        prompt   = STRING_TOKEN(STR_EBMC_POWER_CTRL),
+        help     = STRING_TOKEN(STR_EMPTY),
+        option text = STRING_TOKEN(STR_DISABLED),  value = 0, flags = RESET_REQUIRED;
+        option text = STRING_TOKEN(STR_ENABLED), value = 1, flags = RESET_REQUIRED| DEFAULT | MANUFACTURING ;
+      endoneof;
+      
+      numeric varid=SETUP_DATA.eBMCSettleTime,
+        prompt   = STRING_TOKEN(STR_EBMC_TIMER),
+        help   = STRING_TOKEN(STR_RANGE_0_31),
+       flags = DISPLAY_UINT_HEX,
+        minimum=0,
+        maximum=31,
+        step=0,
+        default=31,
+      endnumeric;
+
+  endform;//end POWER_GATING_CTRL_FORM_ID
+  
+  
+	form formid = POWER_LEGACY_SEL_CTRL_FORM_ID,
+    title = STRING_TOKEN(STR_LEGACY_SEL_CTRL);    
+   
+       oneof varid = SETUP_DATA.KBDCLegacySelControl,
+        prompt   = STRING_TOKEN(STR_KBDC_LEGACY_SEL),
+        help     = STRING_TOKEN(STR_KBDC_LEGACY_SEL_HELP),
+        option text = STRING_TOKEN(STR_HARD_MACRO),  value = 0, flags = RESET_REQUIRED| DEFAULT | MANUFACTURING;
+        option text = STRING_TOKEN(STR_NEW_DESIGN), value = 1, flags = RESET_REQUIRED ;
+      endoneof;
+      
+     oneof varid = SETUP_DATA.INTCLegacySelControl,
+        prompt   = STRING_TOKEN(STR_INTC_LEGACY_SEL),
+        help     = STRING_TOKEN(STR_INTC_LEGACY_SEL_HELP),
+        option text = STRING_TOKEN(STR_HARD_MACRO),  value = 0, flags = RESET_REQUIRED| DEFAULT | MANUFACTURING;
+        option text = STRING_TOKEN(STR_NEW_DESIGN), value = 1, flags = RESET_REQUIRED ;
+      endoneof;
+ 
+       oneof varid = SETUP_DATA.DMACLegacySelControl,
+        prompt   = STRING_TOKEN(STR_DMAC_LEGACY_SEL),
+        help     = STRING_TOKEN(STR_DMAC_LEGACY_SEL_HELP),
+        option text = STRING_TOKEN(STR_HARD_MACRO),  value = 0, flags = RESET_REQUIRED| DEFAULT | MANUFACTURING ;
+        option text = STRING_TOKEN(STR_NEW_DESIGN), value = 1, flags = RESET_REQUIRED;
+      endoneof;
+      
+     oneof varid = SETUP_DATA.TMRCLegacySelControl,
+        prompt   = STRING_TOKEN(STR_TMRC_LEGACY_SEL),
+        help     = STRING_TOKEN(STR_TMRC_LEGACY_SEL_HELP),
+        option text = STRING_TOKEN(STR_HARD_MACRO),  value = 0, flags = RESET_REQUIRED| DEFAULT | MANUFACTURING;
+        option text = STRING_TOKEN(STR_NEW_DESIGN), value = 1, flags = RESET_REQUIRED ;
+      endoneof;      
+
+  endform;//end POWER_GATING_CTRL_FORM_ID
+
+  form formid = INTERRUPT_CTRL_FORM_ID,
+    title = STRING_TOKEN(STR_INTERRUPT_CTRL);    
+      oneof varid = SETUP_DATA.MsiSupport,
+       prompt   = STRING_TOKEN(STR_MSI_SUPPORT),
+       help     = STRING_TOKEN(STR_EMPTY),
+       option text = STRING_TOKEN(STR_DISABLED),  value = 0, flags = RESET_REQUIRED;
+       option text = STRING_TOKEN(STR_ENABLED), value = 1, flags = RESET_REQUIRED| DEFAULT | MANUFACTURING ;
+      endoneof;
+     endform;
+     
+  form formid = CX_STATE_CTRL_FORM_ID,
+    title = STRING_TOKEN(STR_CX_STATE_CTRL);     
+     
+     numeric varid=SETUP_DATA.C3BusMasterIdleTimer,
+       prompt   = STRING_TOKEN(STR_C3BUS_TDLE_TIMER),
+       help   = STRING_TOKEN(STR_C3BUS_TDLE_TIMER_HELP),
+       flags = DISPLAY_UINT_HEX,
+       minimum=0,
+       maximum=0xf,
+       step=0,
+       default=3,
+      endnumeric;
+    
+    
+     numeric varid=SETUP_DATA.C4BusMasterIdleTimer,
+      prompt   = STRING_TOKEN(STR_C4BUS_TDLE_TIMER),
+      help   = STRING_TOKEN(STR_C4BUS_TDLE_TIMER_HELP),
+      flags = DISPLAY_UINT_HEX,
+      minimum=0,
+      maximum=0xff,
+      step=0,
+      default=4,
+     endnumeric;
+     
+   endform;
+   
+   
+endformset;
+
+
+
+
+   
+  

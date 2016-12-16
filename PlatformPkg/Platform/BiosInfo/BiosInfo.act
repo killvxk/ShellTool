@@ -1,0 +1,63 @@
+
+
+#include <Uefi.h>
+
+#define NON_FV_INFO_COUNT                  2
+
+#define NON_FV_INFO_TYPE_MICROCODE         SIGNATURE_32('_', 'M', 'C', '_')
+#define NON_FV_INFO_TYPE_SMBIOS_DATA       SIGNATURE_32('S', 'M', 'D', 'A')
+
+#define BYO_BIOS_INFO_SIGNATURE    SIGNATURE_32('$', 'B', 'B', 'I')
+#define BYO_BIOS_INFO_VERSION      1
+
+typedef struct {
+  UINT32  Type;
+  UINT32  OemInfo;  
+  UINT32  Base;
+  UINT32  Size;
+} NON_FV_RANGE;
+
+typedef struct {
+  UINT32        Signature;
+  UINT32        Length;
+  UINT32        Version;
+  UINT32        NonFvRangeCount;
+  NON_FV_RANGE  Range[NON_FV_INFO_COUNT];
+} BYO_BIOS_INFO; 
+
+
+
+BYO_BIOS_INFO gByoBiosInfo = {
+  BYO_BIOS_INFO_SIGNATURE,
+  sizeof(BYO_BIOS_INFO),
+  BYO_BIOS_INFO_VERSION,
+  NON_FV_INFO_COUNT,
+  {
+    {
+      NON_FV_INFO_TYPE_MICROCODE, 
+      0,
+      _PCD_VALUE_PcdFlashNvStorageMicrocodeBase,
+      _PCD_VALUE_PcdFlashNvStorageMicrocodeSize
+    },
+    {
+      NON_FV_INFO_TYPE_SMBIOS_DATA, 
+      0,
+      _PCD_VALUE_PcdFlashNvStorageSmbiosBase,
+      _PCD_VALUE_PcdFlashNvStorageSmbiosSize
+    },    
+  },
+};
+
+
+VOID*
+ReferenceAcpiTable (
+  VOID
+  )
+{
+  //
+  // Reference the table being generated to prevent the optimizer from removing the 
+  // data structure from the exeutable
+  //
+  return (VOID*)&gByoBiosInfo;
+}
+

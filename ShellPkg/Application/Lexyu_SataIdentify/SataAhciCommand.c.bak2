@@ -1,0 +1,491 @@
+/** @file
+  This is a simple shell application
+
+  Copyright (c) 2008 - 2010, Intel Corporation. All rights reserved.<BR>
+  This program and the accompanying materials
+  are licensed and made available under the terms and conditions of the BSD License
+  which accompanies this distribution.  The full text of the license may be found at
+  http://opensource.org/licenses/bsd-license.php
+
+  THE PROGRAM IS DISTRIBUTED UNDER THE BSD LICENSE ON AN "AS IS" BASIS,
+  WITHOUT WARRANTIES OR REPRESENTATIONS OF ANY KIND, EITHER EXPRESS OR IMPLIED.
+
+**/
+
+// #define ATA_DEVICE_FROM_PACKET(a)         CR (a, ATA_DEVICE, Handle, ATA_DEVICE_SIGNATURE)
+// #define ATA_DEVICE_FROM_PACKET(a)         CR (a, ATA_DEVICE, Packet, ATA_DEVICE_SIGNATURE)
+
+#include <Uefi.h>
+#include <Uefi/UefiSpec.h>
+
+
+#include <AtaBusDxe/AtaBus.h>
+#include <AtaAtapiPassThru/ComponentName.c>
+#include <AtaAtapiPassThru/AtaAtapiPassThru.h>
+#include <AtaAtapiPassThru/AtaAtapiPassThru.c>
+#include <AtaAtapiPassThru/AhciMode.c>
+#include <AtaAtapiPassThru/IdeMode.c>
+#include <Library/UefiDriverEntryPoint.h>
+#include <Library/UefiApplicationEntryPoint.h>
+#include <Library/UefiRuntimeServicesTableLib.h>
+#include <Library/UefiBootServicesTableLib.h>
+#include <Library/UefiLib.h>
+#include <Library/IoLib.h>
+#include <Library/DebugLib.h>
+#include <Library/TimerLib.h>
+#include <Library/BaseLib.h>
+#include <Library/BaseMemoryLib.h>
+#include <Library/MemoryAllocationLib.h>
+#include <Library/PcdLib.h>
+#include <Library/ShellCommandLib.h>
+#include <Library/ShellLib.h>
+#include <Library/SortLib.h>
+#include <Library/HiiLib.h>
+#include <Library/FileHandleLib.h>
+#include <Library/DevicePathLib.h>
+#include <Library/PrintLib.h>
+#include <Library/HandleParsingLib.h>
+#include <Library/ReportStatusCodeLib.h>
+#include <IndustryStandard/Atapi.h>
+#include <Protocol/BlockIo.h>
+#include <Protocol/BlockIo2.h>
+#include <Protocol/DiskIo.h>
+#include <Protocol/DiskInfo.h>
+#include <Protocol/DevicePath.h>
+#include <Protocol/DevicePathToText.h>
+#include <Protocol/DevicePathFromText.h>
+#include <Protocol/PciIo.h>
+#include <Protocol/AtaPassThru.h>
+#include <Protocol/EfiShell.h>
+#include <Protocol/EfiShellParameters.h>
+#include <Protocol/LoadedImage.h>
+#include <Protocol/UnicodeCollation.h>
+#include <Protocol/DriverDiagnostics2.h>
+#include <Protocol/DriverDiagnostics.h>
+#include <Protocol/PlatformDriverOverride.h>
+#include <Protocol/BusSpecificDriverOverride.h>
+#include <Protocol/PlatformToDriverConfiguration.h>
+#include <Protocol/DriverSupportedEfiVersion.h>
+#include <Protocol/DriverFamilyOverride.h>
+#include <Protocol/DriverHealth.h>
+#include <Protocol/SimplePointer.h>
+#include <Protocol/PciRootBridgeIo.h>
+#include <Protocol/AtaPassThru.h>
+#include <Protocol/StorageSecurityCommand.h>
+#include <Guid/GlobalVariable.h>
+#include <Guid/ConsoleInDevice.h>
+#include <Guid/ConsoleOutDevice.h>
+#include <Guid/FileSystemInfo.h>
+#include <Guid/ShellLibHiiGuid.h>
+
+
+//
+// The maximum model name in ATA identify data
+//
+#define MAX_MODEL_NAME_LEN                40
+
+//
+// Length of temp string buffer to store value string.
+//
+#define _48_BIT_ADDRESS_FEATURE_SET_SUPPORTED   0x0400
+#define ATAPI_DEVICE                            0x8000
+
+#define SATA_CFG_IDE              0x01
+#define SATA_CFG_AHCI             0x06
+#define SATA_CFG_IDE_MAXPORT      0x04
+#define SATA_CFG_AHCI_MAXPORT     0x04
+
+
+EFI_STATUS
+EFIAPI
+PrintDevicePath( 
+  IN EFI_DEVICE_PATH_PROTOCOL  *DevicePath
+  )
+{
+    EFI_STATUS                            Status;
+    EFI_DEVICE_PATH_PROTOCOL             *DevPathNode;
+    CHAR16                               *Textdevicepath =NULL;
+    EFI_DEVICE_PATH_TO_TEXT_PROTOCOL     *Device2TextProtocol=NULL;
+                            
+
+
+    Status=gBS->LocateProtocol(&gEfiDevicePathToTextProtocolGuid,NULL,(VOID**)&Device2TextProtocol);
+    ASSERT_EFI_ERROR (Status);
+
+    DevPathNode=DevicePath;
+    if(!IsDevicePathEnd(DevPathNode))
+    {
+      Print(L"(%d,%d)",DevPathNode->Type,DevPathNode->SubType);
+      DevPathNode=NextDevicePathNode(DevPathNode);
+    }
+    while(!IsDevicePathEnd(DevPathNode))
+    {
+      Print(L"/(%d,%d)",DevPathNode->Type,DevPathNode->SubType);
+      DevPathNode=NextDevicePathNode(DevPathNode);
+    }
+    Print(L"\n");
+    
+
+
+    if(!IsDevicePathEnd(DevPathNode))
+    {
+      Textdevicepath=Device2TextProtocol->ConvertDevicePathToText(DevPathNode,TRUE,TRUE);
+      Print(L"%s",Textdevicepath);
+      Print(L"\n\n");
+      if(Textdevicepath) gBS->FreePool(Textdevicepath);
+    }
+
+    return EFI_SUCCESS;
+    
+}
+
+
+
+/**
+  Prints ATA model name to ATA device structure.
+
+  This function converts ATA device model name from ATA identify data
+  to a string in ATA device structure. It needs to change the character
+  order in the original model name string.
+
+  @param  AtaDevice         The ATA child device involved for the operation.
+
+**/
+VOID
+PrintAtaModelName(
+  IN EFI_IDENTIFY_DATA  *Buffer
+  )
+{
+  UINT8      Index;
+  CHAR16     ModelName[MAX_MODEL_NAME_LEN + 1];
+  CHAR8     *Source;
+
+  Source      = Buffer->AtaData.ModelName;
+
+  //
+  // Swap the byte order in the original module name.
+  //
+  for (Index = 0; Index < MAX_MODEL_NAME_LEN; Index += 2) {
+    ModelName[Index]      = Source[Index + 1];
+    ModelName[Index + 1]  = Source[Index];
+  }
+  ModelName[MAX_MODEL_NAME_LEN] = L'\0';
+  
+  Print(L"[Name]: %s\n",ModelName);
+}
+
+
+
+
+/**
+  Prints ATA model name to ATA device structure.
+
+  This function converts ATA device model name from ATA identify data
+  to a string in ATA device structure. It needs to change the character
+  order in the original model name string.
+
+  @param  AtaDevice         The ATA child device involved for the operation.
+
+**/
+VOID
+PrintAtaModelSize(
+  IN EFI_IDENTIFY_DATA  *Buffer
+  )
+{
+  	UINT64    NumSectors       = 0; 
+	UINT64    DriveSizeInBytes = 0;
+	UINT32    RemainderInBytes = 0;
+	UINT32    DriveSizeInGB    = 0;
+	UINTN     NumTenthsOfGB    = 0;
+
+    // For HardDisk append the size. Otherwise display atapi
+    if (!(Buffer->AtaData.config & ATAPI_DEVICE))
+    {
+        if (Buffer->AtaData.command_set_supported_83 & _48_BIT_ADDRESS_FEATURE_SET_SUPPORTED)
+        { 
+            NumSectors = (Buffer->AtaData.maximum_lba_for_48bit_addressing[0])|(((UINT64)Buffer->AtaData.maximum_lba_for_48bit_addressing[1])<<16)|(((UINT64)Buffer->AtaData.maximum_lba_for_48bit_addressing[2])<<32)|(((UINT64)Buffer->AtaData.maximum_lba_for_48bit_addressing[3])<<48); 
+        }
+        else
+        {
+            NumSectors = Buffer->AtaData.user_addressable_sectors_lo|(Buffer->AtaData.user_addressable_sectors_hi<<16); 
+        }
+        
+        DriveSizeInBytes = MultU64x32(NumSectors, 512); 
+    
+        //DriveSizeInGB is DriveSizeInBytes / 1 GB (1 Decimal GB = 10^9 bytes)
+        DriveSizeInGB = (UINT32) DivU64x32Remainder(DriveSizeInBytes, 1000000000, &RemainderInBytes);
+        
+        //Convert the Remainder, which is in bytes, to number of tenths of a Decimal GB.
+        NumTenthsOfGB = RemainderInBytes / 100000000;
+    
+        Print(L"[SIZE]: %d.%d GB\n",DriveSizeInGB, NumTenthsOfGB);
+    }
+    else
+    {
+  	  Print(L"[SIZE]: ATAPI\n",DriveSizeInGB, NumTenthsOfGB);
+    }
+}
+
+
+EFI_STATUS
+EFIAPI
+DeviceFeatureIdentify(
+    IN ATA_ATAPI_PASS_THRU_INSTANCE   *Instance, 
+    IN UINTN                           SataMode,
+    IN EFI_PCI_IO_PROTOCOL            *PciIo,
+    IN UINT8                           Port
+    )
+{
+    EFI_STATUS                         Status = EFI_UNSUPPORTED;
+    UINT8                              SStatus;
+	EFI_IDENTIFY_DATA                  Buffer;
+
+    if(SataMode==SATA_CFG_IDE)
+    {
+	    Status = PciIo->Pci.Read (
+	                      PciIo,
+	                      EfiPciIoWidthUint8,
+	                      0xA0+Port,
+	                      0x1,
+	                      &SStatus
+	                      );
+		if((SStatus&(BIT0|BIT1))!=(BIT0|BIT1))
+		{
+			return EFI_UNSUPPORTED;
+		}
+		
+	    Status = AtaIdentify (Instance, Port/2, Port%2, &Buffer, NULL);
+    }
+    else if(SataMode==SATA_CFG_AHCI)
+    {
+        Status = AhciIdentify (PciIo, &Instance->AhciRegisters, Port, 0, &Buffer);
+
+    }
+
+    Print (L"[Port%d]:\n", Port);
+    if(!EFI_ERROR(Status))
+    {
+        PrintAtaModelName(&Buffer); 
+        PrintAtaModelSize(&Buffer);   
+        //// SATA Speed
+        if((Buffer.AtaData.serial_ata_capabilities&BIT3)==BIT3)
+        {  
+            Print (L"\t[SPEED]: Gen3\n");
+        }else if((Buffer.AtaData.serial_ata_capabilities&BIT2)==BIT2)
+        {  
+            Print (L"\t[SPEED]: Gen2\n");
+        }else if((Buffer.AtaData.serial_ata_capabilities&BIT3)==BIT3)
+        {  
+            Print (L"\t[SPEED]: Gen1\n");
+        }
+
+        //// Power Managerment
+        if((Buffer.AtaData.serial_ata_features_supported&BIT3)==BIT3)
+        {
+            //hipm
+            if((Buffer.AtaData.serial_ata_capabilities&BIT9)==BIT9){
+                Print (L"\t[HIPM]: YES\n");
+            }else{  
+                Print (L"\t[HIPM]: NO\n");
+            }
+
+            //dipm support
+            if((Buffer.AtaData.serial_ata_features_supported&BIT10)==BIT10){
+                Print (L"\t[DIPM]: YES,");
+            }else{
+                Print (L"\t[DIPM]: NO, ");
+            }
+            //dipm enable
+            if((Buffer.AtaData.serial_ata_features_enabled&BIT3)==BIT3){
+                Print (L"\tEnable\n");
+            }else{
+                Print (L"\tDisable\n");
+            }
+
+            //device auto partial to slumber support
+            if((Buffer.AtaData.serial_ata_capabilities&BIT14)==BIT14){
+                Print (L"\t[Auto Partial to Slumber]: YES,");
+            }else{
+                Print (L"\t[Auto Partial to Slumber]: NO, ");
+            }
+            //device auto partial to slumber enable
+            if((Buffer.AtaData.serial_ata_features_enabled&BIT7)==BIT7){
+                Print (L"\tEnable\n");
+            }else{
+                Print (L"\tDisable\n");
+            }
+
+            //Device Sleep support
+            if((Buffer.AtaData.serial_ata_features_supported&BIT8)==BIT8){
+                Print (L"\t[Device Sleep]: YES,");
+            }else{
+                Print (L"\t[Device Sleep]: NO, ");
+            }
+            //Device Sleep enable
+            if((Buffer.AtaData.serial_ata_features_enabled&BIT8)==BIT8){
+                Print (L"\tEnable\n");
+            }else{
+                Print (L"\tDisable\n");
+            }
+
+            //NCQ support
+            if((Buffer.AtaData.serial_ata_capabilities&BIT8)==BIT8){
+                Print (L"\t[NCQ]: YES\n");
+            }else{
+                Print (L"\t[NCQ]: NO\n");
+            }  
+        }else{
+            Print (L"\t[Power Managerment]: NO\n");
+        }
+        
+    }else{
+        Print (L"\t[ERROR]: Timeout!\n");
+    }
+
+    return EFI_SUCCESS;
+}
+
+ 
+/**
+  as the real entry point for the application.
+
+  @param[in] ImageHandle    The firmware allocated handle for the EFI image.
+  @param[in] SystemTable    A pointer to the EFI System Table.
+
+  @retval EFI_SUCCESS       The entry point is executed successfully.
+  @retval other             Some error occurs when executing this entry point.
+
+**/
+EFI_STATUS
+EFIAPI
+UefiMain (
+  IN EFI_HANDLE             ImageHandle,
+  IN EFI_SYSTEM_TABLE      *SystemTable
+  )
+{
+	EFI_STATUS                             Status;
+	UINTN                                  Count;
+	EFI_HANDLE                            *HandleAtaatapipassthru;
+	UINT8                                  i = 0;
+	UINT8                                  j = 0;
+	EFI_DEVICE_PATH_PROTOCOL              *DevicePath;
+	EFI_DEVICE_PATH_TO_TEXT_PROTOCOL*      Device2TextProtocol=NULL;
+	ATA_ATAPI_PASS_THRU_INSTANCE          *Instance = NULL;
+	EFI_ATA_PASS_THRU_PROTOCOL            *AtaPassThru;
+	EFI_PCI_IO_PROTOCOL                   *PciIo=NULL;
+	UINTN                                  Segment;
+	UINTN                                  Bus;
+    UINTN                                  Dev;
+    UINTN                                  Func;
+    UINT16                                 VendorID;
+    UINT16                                 DeviceID;
+    UINTN                                  SataMode;
+
+
+    //////////////////////////////////////////////////// Get the handle of SATA controller /////////////////////
+    Status=gBS->LocateHandleBuffer(
+			        ByProtocol,
+			        &gEfiAtaPassThruProtocolGuid,
+			        NULL,
+			        &Count,
+			        &HandleAtaatapipassthru
+				    );
+    if (EFI_ERROR (Status))
+    {
+	    Print(L"Locate gEfiAtaPassThruProtocolGuid Error!\n");
+    }
+    else
+    {
+	    Print(L"Locate gEfiAtaPassThruProtocolGuid! Number1=%d\n\n",Count);
+    }
+  
+    Status=gBS->LocateProtocol(&gEfiDevicePathToTextProtocolGuid,NULL,(VOID**)&Device2TextProtocol);
+    ASSERT_EFI_ERROR (Status);
+    
+    for(i=0; i<Count; i++)
+    {
+        Status=gBS->HandleProtocol(
+			          HandleAtaatapipassthru[i],
+			          &gEfiDevicePathProtocolGuid,
+			          (VOID**) &DevicePath
+			          );
+
+	    PrintDevicePath (DevicePath);
+	  
+	    Status = gBS->HandleProtocol (
+	                   HandleAtaatapipassthru[i],
+	                   &gEfiPciIoProtocolGuid,
+	                   (VOID**) &PciIo
+	                   );
+	    ASSERT_EFI_ERROR (Status);
+
+	    Status = PciIo->Pci.Read (
+	                          PciIo,
+	                          EfiPciIoWidthUint16,
+	                          0x0,
+	                          0x1,
+	                          &VendorID
+	                          );
+	                          
+	    Status = PciIo->Pci.Read (
+	                          PciIo,
+	                          EfiPciIoWidthUint16,
+	                          0x2,
+	                          0x1,
+	                          &DeviceID
+	                          );	                          
+
+        if((VendorID!=0x1106 && VendorID!=0x1d17) || (DeviceID!=0x9002 && DeviceID!=0x9083))
+        {
+	        continue;
+        }else
+        {
+            Status = PciIo->GetLocation (
+			                PciIo,
+			                &Segment,
+			                &Bus,
+			                &Dev,
+			                &Func
+			                );
+            Print(L"[Lex]: ZX SATA CONTROLLER AT BUS%d D%dF%d, ", Bus, Dev, Func);
+
+	  
+		    Status = PciIo->Pci.Read (
+		                          PciIo,
+		                          EfiPciIoWidthUint8,
+		                          0x0A,
+		                          0x1,
+		                          &SataMode
+		                          );
+		    ASSERT_EFI_ERROR (Status);
+		    
+		    Status  = gBS->HandleProtocol (
+		                     HandleAtaatapipassthru[i],
+		                     &gEfiAtaPassThruProtocolGuid,
+		                     (VOID **) &AtaPassThru
+		                     );
+		    ASSERT_EFI_ERROR (Status);
+		    
+		    Instance = ATA_PASS_THRU_PRIVATE_DATA_FROM_THIS (AtaPassThru);		  
+		  
+		    if(SataMode==SATA_CFG_IDE)
+		    {
+				Print(L"IN IDE MODE!\n");
+		        for(j=0; j<SATA_CFG_IDE_MAXPORT ;j++)
+			    {
+				    Status = DeviceFeatureIdentify(Instance, SataMode, PciIo, j);
+				}
+		    }
+		    else if(SataMode==SATA_CFG_AHCI)
+		    {
+		        Print(L"IN AHCI MODE\n");
+		       	for(j=0; j<SATA_CFG_AHCI_MAXPORT ;j++)
+			    {
+				    Status = DeviceFeatureIdentify(Instance, SataMode, PciIo, j);
+				}
+		    }
+		}
+    }
+  
+    return EFI_SUCCESS;
+}

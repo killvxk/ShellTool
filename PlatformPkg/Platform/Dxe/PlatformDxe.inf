@@ -1,0 +1,148 @@
+## @file
+#  This module will initialize TPM device and measure FVs in PEI phase.
+#
+# Copyright (c) 2006 - 2011, Intel Corporation. All rights reserved.<BR>
+# This program and the accompanying materials
+# are licensed and made available under the terms and conditions of the BSD License
+# which accompanies this distribution. The full text of the license may be found at
+# http://opensource.org/licenses/bsd-license.php
+# THE PROGRAM IS DISTRIBUTED UNDER THE BSD LICENSE ON AN "AS IS" BASIS,
+# WITHOUT WARRANTIES OR REPRESENTATIONS OF ANY KIND, EITHER EXPRESS OR IMPLIED.
+#
+##
+
+[Defines]
+  INF_VERSION                    = 0x00010005
+  BASE_NAME                      = PlatformDxe
+  FILE_GUID                      = 243B9DC8-2380-40e6-BB30-0D85D9618E94
+  MODULE_TYPE                    = DXE_DRIVER
+  VERSION_STRING                 = 1.0
+  ENTRY_POINT                    = PlatformDxeEntry
+
+#
+# The following information is for reference only and not required by the build tools.
+#
+#  VALID_ARCHITECTURES           = IA32 X64 IPF EBC
+#
+
+[Sources]
+  PlatformDxe.c
+  LegacyInterrupt.c
+  LegacyBiosPlatform.c
+  SmmAccess2.c
+  LegacyRegion2.c
+  PciPlatform.c
+  Debug.c
+  SataController.c
+  PlatformMisc.c  
+  IncompatiblePciDeviceSupport.c
+  Smbios.c
+  PciHotPlug.c
+  Dmar.c
+  
+
+[Packages]
+  MdePkg/MdePkg.dec
+  MdeModulePkg/MdeModulePkg.dec
+  IntelFrameworkPkg/IntelFrameworkPkg.dec
+  AsiaPkg/AsiaPkg.dec
+  PlatformPkg/PlatformPkg.dec 
+  IntelFrameworkModulePkg/IntelFrameworkModulePkg.dec  
+  PlatformPkg/IA32FamilyCpuPkg/IA32FamilyCpuPkg.dec
+  ByoModulePkg/ByoModulePkg.dec
+  UefiCpuPkg/UefiCpuPkg.dec
+  ByoNvMediaPkg/ByoNvMediaPkg.dec
+
+
+[LibraryClasses]
+  MemoryAllocationLib
+  BaseLib
+  UefiBootServicesTableLib
+  HobLib
+  UefiDriverEntryPoint
+  UefiRuntimeServicesTableLib
+  BaseMemoryLib
+  DebugLib
+  PrintLib
+  UefiLib
+  IoLib
+  DxeServicesLib
+  DxeServicesTableLib
+  TimerLib
+  SynchronizationLib
+  LocalApicLib
+  S3BootScriptLib
+  LockBoxLib
+  PerformanceLib
+  MtrrLib
+  PlatformCommLib
+  
+
+[Guids]
+  gEfiPlatformMemInfoGuid
+  gPlatformSetupVariableGuid
+  gEfiPlatformNvInfoGuid
+  gEfiGlobalVariableGuid
+  gEfiAcpiTableGuid
+  gEfiAcpiS3ContextGuid
+  gEfiSetupEnterGuid
+
+  
+[Protocols]
+  gEfiLegacyInterruptProtocolGuid
+  gEfiLegacyBiosPlatformProtocolGuid
+  gEfiSmmAccess2ProtocolGuid
+  gEfiLegacyRegion2ProtocolGuid
+  gEfiCpuArchProtocolGuid
+  gEfiResetArchProtocolGuid
+  gEfiPciIoProtocolGuid
+  gEfiPciPlatformProtocolGuid
+  gAsiaCpuProtocolGuid
+  gAsiaNbProtocolGuid
+  gAsiaSbProtocolGuid
+  gEfiTimerArchProtocolGuid
+  gEfiLegacy8259ProtocolGuid
+  gExitPmAuthProtocolGuid
+  gEfiIdeControllerInitProtocolGuid
+  gSwSmiValuePolicyGuid
+  gEfiVariableWriteArchProtocolGuid
+  gEfiIncompatiblePciDeviceSupportProtocolGuid
+  gEfiLegacyBiosProtocolGuid
+  gEfiAtaPassThruProtocolGuid
+  gEfiMpServiceProtocolGuid
+  gEfiSmbiosProtocolGuid
+  gUsbPolicyGuid
+  gBdsAllDriversConnectedProtocolGuid
+  gEfiPciRootBridgeIoProtocolGuid
+  gEfiPs2PolicyProtocolGuid
+  gEfiVirtLegacyBiosProtocolGuid
+  gEfiSmmCommunicationProtocolGuid
+  gEfiHiiConfigAccessProtocolGuid
+  gEfiHiiDatabaseProtocolGuid
+  gEfiPciHotPlugInitProtocolGuid
+  gEfiAcpiTableProtocolGuid
+  gEfiNvMediaAccessSpiReadyGuid
+  gEfiNvMediaAccessProtocolGuid
+  gLegacyOptionRomInfoProtocolGuid
+  
+
+[Pcd]
+  gEfiMdePkgTokenSpaceGuid.PcdPciExpressBaseAddress
+  gPlatformModuleTokenSpaceGuid.PcdCsm16File  
+  gPlatformModuleTokenSpaceGuid.AcpiIoPortBaseAddress   
+  gEfiIntelFrameworkModulePkgTokenSpaceGuid.PcdDisplayOptionRomMessage
+  gEfiByoModulePkgTokenSpaceGuid.PcdFlashAreaSize
+  gPlatformModuleTokenSpaceGuid.PcdS3RecordAddr
+  gEfiIntelFrameworkModulePkgTokenSpaceGuid.PcdCpuS3ApVectorAddress 
+  gEfiMdeModulePkgTokenSpaceGuid.PcdAcpiDefaultOemId            ## SOMETIMES_CONSUMES
+  gEfiMdeModulePkgTokenSpaceGuid.PcdAcpiDefaultOemTableId       ## SOMETIMES_CONSUMES
+  gEfiMdeModulePkgTokenSpaceGuid.PcdAcpiDefaultOemRevision      ## SOMETIMES_CONSUMES
+  gEfiMdeModulePkgTokenSpaceGuid.PcdAcpiDefaultCreatorId        ## SOMETIMES_CONSUMES
+  gEfiMdeModulePkgTokenSpaceGuid.PcdAcpiDefaultCreatorRevision  ## SOMETIMES_CONSUMES
+  gEfiMdeModulePkgTokenSpaceGuid.PcdFirmwareVendor
+  
+  
+[Depex]
+  gAsiaNbProtocolGuid AND gAsiaSbProtocolGuid AND gEfiCpuArchProtocolGuid
+
+  

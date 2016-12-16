@@ -1,0 +1,58 @@
+
+
+  #ifdef ADVANCED_FORM_SET
+
+    #ifdef FORM_SET_GOTO
+      goto ConsoleRedirection_FORM_ID,
+        prompt  = STRING_TOKEN(STR_CONSOLE_REDIRECTION_CONF_TITLE),
+        help    = STRING_TOKEN(STR_CONSOLE_REDIRECTION_CONF_HELP);
+    #endif
+
+    #ifdef FORM_SET_FORM
+      form formid = AUTO_ID(ConsoleRedirection_FORM_ID),
+        title     = STRING_TOKEN(STR_CONSOLE_REDIRECTION_CONF_TITLE);
+        subtitle text = STRING_TOKEN(STR_CONSOLE_REDIRECTION_CONF_TITLE);
+        subtitle text = STRING_TOKEN(STR_EMPTY);
+
+
+        oneof   varid   = SETUP_DATA.UCREnable,
+                prompt      = STRING_TOKEN(STR_UCR),
+                help        = STRING_TOKEN(STR_UCR_HELP),
+                option text = STRING_TOKEN(STR_DISABLE), value=0, flags=DEFAULT | RESET_REQUIRED;
+                option text = STRING_TOKEN(STR_ENABLE), value=1, flags=0 | RESET_REQUIRED;
+        endoneof;
+
+        suppressif NOT ideqval SETUP_DATA.UCREnable == 1;
+            oneof varid   = SETUP_DATA.SerialPortSelect,
+                  prompt      = STRING_TOKEN(STR_SERIAL_PORT_SELECT),
+                  help        = STRING_TOKEN(STR_SERIAL_PORT_SELECT_HELP),
+                  option text = STRING_TOKEN(STR_SERIAL_PORT_SELECT_COM1), value=0, flags=0| RESET_REQUIRED;
+                  option text = STRING_TOKEN(STR_SERIAL_PORT_SELECT_COM2), value=1, flags=0 | RESET_REQUIRED;
+                  option text = STRING_TOKEN(STR_SERIAL_PORT_SELECT_COM3), value=3, flags=DEFAULT| RESET_REQUIRED;
+            endoneof;
+
+          oneof varid   = SETUP_DATA.SerialBaudrate,
+                prompt      = STRING_TOKEN(STR_SERIAL_BAUDRATE),
+                help        = STRING_TOKEN(STR_SERIAL_BAUDRATE_HELP),
+                option text = STRING_TOKEN(STR_SERIAL_BAUDRATE_9600),  value=0, flags=0 | RESET_REQUIRED;
+                option text = STRING_TOKEN(STR_SERIAL_BAUDRATE_19200), value=1, flags=0 | RESET_REQUIRED;
+                option text = STRING_TOKEN(STR_SERIAL_BAUDRATE_38400), value=2, flags=0 | RESET_REQUIRED;
+                option text = STRING_TOKEN(STR_SERIAL_BAUDRATE_57600), value=3, flags=0 | RESET_REQUIRED;
+                option text = STRING_TOKEN(STR_SERIAL_BAUDRATE_115200), value=4, flags=DEFAULT | RESET_REQUIRED;
+          endoneof;
+
+          oneof varid   = SETUP_DATA.TerminalType,
+                prompt      = STRING_TOKEN(STR_TERMINAL_TYPE),
+                help        = STRING_TOKEN(STR_TERMINAL_TYPE_HELP),
+                option text = STRING_TOKEN(STR_TERMINAL_TYPE_ANSI), value=0, flags=0 | RESET_REQUIRED;
+                option text = STRING_TOKEN(STR_TERMINAL_TYPE_VT100), value=1, flags=DEFAULT | RESET_REQUIRED;
+                option text = STRING_TOKEN(STR_TERMINAL_TYPE_VT100_PLUS), value=2, flags=0 | RESET_REQUIRED;
+                option text = STRING_TOKEN(STR_TERMINAL_TYPE_UTF8), value=3, flags=0 | RESET_REQUIRED;
+          endoneof;
+
+        endif;
+      endform;
+    #endif
+    
+  #endif //ifdef ADVANCED_FORM_SET
+  

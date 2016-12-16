@@ -1,0 +1,61 @@
+##  @file
+# Provides shell Debug1 profile functions
+#
+# Copyright (c) 2010 - 2011, Intel Corporation. All rights reserved.<BR>
+#
+#  This program and the accompanying materials
+#  are licensed and made available under the terms and conditions of the BSD License
+#  which accompanies this distribution. The full text of the license may be found at
+#  http://opensource.org/licenses/bsd-license.php
+#  THE PROGRAM IS DISTRIBUTED UNDER THE BSD LICENSE ON AN "AS IS" BASIS,
+#  WITHOUT WARRANTIES OR REPRESENTATIONS OF ANY KIND, EITHER EXPRESS OR IMPLIED.
+#
+#
+##
+[Defines]
+  INF_VERSION                    = 0x00010006
+  BASE_NAME                      = Sata_test_CommandsLib
+  FILE_GUID                      = 81330D51-A99B-4cc8-A2EB-AE22542A3F45
+  MODULE_TYPE                    = UEFI_DRIVER
+  VERSION_STRING                 = 1.0
+  LIBRARY_CLASS                  = NULL|UEFI_APPLICATION UEFI_DRIVER
+  CONSTRUCTOR                    = Sata_test_CommandLibConstructor
+  DESTRUCTOR                     = Sata_test_CommandsLibDestructor 
+
+[Sources]
+  Sata_test_CommandsLib.c
+  Sata_test_CommandsLib.h
+  Sata_Block.c
+  Sata_Block.h
+  Sata_test_CommandsLib.uni
+
+[Packages]
+  MdePkg/MdePkg.dec
+  ShellPkg/ShellPkg.dec
+  MdeModulePkg/MdeModulePkg.dec
+
+[LibraryClasses]
+  MemoryAllocationLib
+  BaseLib
+  BaseMemoryLib
+  DebugLib
+  ShellCommandLib
+  ShellLib
+  UefiLib
+  UefiRuntimeServicesTableLib
+  UefiBootServicesTableLib
+  SortLib
+  PrintLib
+
+[Pcd]
+  gEfiShellPkgTokenSpaceGuid.PcdShellProfileMask              # ALWAYS_CONSUMED
+  gEfiShellPkgTokenSpaceGuid.PcdShellFileOperationSize        # ALWAYS_CONSUMED
+  gEfiMdePkgTokenSpaceGuid.PcdMaximumUnicodeStringLength      # ALWAYS_CONSUMED
+
+[Protocols]
+  gEfiPciRootBridgeIoProtocolGuid
+  gEfiBlockIoProtocolGuid
+  gEfiSimplePointerProtocolGuid
+
+[Guids]
+  gShellSataHiiGuid

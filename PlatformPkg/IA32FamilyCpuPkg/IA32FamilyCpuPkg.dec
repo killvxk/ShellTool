@@ -1,0 +1,90 @@
+#
+# This file contains an 'Intel Peripheral Driver' and is      
+# licensed for Intel CPUs and chipsets under the terms of your
+# license agreement with Intel or your vendor.  This file may 
+# be modified by the user, subject to additional terms of the 
+# license agreement                                           
+#
+## @file
+# Package for support of IA32 family processors
+#
+# This package supports IA32 family processors, with CPU DXE module, CPU PEIM, CPU S3 module,
+# SMM modules, related libraries, and corresponding definitions.
+#
+# Copyright (c) 2006 - 2010, Intel Corporation. All rights reserved.<BR>
+#
+#    This software and associated documentation (if any) is furnished
+#    under a license and may only be used or copied in accordance
+#    with the terms of the license. Except as permitted by such
+#    license, no part of this software or documentation may be
+#    reproduced, stored in a retrieval system, or transmitted in any
+#    form or by any means without the express written consent of
+#    Intel Corporation.
+#
+##
+
+[Defines]
+  DEC_SPECIFICATION              = 0x00010005
+  PACKAGE_NAME                   = IA32FamilyCpuPkg
+  PACKAGE_GUID                   = 7dbe088f-2e1a-475c-b006-55632c2a5489
+  PACKAGE_VERSION                = 0.4
+
+[Includes]
+  Include                        
+
+[LibraryClasses]
+  CpuConfigLib|Include/Library/CpuConfigLib.h
+  CpuOnlyResetLib|Include/Library/CpuOnlyResetLib.h
+  PlatformSecLib|Include/Library/PlatformSecLib.h
+  Socket775LgaLib|Include/Library/SocketLga775Lib.h
+  SocketLga1156Lib|Include/Library/SocketLga1156Lib.h
+  
+[Guids]
+  gEfiCpuTokenSpaceGuid = { 0x2ADA836D, 0x0A3D, 0x43D6, { 0xA2, 0x5A, 0x38, 0x45, 0xCA, 0xD2, 0xD4, 0x00 }}
+
+[Ppis]
+  gPeiCachePpiGuid      = { 0xC153205A, 0xE898, 0x4C24, { 0x86, 0x89, 0xA4, 0xB4, 0xBC, 0xC5, 0xC8, 0xA2 }}
+
+[PcdsFeatureFlag]
+  gEfiCpuTokenSpaceGuid.PcdCpuSmmEnableBspElection|TRUE|BOOLEAN|0x32132106
+  gEfiCpuTokenSpaceGuid.PcdCpuDcuModeSelectionFlag|FALSE|BOOLEAN|0x10000028
+  gEfiCpuTokenSpaceGuid.PcdCpuSmmBlockStartupThisAp|FALSE|BOOLEAN|0x32132108
+  gEfiCpuTokenSpaceGuid.PcdCpuSmmDebug|FALSE|BOOLEAN|0x1000001B
+  gEfiCpuTokenSpaceGuid.PcdCpuSmmStackGuard|FALSE|BOOLEAN|0x1000001C
+
+[PcdsFixedAtBuild]
+  gEfiCpuTokenSpaceGuid.PcdCpuMaxLogicalProcessorNumber|64|UINT32|0x30000002
+  gEfiCpuTokenSpaceGuid.PcdCpuSmmApSyncTimeout|1000000|UINT64|0x32132104
+  gEfiCpuTokenSpaceGuid.PcdCpuSmmStackSize|0x2000|UINT32|0x32132105
+  gEfiCpuTokenSpaceGuid.PcdSecCoreMaxPpiSupported|0x6|UINT32|0x10001010
+  gEfiCpuTokenSpaceGuid.PcdTemporaryRamBase|0xfef00000|UINT32|0x10001001                   
+  gEfiCpuTokenSpaceGuid.PcdTemporaryRamSize|0x2000|UINT32|0x10001002                       
+  gEfiCpuTokenSpaceGuid.PcdSecMaximumNumberOfProcessors|1|UINT32|0x10001000
+  gEfiCpuTokenSpaceGuid.PcdMicroCodeHeaderSize|0x30|UINT32|0x10001004
+  
+[PcdsFixedAtBuild, PcdsPatchableInModule]
+  ## Stack size in the temporary RAM.
+  #   0 means half of TemporaryRamSize.
+  gEfiCpuTokenSpaceGuid.PcdPeiTemporaryRamStackSize|0|UINT32|0x10001003
+
+[PcdsFixedAtBuild, PcdsPatchableInModule, PcdsDynamic, PcdsDynamicEx]
+  gEfiCpuTokenSpaceGuid.PcdCpuApInitTimeOutInMicroSeconds|50000|UINT32|0x30000001
+  gEfiCpuTokenSpaceGuid.PcdCpuApStackSize|0x4000|UINT32|0x30000003
+
+
+  #  The value is defined as below.
+  #  1: ApInHltLoop,   AP is in the Hlt-Loop state.
+  #  2: ApInMwaitLoop, AP is in the Mwait-Loop state.
+  #  3: ApInRunLoop,   AP is in the Run-Loop state.
+  gEfiCpuTokenSpaceGuid.PcdCpuApLoopMode|1|UINT8|0x60008006
+
+[PcdsDynamic, PcdsDynamicEx]
+  gEfiCpuTokenSpaceGuid.PcdCpuPageTableAddress|0x0|UINT64|0x6000000E
+  gEfiCpuTokenSpaceGuid.PcdCpuMtrrTableAddress|0x0|UINT64|0x6000000D
+  gEfiCpuTokenSpaceGuid.PcdCpuConfigContextBuffer|0x0|UINT64|0x50000001
+  gEfiCpuTokenSpaceGuid.PcdCpuDcuMode|0x0|UINT8|0x60008005
+  gEfiCpuTokenSpaceGuid.PcdCpuMicroCodeAddress|0x0|UINT32|0x60000011
+  gEfiCpuTokenSpaceGuid.PcdCpuMicroCodeSize|0x0|UINT32|0x60000012
+  gEfiCpuTokenSpaceGuid.PcdCpuCoreEnabled|0x0|UINT8|0x60000013
+
+  

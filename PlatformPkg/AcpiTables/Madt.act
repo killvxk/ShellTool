@@ -1,0 +1,217 @@
+
+#include <IndustryStandard/Acpi.h>
+
+
+#define EFI_ACPI_LOCAL_APIC_ADDRESS 0xFEE00000
+#define EFI_ACPI_1_0_MULTIPLE_APIC_FLAGS             (EFI_ACPI_1_0_PCAT_COMPAT)
+#define EFI_ACPI_INTERRUPT_SOURCE_OVERRIDE_COUNT      6
+#define EFI_ACPI_IO_APIC_COUNT                        2
+
+
+#pragma pack (1)
+typedef struct {
+  EFI_ACPI_1_0_MULTIPLE_APIC_DESCRIPTION_TABLE_HEADER   Header;
+
+#if _PCD_VALUE_PcdCpuMaxLogicalProcessorNumber > 0
+  EFI_ACPI_1_0_PROCESSOR_LOCAL_APIC_STRUCTURE           LocalApic[_PCD_VALUE_PcdCpuMaxLogicalProcessorNumber];
+#endif
+
+#if EFI_ACPI_INTERRUPT_SOURCE_OVERRIDE_COUNT > 0
+  EFI_ACPI_1_0_INTERRUPT_SOURCE_OVERRIDE_STRUCTURE      Iso[EFI_ACPI_INTERRUPT_SOURCE_OVERRIDE_COUNT];
+#endif
+
+#if EFI_ACPI_IO_APIC_COUNT > 0
+  EFI_ACPI_1_0_IO_APIC_STRUCTURE                        IoApic[EFI_ACPI_IO_APIC_COUNT];
+#endif
+
+  EFI_ACPI_1_0_LOCAL_APIC_NMI_STRUCTURE                 Nmi[1];
+
+} EFI_ACPI_1_0_MULTIPLE_APIC_DESCRIPTION_TABLE;
+#pragma pack ()
+
+
+
+EFI_ACPI_1_0_MULTIPLE_APIC_DESCRIPTION_TABLE Madt = {
+  {
+    {
+      EFI_ACPI_1_0_APIC_SIGNATURE,
+      sizeof (EFI_ACPI_1_0_MULTIPLE_APIC_DESCRIPTION_TABLE),
+      3,//EFI_ACPI_1_0_MULTIPLE_APIC_DESCRIPTION_TABLE_REVISION,
+      0x00,
+      "ZX   ",
+      0x2020202020202020,
+      1,
+      1,
+      1
+    },
+
+    EFI_ACPI_LOCAL_APIC_ADDRESS,
+    EFI_ACPI_1_0_MULTIPLE_APIC_FLAGS,
+  },
+
+
+  {
+    {
+      EFI_ACPI_1_0_PROCESSOR_LOCAL_APIC,                        // Type
+      sizeof(EFI_ACPI_1_0_PROCESSOR_LOCAL_APIC_STRUCTURE),      // Length
+      0x00,                                                     // Processor ID
+      0x00,                                                     // Local APIC ID
+      0x00000001                                                // Flags - Enabled by default
+    },
+    {
+      EFI_ACPI_1_0_PROCESSOR_LOCAL_APIC,                        // Type
+      sizeof(EFI_ACPI_1_0_PROCESSOR_LOCAL_APIC_STRUCTURE),      // Length
+      0x01,                                                     // Processor ID
+      0x01,                                                     // Local APIC ID
+      0x00000001                                                // Flags - Enabled by default
+    },
+    {
+      EFI_ACPI_1_0_PROCESSOR_LOCAL_APIC,                        // Type
+      sizeof(EFI_ACPI_1_0_PROCESSOR_LOCAL_APIC_STRUCTURE),      // Length
+      0x02,                                                     // Processor ID
+      0x02,                                                     // Local APIC ID
+      0x00000001                                                // Flags - Enabled by default
+    },
+    {
+      EFI_ACPI_1_0_PROCESSOR_LOCAL_APIC,                        // Type
+      sizeof(EFI_ACPI_1_0_PROCESSOR_LOCAL_APIC_STRUCTURE),      // Length
+      0x03,                                                     // Processor ID
+      0x03,                                                     // Local APIC ID
+      0x00000001                                                // Flags - Enabled by default
+    },
+    {
+      EFI_ACPI_1_0_PROCESSOR_LOCAL_APIC,                        // Type
+      sizeof(EFI_ACPI_1_0_PROCESSOR_LOCAL_APIC_STRUCTURE),      // Length
+      0x04,                                                     // Processor ID
+      0x04,                                                     // Local APIC ID
+      0x00000001                                                // Flags - Enabled by default
+    },
+    {
+      EFI_ACPI_1_0_PROCESSOR_LOCAL_APIC,                        // Type
+      sizeof(EFI_ACPI_1_0_PROCESSOR_LOCAL_APIC_STRUCTURE),      // Length
+      0x05,                                                     // Processor ID
+      0x05,                                                     // Local APIC ID
+      0x00000001                                                // Flags - Enabled by default
+    },
+    {
+      EFI_ACPI_1_0_PROCESSOR_LOCAL_APIC,                        // Type
+      sizeof(EFI_ACPI_1_0_PROCESSOR_LOCAL_APIC_STRUCTURE),      // Length
+      0x06,                                                     // Processor ID
+      0x06,                                                     // Local APIC ID
+      0x00000001                                                // Flags - Enabled by default
+    },
+    {
+      EFI_ACPI_1_0_PROCESSOR_LOCAL_APIC,                        // Type
+      sizeof(EFI_ACPI_1_0_PROCESSOR_LOCAL_APIC_STRUCTURE),      // Length
+      0x07,                                                     // Processor ID
+      0x07,                                                     // Local APIC ID
+      0x00000001                                                // Flags - Enabled by default
+    }
+  },
+
+  //
+  // Interrupt Source Override Structure
+  //
+
+  {
+    {
+      //
+      // IRQ0=>IRQ2 Interrupt Source Override Structure
+      //
+      EFI_ACPI_1_0_INTERRUPT_SOURCE_OVERRIDE,                   // Type
+      sizeof (EFI_ACPI_1_0_INTERRUPT_SOURCE_OVERRIDE_STRUCTURE),// Length
+      0x00,                                                     // Bus - ISA
+      0x00,                                                     // Source - IRQ0
+      0x00000002,                                               // Global System Interrupt - IRQ2
+      0x0000                                                    // Flags - Conforms to specifications of the bus
+    },
+    {
+      EFI_ACPI_1_0_INTERRUPT_SOURCE_OVERRIDE,                   // Type
+      sizeof (EFI_ACPI_1_0_INTERRUPT_SOURCE_OVERRIDE_STRUCTURE),// Length
+      0x00,                                                     // Bus - ISA
+      0x03,                                                     // Source - IRQx
+      0x00000003,                                               // Global System Interrupt - IRQx
+      0x000F                                                    // Flags - Level-tiggered, Active Low
+    },    
+    {
+      EFI_ACPI_1_0_INTERRUPT_SOURCE_OVERRIDE,                   // Type
+      sizeof (EFI_ACPI_1_0_INTERRUPT_SOURCE_OVERRIDE_STRUCTURE),// Length
+      0x00,                                                     // Bus - ISA
+      0x04,                                                     // Source - IRQx
+      0x00000004,                                               // Global System Interrupt - IRQx
+      0x000F                                                    // Flags - Level-tiggered, Active Low
+    }, 
+    {
+      EFI_ACPI_1_0_INTERRUPT_SOURCE_OVERRIDE,                   // Type
+      sizeof (EFI_ACPI_1_0_INTERRUPT_SOURCE_OVERRIDE_STRUCTURE),// Length
+      0x00,                                                     // Bus - ISA
+      0x07,                                                     // Source - IRQx
+      0x00000007,                                               // Global System Interrupt - IRQx
+      0x0000                                                    // Flags
+    },      
+    {
+      //
+      // ISO (SCI Active High) Interrupt Source Override Structure
+      //
+      EFI_ACPI_1_0_INTERRUPT_SOURCE_OVERRIDE,                   // Type
+      sizeof (EFI_ACPI_1_0_INTERRUPT_SOURCE_OVERRIDE_STRUCTURE),// Length
+      0x00,                                                     // Bus - ISA
+      0x09,                                                     // Source - IRQ0
+      0x00000009,                                               // Global System Interrupt
+      0x000F                                                    // Flags - Level-tiggered, Active Low
+    },
+    {
+      EFI_ACPI_1_0_INTERRUPT_SOURCE_OVERRIDE,                   // Type
+      sizeof (EFI_ACPI_1_0_INTERRUPT_SOURCE_OVERRIDE_STRUCTURE),// Length
+      0x00,                                                     // Bus - ISA
+      0x0B,                                                     // Source - IRQx
+      0x0000000B,                                               // Global System Interrupt - IRQx
+      0x0000                                                    // Flags
+    },     
+  },
+
+  //
+  // IO APIC Structure
+  //
+  {
+    {
+      EFI_ACPI_1_0_IO_APIC,                                     // Type
+      sizeof (EFI_ACPI_1_0_IO_APIC_STRUCTURE),                  // Length
+      0x09,                                                     // IO APIC ID
+      EFI_ACPI_RESERVED_BYTE,                                   // Reserved
+      0xFEC00000,                                               // IO APIC Address (physical)
+      0x00000000                                                // Global System Interrupt Base
+    },
+    {
+      EFI_ACPI_1_0_IO_APIC,                                     // Type
+      sizeof (EFI_ACPI_1_0_IO_APIC_STRUCTURE),                  // Length
+      0x0A,                                                     // IO APIC ID
+      EFI_ACPI_RESERVED_BYTE,                                   // Reserved
+      0xFECC0000,                                               // IO APIC Address (physical)
+      0x00000018                                                // Global System Interrupt Base
+    }    
+  },
+  
+  {
+    {  
+      EFI_ACPI_1_0_LOCAL_APIC_NMI,
+      sizeof(EFI_ACPI_1_0_LOCAL_APIC_NMI_STRUCTURE),
+      0xFF,
+      0x05,
+      0x01
+    },
+  }
+};
+
+
+VOID*
+ReferenceAcpiTable (
+  VOID
+  )
+{
+  //
+  // Reference the table being generated to prevent the optimizer from removing the
+  // data structure from the exeutable
+  //
+  return (VOID*)&Madt;
+}

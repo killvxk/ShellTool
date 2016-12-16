@@ -1,0 +1,204 @@
+## @file  
+#
+# Copyright (c) 2006 - 2011, Byosoft Corporation.<BR> 
+# All rights reserved.This software and associated documentation (if any)
+# is furnished under a license and may only be used or copied in 
+# accordance with the terms of the license. Except as permitted by such
+# license, no part of this software or documentation may be reproduced, 
+# stored in a retrieval system, or transmitted in any form or by any 
+# means without the express written consent of Byosoft Corporation.
+#
+# File Name:
+#   PlatformSetupDxe.inf
+#
+# Abstract: 
+#   Component description file for Setup module
+#
+# Revision History:
+##
+
+[Defines]
+  INF_VERSION                    = 0x00010005
+  BASE_NAME                      = PlatformSetupDxe
+  FILE_GUID                      = 03068E4C-E69B-4056-9E98-40BAF502FC03
+  MODULE_TYPE                    = DXE_DRIVER
+  VERSION_STRING                 = 1.0 
+  ENTRY_POINT                    = PlatformSetupEntry
+  
+[Sources]
+  
+  #
+  # Main menu
+  #
+  Main/Main.vfr
+  Main/PlatformInfo.sd
+  Main/PlatformInfo.uni
+  Main/PlatformInfoSetup.c
+
+  #
+  # Devices Menu
+  #
+  Devices/Devices.vfr
+  Devices/Devices.uni
+  Devices/Video/VideoSetup.sd
+  Devices/Video/VideoSetup.uni
+  Devices/Audio/Audio.sd
+  Devices/Audio/Audio.uni  
+  Devices/Network/Network.uni
+  Devices/Network/Network.sd
+  Devices/Usb/UsbSetup.uni  
+  Devices/Usb/UsbSetup.sd
+  Devices/Sdio/Sdio.sd
+  Devices/Sdio/Sdio.uni
+  Devices/Pcie/Pcie.sd  
+  Devices/Pcie/Pcie.uni 
+  Devices/Uart/Uart.sd
+  Devices/Uart/Uart.uni
+  Devices/SNMI/SNMI.sd  
+  Devices/SNMI/SNMI.uni  
+  Devices/DevicesSetUp.c
+  #
+  # Advanced Menu
+  #
+  Advanced/Advanced.vfr
+  Advanced/Cpu/Cpu.sd  
+  Advanced/Cpu/Cpu.uni
+  Advanced/Cpu/CpuSetup.c  
+
+  Advanced/ConsoleRedirection/ConsoleRedirection.sd
+  Advanced/ConsoleRedirection/ConsoleRedirection.uni
+
+  Advanced/Chipset/Chipset.sd 
+  Advanced/Chipset/Chipset.uni
+  Advanced/Dram/Dram.sd
+  Advanced/Dram/Dram.uni
+  Advanced/Others/Others.sd
+  Advanced/Others/Others.uni
+  Advanced/Raida/Raida.sd
+  Advanced/Raida/Raida.uni
+  Advanced/mca/Mca.sd
+  Advanced/mca/Mca.uni
+# Advanced/AdvancedSetUp.c
+  #
+  # Power Menu
+  #
+  Power/Power.vfr
+  Power/Power.uni
+  Power/PowerSetUp.c
+  #   
+  # Secirity Menu
+  #
+  Security/Security.vfr
+  Security/PasswordCallback.c
+
+  #
+  # Exit Menu
+  #
+  Exit/Exit.vfr
+  Exit/ExitSetup.c
+  
+  #
+  # OEM & Platform Specific
+  #
+  SetupCallback.c
+  SetupCallback.h
+  HiiConfigAccess.c
+  OemReset.c
+
+  PlatformSetup.c
+  PlatformSetup.h
+  Setup.uni
+  UqiList.uni
+  SetupDefinitions.h
+  SetupItemId.h
+  SetupStrings.c
+  SetupStrings.h
+  VfrExtension.h
+
+  
+[Packages]
+  MdePkg/MdePkg.dec
+  MdeModulePkg/MdeModulePkg.dec
+  ByoModulePkg/ByoModulePkg.dec
+  IntelFrameworkPkg/IntelFrameworkPkg.dec
+  IntelFrameworkModulePkg/IntelFrameworkModulePkg.dec
+  AsiaPkg/AsiaPkg.dec
+  PlatformPkg/PlatformPkg.dec
+  PlatformPkg/IA32FamilyCpuPkg/IA32FamilyCpuPkg.dec
+  SecurityPkg/SecurityPkg.dec
+  CryptoPkg/CryptoPkg.dec
+ 
+ 
+[LibraryClasses]
+  UefiBootServicesTableLib
+  UefiRuntimeServicesTableLib
+  UefiDriverEntryPoint
+  HiiLib
+  HobLib
+  UefiLib
+  UefiHiiServicesLib
+  PrintLib
+  IoLib
+  PerformanceLib
+  MemoryAllocationLib
+  BaseMemoryLib
+  BaseLib
+  DebugLib
+  PcdLib
+  DxeServicesLib
+  BaseCryptLib
+  PlatformCommLib
+  
+
+[Guids]
+  gEfiGlobalVariableGuid             ## Consumed
+  gEfiEventReadyToBootGuid           ## Consumed
+  gEfiHobListGuid                    ## Consumed
+  gEfiHddPasswordSecurityVariableGuid
+  gPlatformSetupVariableGuid         ## Consumed
+  gSetupPasswordVariableTseGuid
+  gEfiPlatformMemInfoGuid            ## Consumed      #chentaiyuan20131226+
+  gEfiSmbiosTableGuid                ## Consumed      #chentaiyuan20131226+
+  gEfiIfrTianoGuid
+  gEfiSetupEnterGuid  
+  gAsiaCpuCfgHobGuid 
+
+[Protocols]
+  gEfiVariableArchProtocolGuid       ## Consumed 
+  gEfiVariableWriteArchProtocolGuid  ## Consumed
+  gEfiHiiDatabaseProtocolGuid        ## Consumed
+  gEfiHiiConfigAccessProtocolGuid    ## Consumed
+  gEfiAcpiSupportProtocolGuid        ## Consumed
+  gEfiSerialIoProtocolGuid           ## Consumed
+  gEfiMpServiceProtocolGuid          ## Consumed
+  gEfiLegacyBiosProtocolGuid         ## Consumed
+  gPlatformInfoProtocolGuid          ## Consumes
+  gEfiDevicePathProtocolGuid         ## Consumed
+  gEfiDiskInfoProtocolGuid           ## Consumed
+  gEfiPciRootBridgeIoProtocolGuid    ## Consumed
+  gEfiAtaPassThruProtocolGuid        ## Consumed
+  gEfiPciIoProtocolGuid              ## Consumed 
+  gSetupSaveNotifyProtocolGuid 
+  gEfiGraphicsOutputProtocolGuid
+  gEfiByoFormBrowserExProtocolGuid
+  gAsiaCpuProtocolGuid               ## Consumed
+  gEfiByoFormsetManagerProtocolGuid  ## PROTOCOL CONSUMES
+  gAsiaSbProtocolGuid
+  gAsiaNbProtocolGuid
+  
+[Pcd]  
+  gEfiMdePkgTokenSpaceGuid.PcdPciExpressBaseAddress
+  gEfiIntelFrameworkModulePkgTokenSpaceGuid.PcdBootState
+  gEfiMdePkgTokenSpaceGuid.PcdUefiVariableDefaultLangCodes
+  gEfiMdePkgTokenSpaceGuid.PcdUefiVariableDefaultLang
+  gEfiMdePkgTokenSpaceGuid.PcdUefiVariableDefaultPlatformLangCodes
+  gEfiMdePkgTokenSpaceGuid.PcdUefiVariableDefaultPlatformLang
+  gEfiCpuTokenSpaceGuid.PcdCpuMicroCodeAddress
+  gEfiMdeModulePkgTokenSpaceGuid.PcdSetupExitNeedReset
+  
+[Depex]
+  gEfiVariableArchProtocolGuid      AND 
+  gEfiVariableWriteArchProtocolGuid AND 
+  gEfiHiiDatabaseProtocolGuid       AND 
+  gEfiMpServiceProtocolGuid
+      

@@ -1,0 +1,1749 @@
+/** @file
+
+Copyright (c) 2006 - 2011, Byosoft Corporation.<BR>
+All rights reserved.This software and associated documentation (if any)
+is furnished under a license and may only be used or copied in
+accordance with the terms of the license. Except as permitted by such
+license, no part of this software or documentation may be reproduced,
+stored in a retrieval system, or transmitted in any form or by any
+means without the express written consent of Byosoft Corporation.
+
+File Name:
+  Chipset.sd
+
+Abstract:
+  Chipset Form Template.
+
+Revision History:
+
+**/
+
+
+
+#ifdef ADVANCED_FORM_SET
+
+
+  #ifdef FORM_SET_GOTO
+    goto CHIPSET_FORM_ID, 
+      prompt = STRING_TOKEN(STR_CHIPSET_FORM),
+      help   = STRING_TOKEN(STR_CHIPSET_FORM_HELP);
+  #endif
+
+  #ifdef FORM_SET_FORM
+
+    form formid = AUTO_ID(CHIPSET_FORM_ID),
+      title = STRING_TOKEN(STR_CHIPSET_FORM);
+      
+  
+    subtitle text = STRING_TOKEN(STR_EMPTY);		
+ 
+     oneof varid = SETUP_DATA.ApplicationModeSelection,
+        prompt      = STRING_TOKEN(STR_APP_MODE_SEL),
+        help        = STRING_TOKEN(STR_EMPTY),
+        option text = STRING_TOKEN(STR_NOTEBOOK),   value = 0, flags = RESET_REQUIRED ;
+        option text = STRING_TOKEN(STR_DT_EMBEDED), value = 1, flags = RESET_REQUIRED| MANUFACTURING | DEFAULT;          
+       endoneof;    
+     
+    subtitle text = STRING_TOKEN(STR_EMPTY);		
+    text
+      help   = STRING_TOKEN(STR_EMPTY),
+      text   = STRING_TOKEN(STR_NORTH_BRIDGE),
+      flags  = 0,
+      key    = 0;  
+       oneof varid = SETUP_DATA.NBSPEValue,
+        prompt      = STRING_TOKEN(STR_NB_SPE),
+        help        = STRING_TOKEN(STR_EMPTY),
+        option text = STRING_TOKEN(STR_MANUAL), value = 0, flags = RESET_REQUIRED;
+        option text = STRING_TOKEN(STR_S),      value = 1, flags = RESET_REQUIRED | MANUFACTURING | DEFAULT;          
+        option text = STRING_TOKEN(STR_P_S),    value = 2, flags = RESET_REQUIRED;
+        option text = STRING_TOKEN(STR_E_P_S),  value = 3, flags = RESET_REQUIRED;
+      endoneof;         
+
+     suppressif NOT ideqval SETUP_DATA.NBSPEValue == 0;  
+        
+      oneof varid = SETUP_DATA.D0F0SPEValue,
+        prompt      = STRING_TOKEN(STR_D0F0_SPE),
+        help        = STRING_TOKEN(STR_EMPTY),
+        option text = STRING_TOKEN(STR_S),  value = 0, flags = RESET_REQUIRED;          
+        option text = STRING_TOKEN(STR_P_S), value = 1, flags = RESET_REQUIRED;
+        option text = STRING_TOKEN(STR_E_P_S), value = 2, flags = RESET_REQUIRED | MANUFACTURING | DEFAULT;
+      endoneof; 
+      
+      oneof varid = SETUP_DATA.D0F1SPEValue,
+        prompt      = STRING_TOKEN(STR_D0F1_SPE),
+        help        = STRING_TOKEN(STR_EMPTY),
+        option text = STRING_TOKEN(STR_S),  value = 0, flags = RESET_REQUIRED;          
+        option text = STRING_TOKEN(STR_P_S), value = 1, flags = RESET_REQUIRED;
+        option text = STRING_TOKEN(STR_E_P_S), value = 2, flags = RESET_REQUIRED | MANUFACTURING | DEFAULT;
+      endoneof;
+      
+      oneof varid = SETUP_DATA.D0F2SPEValue,
+        prompt      = STRING_TOKEN(STR_D0F2_SPE),
+        help        = STRING_TOKEN(STR_EMPTY),
+       option text = STRING_TOKEN(STR_S),  value = 0, flags = RESET_REQUIRED;          
+        option text = STRING_TOKEN(STR_P_S), value = 1, flags = RESET_REQUIRED;
+        option text = STRING_TOKEN(STR_E_P_S), value = 2, flags = RESET_REQUIRED | MANUFACTURING | DEFAULT;
+       endoneof;
+      
+      oneof varid = SETUP_DATA.D0F3SPEValue,
+        prompt      = STRING_TOKEN(STR_D0F3_SPE),
+        help        = STRING_TOKEN(STR_EMPTY),
+       option text = STRING_TOKEN(STR_S),  value = 0, flags = RESET_REQUIRED;          
+        option text = STRING_TOKEN(STR_P_S), value = 1, flags = RESET_REQUIRED;
+        option text = STRING_TOKEN(STR_E_P_S), value = 2, flags = RESET_REQUIRED | MANUFACTURING | DEFAULT;
+       endoneof;  
+      
+      oneof varid = SETUP_DATA.D0F4SPEValue,
+        prompt      = STRING_TOKEN(STR_D0F4_SPE),
+        help        = STRING_TOKEN(STR_EMPTY),
+       option text = STRING_TOKEN(STR_S),  value = 0, flags = RESET_REQUIRED;          
+        option text = STRING_TOKEN(STR_P_S), value = 1, flags = RESET_REQUIRED;
+        option text = STRING_TOKEN(STR_E_P_S), value = 2, flags = RESET_REQUIRED | MANUFACTURING | DEFAULT;
+     endoneof;
+      
+      oneof varid = SETUP_DATA.D0F5SPEValue,
+        prompt      = STRING_TOKEN(STR_D0F5_SPE),
+        help        = STRING_TOKEN(STR_EMPTY),
+       option text = STRING_TOKEN(STR_S),  value = 0, flags = RESET_REQUIRED;          
+        option text = STRING_TOKEN(STR_P_S), value = 1, flags = RESET_REQUIRED;
+        option text = STRING_TOKEN(STR_E_P_S), value = 2, flags = RESET_REQUIRED | MANUFACTURING | DEFAULT;
+ 
+      endoneof; 
+      
+      oneof varid = SETUP_DATA.D0F6SPEValue,
+        prompt      = STRING_TOKEN(STR_D0F6_SPE),
+        help        = STRING_TOKEN(STR_EMPTY),
+        option text = STRING_TOKEN(STR_S),  value = 0, flags = RESET_REQUIRED;          
+        option text = STRING_TOKEN(STR_P_S), value = 1, flags = RESET_REQUIRED;
+        option text = STRING_TOKEN(STR_E_P_S), value = 2, flags = RESET_REQUIRED | MANUFACTURING | DEFAULT;
+      endoneof;
+
+      
+      oneof varid = SETUP_DATA.D2F0SPEValue,
+        prompt      = STRING_TOKEN(STR_D2F0_SPE),
+        help        = STRING_TOKEN(STR_EMPTY),
+        option text = STRING_TOKEN(STR_S),  value = 0, flags = RESET_REQUIRED | MANUFACTURING | DEFAULT;          
+        option text = STRING_TOKEN(STR_P_S), value = 1, flags = RESET_REQUIRED;
+        option text = STRING_TOKEN(STR_E_P_S), value = 2, flags = RESET_REQUIRED;
+       endoneof; 
+      
+      oneof varid = SETUP_DATA.D3F0SPEValue,
+        prompt      = STRING_TOKEN(STR_D3F0_SPE),
+        help        = STRING_TOKEN(STR_EMPTY),
+        option text = STRING_TOKEN(STR_S),  value = 0, flags = RESET_REQUIRED | MANUFACTURING | DEFAULT;          
+        option text = STRING_TOKEN(STR_P_S), value = 1, flags = RESET_REQUIRED;
+        option text = STRING_TOKEN(STR_E_P_S), value = 2, flags = RESET_REQUIRED;
+       endoneof;
+      
+      oneof varid = SETUP_DATA.D3F1SPEValue,
+        prompt      = STRING_TOKEN(STR_D3F1_SPE),
+        help        = STRING_TOKEN(STR_EMPTY),
+        option text = STRING_TOKEN(STR_S),  value = 0, flags = RESET_REQUIRED | MANUFACTURING | DEFAULT;          
+        option text = STRING_TOKEN(STR_P_S), value = 1, flags = RESET_REQUIRED;
+        option text = STRING_TOKEN(STR_E_P_S), value = 2, flags = RESET_REQUIRED;
+       endoneof;
+       
+      oneof varid = SETUP_DATA.D3F2SPEValue,
+        prompt      = STRING_TOKEN(STR_D3F2_SPE),
+        help        = STRING_TOKEN(STR_EMPTY),
+        option text = STRING_TOKEN(STR_S),  value = 0, flags = RESET_REQUIRED | MANUFACTURING | DEFAULT;          
+        option text = STRING_TOKEN(STR_P_S), value = 1, flags = RESET_REQUIRED;
+        option text = STRING_TOKEN(STR_E_P_S), value = 2, flags = RESET_REQUIRED;
+       endoneof;
+      
+      oneof varid = SETUP_DATA.D3F3SPEValue,
+        prompt      = STRING_TOKEN(STR_D3F3_SPE),
+        help        = STRING_TOKEN(STR_EMPTY),
+        option text = STRING_TOKEN(STR_S),  value = 0, flags = RESET_REQUIRED | MANUFACTURING | DEFAULT;          
+        option text = STRING_TOKEN(STR_P_S), value = 1, flags = RESET_REQUIRED;
+        option text = STRING_TOKEN(STR_E_P_S), value = 2, flags = RESET_REQUIRED;
+       endoneof;
+      
+      oneof varid = SETUP_DATA.D4F0SPEValue,
+        prompt      = STRING_TOKEN(STR_D4F0_SPE),
+        help        = STRING_TOKEN(STR_EMPTY),
+        option text = STRING_TOKEN(STR_S),  value = 0, flags = RESET_REQUIRED | MANUFACTURING | DEFAULT;          
+        option text = STRING_TOKEN(STR_P_S), value = 1, flags = RESET_REQUIRED;
+        option text = STRING_TOKEN(STR_E_P_S), value = 2, flags = RESET_REQUIRED;
+       endoneof;
+      
+       oneof varid = SETUP_DATA.D4F1SPEValue,
+        prompt      = STRING_TOKEN(STR_D4F1_SPE),
+        help        = STRING_TOKEN(STR_EMPTY),
+        option text = STRING_TOKEN(STR_S),  value = 0, flags = RESET_REQUIRED | MANUFACTURING | DEFAULT;          
+        option text = STRING_TOKEN(STR_P_S), value = 1, flags = RESET_REQUIRED;
+        option text = STRING_TOKEN(STR_E_P_S), value = 2, flags = RESET_REQUIRED;
+       endoneof;
+      
+      
+     oneof varid = SETUP_DATA.D5F0SPEValue,
+        prompt      = STRING_TOKEN(STR_D5F0_SPE),
+        help        = STRING_TOKEN(STR_EMPTY),
+        option text = STRING_TOKEN(STR_S),  value = 0, flags = RESET_REQUIRED | MANUFACTURING | DEFAULT;          
+        option text = STRING_TOKEN(STR_P_S), value = 1, flags = RESET_REQUIRED;
+        option text = STRING_TOKEN(STR_E_P_S), value = 2, flags = RESET_REQUIRED;
+       endoneof;
+      
+      
+      oneof varid = SETUP_DATA.D5F1SPEValue,
+        prompt      = STRING_TOKEN(STR_D5F1_SPE),
+        help        = STRING_TOKEN(STR_EMPTY),
+        option text = STRING_TOKEN(STR_S),  value = 0, flags = RESET_REQUIRED | MANUFACTURING | DEFAULT;          
+        option text = STRING_TOKEN(STR_P_S), value = 1, flags = RESET_REQUIRED;
+        option text = STRING_TOKEN(STR_E_P_S), value = 2, flags = RESET_REQUIRED;
+       endoneof;
+   
+   
+     oneof varid = SETUP_DATA.D8F0SPEValue,
+        prompt      = STRING_TOKEN(STR_D8F0_SPE),
+        help        = STRING_TOKEN(STR_EMPTY),
+        option text = STRING_TOKEN(STR_S),  value = 0, flags = RESET_REQUIRED;          
+        option text = STRING_TOKEN(STR_P_S), value = 1, flags = RESET_REQUIRED;
+        option text = STRING_TOKEN(STR_E_P_S), value = 2, flags = RESET_REQUIRED | MANUFACTURING | DEFAULT;
+       endoneof; 
+
+
+      oneof varid = SETUP_DATA.D9F0SPEValue,
+        prompt      = STRING_TOKEN(STR_D9F0_SPE),
+        help        = STRING_TOKEN(STR_EMPTY),
+        option text = STRING_TOKEN(STR_S),  value = 0, flags = RESET_REQUIRED;          
+        option text = STRING_TOKEN(STR_P_S), value = 1, flags = RESET_REQUIRED;
+        option text = STRING_TOKEN(STR_E_P_S), value = 2, flags = RESET_REQUIRED | MANUFACTURING | DEFAULT;
+       endoneof; 
+             
+       oneof varid = SETUP_DATA.RCRBHSPEValue,
+        prompt      = STRING_TOKEN(STR_RCRBH_SPE),
+        help        = STRING_TOKEN(STR_EMPTY),
+        option text = STRING_TOKEN(STR_S),  value = 0, flags = RESET_REQUIRED | MANUFACTURING | DEFAULT;          
+        option text = STRING_TOKEN(STR_P_S), value = 1, flags = RESET_REQUIRED;
+        option text = STRING_TOKEN(STR_E_P_S), value = 2, flags = RESET_REQUIRED;
+       endoneof;
+      
+      
+     oneof varid = SETUP_DATA.PCIEEPHYSPEValue,
+        prompt      = STRING_TOKEN(STR_PCIE_PHY_SPE),
+        help        = STRING_TOKEN(STR_EMPTY),
+        option text = STRING_TOKEN(STR_S),  value = 0, flags = RESET_REQUIRED | MANUFACTURING | DEFAULT;          
+        option text = STRING_TOKEN(STR_P_S), value = 1, flags = RESET_REQUIRED;
+        option text = STRING_TOKEN(STR_E_P_S), value = 2, flags = RESET_REQUIRED;
+       endoneof;
+       
+      oneof varid = SETUP_DATA.D1F0SPEValue,
+        prompt      = STRING_TOKEN(STR_D1F0_SPE),
+        help        = STRING_TOKEN(STR_EMPTY),
+        option text = STRING_TOKEN(STR_S),  value = 0, flags = RESET_REQUIRED;          
+        option text = STRING_TOKEN(STR_P_S), value = 1, flags = RESET_REQUIRED;
+        option text = STRING_TOKEN(STR_E_P_S), value = 2, flags = RESET_REQUIRED | MANUFACTURING | DEFAULT;
+      endoneof;
+      
+      oneof varid = SETUP_DATA.MMIOSPEValue,
+        prompt      = STRING_TOKEN(STR_MMIO_SPE),
+        help        = STRING_TOKEN(STR_EMPTY),
+       option text = STRING_TOKEN(STR_S),  value = 0, flags = RESET_REQUIRED;          
+        option text = STRING_TOKEN(STR_P_S), value = 1, flags = RESET_REQUIRED;
+        option text = STRING_TOKEN(STR_E_P_S), value = 2, flags = RESET_REQUIRED | MANUFACTURING | DEFAULT;
+       endoneof; 
+
+
+  endif;
+  
+   subtitle text = STRING_TOKEN(STR_EMPTY); 
+       text
+      help   = STRING_TOKEN(STR_EMPTY),
+      text   = STRING_TOKEN(STR_SOUTH_BRIDGE),
+      flags  = 0,
+      key    = 0;  
+      oneof varid = SETUP_DATA.SBSPEValue,
+        prompt      = STRING_TOKEN(STR_SB_SPE),
+        help        = STRING_TOKEN(STR_EMPTY),
+        option text = STRING_TOKEN(STR_MANUAL), value = 0, flags = RESET_REQUIRED;
+        option text = STRING_TOKEN(STR_S),      value = 1, flags = RESET_REQUIRED| MANUFACTURING | DEFAULT;          
+        option text = STRING_TOKEN(STR_P_S),    value = 2, flags = RESET_REQUIRED;
+        option text = STRING_TOKEN(STR_E_P_S),  value = 3, flags = RESET_REQUIRED ;
+      endoneof;
+      
+   suppressif NOT ideqval SETUP_DATA.SBSPEValue == 0;  
+     
+      oneof varid = SETUP_DATA.VARTSPEValue,
+        prompt      = STRING_TOKEN(STR_VART_SPE),
+        help        = STRING_TOKEN(STR_EMPTY),
+       option text = STRING_TOKEN(STR_S),  value = 0, flags = RESET_REQUIRED;          
+        option text = STRING_TOKEN(STR_P_S), value = 1, flags = RESET_REQUIRED;
+        option text = STRING_TOKEN(STR_E_P_S), value = 2, flags = RESET_REQUIRED | MANUFACTURING | DEFAULT;
+       endoneof; 
+      
+      oneof varid = SETUP_DATA.ESPISPEValue,
+        prompt      = STRING_TOKEN(STR_ESPI_SPE),
+        help        = STRING_TOKEN(STR_EMPTY),
+        option text = STRING_TOKEN(STR_S),  value = 0, flags = RESET_REQUIRED;          
+        option text = STRING_TOKEN(STR_P_S), value = 1, flags = RESET_REQUIRED;
+        option text = STRING_TOKEN(STR_E_P_S), value = 2, flags = RESET_REQUIRED | MANUFACTURING | DEFAULT;
+        endoneof;
+        
+               
+      oneof varid = SETUP_DATA.SDIOSPEValue,
+        prompt      = STRING_TOKEN(STR_SDIO_SPE),
+        help        = STRING_TOKEN(STR_EMPTY),
+        option text = STRING_TOKEN(STR_S),  value = 0, flags = RESET_REQUIRED;          
+        option text = STRING_TOKEN(STR_P_S), value = 1, flags = RESET_REQUIRED;
+        option text = STRING_TOKEN(STR_E_P_S), value = 2, flags = RESET_REQUIRED | MANUFACTURING | DEFAULT;
+       endoneof;
+ 
+      
+      oneof varid = SETUP_DATA.BusCtrlSPEValue,
+        prompt      = STRING_TOKEN(STR_BUS_CTRL_SPE),
+        help        = STRING_TOKEN(STR_EMPTY),
+        option text = STRING_TOKEN(STR_S),  value = 0, flags = RESET_REQUIRED;          
+        option text = STRING_TOKEN(STR_P_S), value = 1, flags = RESET_REQUIRED;
+        option text = STRING_TOKEN(STR_E_P_S), value = 2, flags = RESET_REQUIRED | MANUFACTURING | DEFAULT;
+      endoneof;
+      
+      oneof varid = SETUP_DATA.PMUSPEValue,
+        prompt      = STRING_TOKEN(STR_PMU_SPE),
+        help        = STRING_TOKEN(STR_EMPTY),
+        option text = STRING_TOKEN(STR_S),  value = 0, flags = RESET_REQUIRED| MANUFACTURING | DEFAULT;          
+        option text = STRING_TOKEN(STR_P_S), value = 1, flags = RESET_REQUIRED;
+        option text = STRING_TOKEN(STR_E_P_S), value = 2, flags = RESET_REQUIRED ;
+       endoneof; 
+      
+      oneof varid = SETUP_DATA.PCCASPEValue,
+        prompt      = STRING_TOKEN(STR_PCCA_SPE),
+        help        = STRING_TOKEN(STR_EMPTY),
+        option text = STRING_TOKEN(STR_S),  value = 0, flags = RESET_REQUIRED| MANUFACTURING | DEFAULT;          
+        option text = STRING_TOKEN(STR_P_S), value = 1, flags = RESET_REQUIRED;
+        option text = STRING_TOKEN(STR_E_P_S), value = 2, flags = RESET_REQUIRED ;
+      endoneof;
+       
+      
+       oneof varid = SETUP_DATA.HDACSPEValue,
+        prompt      = STRING_TOKEN(STR_HDAC_SPE),
+        help        = STRING_TOKEN(STR_EMPTY),
+        option text = STRING_TOKEN(STR_S),  value = 0, flags = RESET_REQUIRED;          
+        option text = STRING_TOKEN(STR_P_S), value = 1, flags = RESET_REQUIRED;
+        option text = STRING_TOKEN(STR_E_P_S), value = 2, flags = RESET_REQUIRED | MANUFACTURING | DEFAULT;
+        endoneof; 
+     
+               
+       oneof varid = SETUP_DATA.SPISPEValue,
+        prompt      = STRING_TOKEN(STR_SPI_SPE),
+        help        = STRING_TOKEN(STR_EMPTY),
+        option text = STRING_TOKEN(STR_S),  value = 0, flags = RESET_REQUIRED;          
+        option text = STRING_TOKEN(STR_P_S), value = 1, flags = RESET_REQUIRED;
+        option text = STRING_TOKEN(STR_E_P_S), value = 2, flags = RESET_REQUIRED | MANUFACTURING | DEFAULT;
+        endoneof; 
+        
+ 
+     endif;
+     
+       subtitle text = STRING_TOKEN(STR_EMPTY);		
+      
+   goto CHIPSET_DEBUG_FORM_ID, 
+      prompt = STRING_TOKEN(STR_CHIPSET_DEBUG_FORM),
+      help   = STRING_TOKEN(STR_CHIPSET_DEBUG_FORM);
+
+   endform;  //end CHIPSET_FORM  
+    
+    
+  form formid = AUTO_ID(CHIPSET_DEBUG_FORM_ID),
+     title = STRING_TOKEN(STR_CHIPSET_DEBUG_FORM);
+  
+     goto CHIPSET_DEBUG_FEATURE_FORM_ID, 
+      prompt = STRING_TOKEN(STR_CHIPSET_DEBUG_FEATURE_FORM),
+      help   = STRING_TOKEN(STR_CHIPSET_DEBUG_FEATURE_FORM);
+   
+    subtitle text = STRING_TOKEN(STR_EMPTY);
+      
+     goto ERROR_REPORTING_FORM_ID, 
+      prompt = STRING_TOKEN(STR_ERROR_REPORTING_FORM),
+      help   = STRING_TOKEN(STR_EMPTY);
+  
+    subtitle text = STRING_TOKEN(STR_EMPTY);
+       
+    goto DEBUGSIGNAL_FORM_ID, 
+      prompt = STRING_TOKEN(STR_DEBUGSIGNAL_FORM),
+      help   = STRING_TOKEN(STR_EMPTY); 
+      
+    subtitle text = STRING_TOKEN(STR_EMPTY);
+    
+    subtitle text = STRING_TOKEN(STR_EMPTY);
+    
+    oneof varid = SETUP_DATA.CPU_FSBC_PCIE_ON,
+        prompt      = STRING_TOKEN(STR_CPU_FSBC_PCIE_ON),
+        help        = STRING_TOKEN(STR_EMPTY),
+        option text = STRING_TOKEN(STR_DISABLE), value = 0, flags = RESET_REQUIRED| MANUFACTURING | DEFAULT;
+        option text = STRING_TOKEN(STR_ENABLE),  value = 1, flags = RESET_REQUIRED;          
+       endoneof;
+           
+   oneof varid = SETUP_DATA.CPU_FSBC_TOPCIE,
+        prompt      = STRING_TOKEN(STR_CPU_FSB_TOPPCIE),
+        help        = STRING_TOKEN(STR_EMPTY),
+        option text = STRING_TOKEN(STR_PORTG0), value = 0, flags = RESET_REQUIRED| MANUFACTURING | DEFAULT;
+        option text = STRING_TOKEN(STR_PORTG),  value = 1, flags = RESET_REQUIRED;          
+       endoneof;
+       
+   oneof varid = SETUP_DATA.CPU_FSBC_DRAM_ON ,
+        prompt      = STRING_TOKEN(STR_CPU_DRAM_ON),
+        help        = STRING_TOKEN(STR_EMPTY),
+        option text = STRING_TOKEN(STR_DISABLE), value = 0, flags = RESET_REQUIRED| MANUFACTURING | DEFAULT;
+        option text = STRING_TOKEN(STR_ENABLE),  value = 1, flags = RESET_REQUIRED;          
+       endoneof;            
+
+   oneof varid = SETUP_DATA.CPU_FSBC_STREAM_EN,
+        prompt      = STRING_TOKEN(STR_CPU_FSBC_STREAM_EN),
+        help        = STRING_TOKEN(STR_EMPTY),
+        option text = STRING_TOKEN(STR_DISABLE), value = 0, flags = RESET_REQUIRED| MANUFACTURING | DEFAULT;
+        option text = STRING_TOKEN(STR_ENABLE),  value = 1, flags = RESET_REQUIRED;          
+       endoneof;
+   oneof varid = SETUP_DATA.CPU_FSBC_MISSPACKE_EN,
+        prompt = STRING_TOKEN(STR_CPU_FSBC_MISSPACKE_EN),
+        help = STRING_TOKEN(STR_EMPTY),
+        option text = STRING_TOKEN(STR_DISABLE), value = 0, flags = RESET_REQUIRED| MANUFACTURING | DEFAULT;
+        option text = STRING_TOKEN(STR_ENABLE),  value = 1, flags = RESET_REQUIRED;          
+   endoneof; 
+
+   oneof varid = SETUP_DATA.CPU_FSBC_TIGPULSE_EN,
+        prompt = STRING_TOKEN(STR_CPU_FSBC_TIGPULSE_EN),
+        help = STRING_TOKEN(STR_EMPTY),
+        option text = STRING_TOKEN(STR_DISABLE), value = 0, flags = RESET_REQUIRED| MANUFACTURING | DEFAULT;
+        option text = STRING_TOKEN(STR_ENABLE),  value = 1, flags = RESET_REQUIRED;          
+   endoneof;
+   
+   oneof varid = SETUP_DATA.CPU_FSBC_IFSBCSTP_EN,
+        prompt = STRING_TOKEN(STR_CPU_FSBC_IFSBCSTP_EN),
+        help = STRING_TOKEN(STR_EMPTY),
+        option text = STRING_TOKEN(STR_DISABLE), value = 0, flags = RESET_REQUIRED| MANUFACTURING | DEFAULT;
+        option text = STRING_TOKEN(STR_ENABLE),  value = 1, flags = RESET_REQUIRED;          
+   endoneof;
+    
+ 	 endform;  //end CHIPSET DEBUG FORM
+ 
+    form formid = AUTO_ID(CHIPSET_DEBUG_FEATURE_FORM_ID),
+      title = STRING_TOKEN(STR_CHIPSET_DEBUG_FEATURE_FORM);       
+ 
+      oneof varid = SETUP_DATA.CpuClockControl,
+        prompt      = STRING_TOKEN(STR_CPU_CLK_CTRL),
+        help        = STRING_TOKEN(STR_EMPTY),
+        option text = STRING_TOKEN(STR__OC20), value = 0, flags = RESET_REQUIRED;
+        option text = STRING_TOKEN(STR__OC19),  value = 1, flags = RESET_REQUIRED ;          
+        option text = STRING_TOKEN(STR__OC18),  value = 2, flags = RESET_REQUIRED ;          
+        option text = STRING_TOKEN(STR__OC17),  value = 3, flags = RESET_REQUIRED ;          
+        option text = STRING_TOKEN(STR__OC16),  value = 4, flags = RESET_REQUIRED ;          
+        option text = STRING_TOKEN(STR__OC15),  value = 5, flags = RESET_REQUIRED ;          
+        option text = STRING_TOKEN(STR__OC14),  value = 6, flags = RESET_REQUIRED ;          
+        option text = STRING_TOKEN(STR__OC13),  value = 7, flags = RESET_REQUIRED ;          
+        option text = STRING_TOKEN(STR__OC12),  value = 8, flags = RESET_REQUIRED ;          
+        option text = STRING_TOKEN(STR__OC11),  value = 9, flags = RESET_REQUIRED ;          
+        option text = STRING_TOKEN(STR__OC10),  value = 10, flags = RESET_REQUIRED ;          
+        option text = STRING_TOKEN(STR__OC9),  value = 11, flags = RESET_REQUIRED ;          
+        option text = STRING_TOKEN(STR__OC8),  value = 12, flags = RESET_REQUIRED ;          
+        option text = STRING_TOKEN(STR__OC7),  value = 13, flags = RESET_REQUIRED ;          
+        option text = STRING_TOKEN(STR__OC6),  value = 14, flags = RESET_REQUIRED ;          
+        option text = STRING_TOKEN(STR__OC5),  value = 15, flags = RESET_REQUIRED ;          
+        option text = STRING_TOKEN(STR__OC4),  value = 16, flags = RESET_REQUIRED ;          
+        option text = STRING_TOKEN(STR__OC3),  value = 17, flags = RESET_REQUIRED ;          
+        option text = STRING_TOKEN(STR__OC2),  value = 18, flags = RESET_REQUIRED ;          
+        option text = STRING_TOKEN(STR__OC1),  value = 19, flags = RESET_REQUIRED ; 
+        option text = STRING_TOKEN(STR_NO_OC), value = 20, flags = RESET_REQUIRED| MANUFACTURING | DEFAULT;
+        option text = STRING_TOKEN(STR_OC1), value = 21, flags = RESET_REQUIRED;
+        option text = STRING_TOKEN(STR_OC2), value = 22, flags = RESET_REQUIRED;
+        option text = STRING_TOKEN(STR_OC3), value = 23, flags = RESET_REQUIRED;
+        option text = STRING_TOKEN(STR_OC4), value = 24, flags = RESET_REQUIRED;
+        option text = STRING_TOKEN(STR_OC5), value = 25, flags = RESET_REQUIRED;
+        option text = STRING_TOKEN(STR_OC6), value = 26, flags = RESET_REQUIRED;
+        option text = STRING_TOKEN(STR_OC7), value = 27, flags = RESET_REQUIRED;
+        option text = STRING_TOKEN(STR_OC8), value = 28, flags = RESET_REQUIRED;
+        option text = STRING_TOKEN(STR_OC9), value = 29, flags = RESET_REQUIRED;
+        option text = STRING_TOKEN(STR_OC10), value = 30, flags = RESET_REQUIRED;
+        option text = STRING_TOKEN(STR_OC11), value = 31, flags = RESET_REQUIRED;
+        option text = STRING_TOKEN(STR_OC12), value = 32, flags = RESET_REQUIRED;
+        option text = STRING_TOKEN(STR_OC13), value = 33, flags = RESET_REQUIRED;
+        option text = STRING_TOKEN(STR_OC14), value = 34, flags = RESET_REQUIRED;
+        option text = STRING_TOKEN(STR_OC15), value = 35, flags = RESET_REQUIRED;
+        option text = STRING_TOKEN(STR_OC16), value = 36, flags = RESET_REQUIRED;
+        option text = STRING_TOKEN(STR_OC17), value =37, flags = RESET_REQUIRED;
+        option text = STRING_TOKEN(STR_OC18), value = 38, flags = RESET_REQUIRED;
+        option text = STRING_TOKEN(STR_OC19), value = 39, flags = RESET_REQUIRED;
+        option text = STRING_TOKEN(STR_OC20), value = 40, flags = RESET_REQUIRED;
+     endoneof;    
+
+      oneof varid = SETUP_DATA.CpuSSCControl,
+        prompt      = STRING_TOKEN(STR_CPU_SSC_CTRL),
+        help        = STRING_TOKEN(STR_EMPTY),
+        option text = STRING_TOKEN(STR_DISABLED), value = 0, flags = RESET_REQUIRED;
+        option text = STRING_TOKEN(STR_ENABLED), value = 1, flags = RESET_REQUIRED| MANUFACTURING | DEFAULT;
+     endoneof; 
+     
+      oneof varid = SETUP_DATA.PcieClockControl,
+        prompt      = STRING_TOKEN(STR_PCIE_CLK_CTRL),
+        help        = STRING_TOKEN(STR_EMPTY),
+        option text = STRING_TOKEN(STR_NO_OC), value = 0, flags = RESET_REQUIRED| MANUFACTURING | DEFAULT;
+        option text = STRING_TOKEN(STR_1), value = 1, flags = RESET_REQUIRED;
+        option text = STRING_TOKEN(STR_2), value = 2, flags = RESET_REQUIRED;
+        option text = STRING_TOKEN(STR_3), value = 3, flags = RESET_REQUIRED;
+        option text = STRING_TOKEN(STR_4), value = 4, flags = RESET_REQUIRED;
+        option text = STRING_TOKEN(STR_5), value = 5, flags = RESET_REQUIRED;
+        option text = STRING_TOKEN(STR_6), value = 6, flags = RESET_REQUIRED;
+        option text = STRING_TOKEN(STR_7), value = 7, flags = RESET_REQUIRED;
+        option text = STRING_TOKEN(STR_8), value = 8, flags = RESET_REQUIRED;
+        option text = STRING_TOKEN(STR_9), value = 9, flags = RESET_REQUIRED;
+        option text = STRING_TOKEN(STR_10), value = 10, flags = RESET_REQUIRED;
+        option text = STRING_TOKEN(STR_11), value = 11, flags = RESET_REQUIRED;
+        option text = STRING_TOKEN(STR_12), value = 12, flags = RESET_REQUIRED;
+        option text = STRING_TOKEN(STR_13), value = 13, flags = RESET_REQUIRED;
+        option text = STRING_TOKEN(STR_14), value = 14, flags = RESET_REQUIRED;
+        option text = STRING_TOKEN(STR_15), value = 15, flags = RESET_REQUIRED;
+        option text = STRING_TOKEN(STR_16), value = 16, flags = RESET_REQUIRED;
+        option text = STRING_TOKEN(STR_17), value =17, flags = RESET_REQUIRED;
+        option text = STRING_TOKEN(STR_18), value = 18, flags = RESET_REQUIRED;
+        option text = STRING_TOKEN(STR_19), value = 19, flags = RESET_REQUIRED;
+        option text = STRING_TOKEN(STR_20), value = 20, flags = RESET_REQUIRED;
+        option text = STRING_TOKEN(STR__1), value = 21, flags = RESET_REQUIRED;
+        option text = STRING_TOKEN(STR__2), value = 22, flags = RESET_REQUIRED;
+        option text = STRING_TOKEN(STR__3), value = 23, flags = RESET_REQUIRED;
+        option text = STRING_TOKEN(STR__4), value = 24, flags = RESET_REQUIRED;
+        option text = STRING_TOKEN(STR__5), value = 25, flags = RESET_REQUIRED;
+     endoneof;
+     
+    oneof varid = SETUP_DATA.PcieSSCControl,
+        prompt      = STRING_TOKEN(STR_PCIE_SSC_CTRL),
+        help        = STRING_TOKEN(STR_EMPTY),
+        option text = STRING_TOKEN(STR_DISABLED), value = 0, flags = RESET_REQUIRED;
+        option text = STRING_TOKEN(STR_ENABLED), value = 1, flags = RESET_REQUIRED| MANUFACTURING | DEFAULT;
+     endoneof; 
+     
+      
+      oneof varid = SETUP_DATA.SkwClockControl,
+        prompt      = STRING_TOKEN(STR_SKW_CLK_CTRL),
+        help        = STRING_TOKEN(STR_EMPTY),
+        option text = STRING_TOKEN(STR_PS_N800), value = 0, flags = RESET_REQUIRED;
+        option text = STRING_TOKEN(STR_PS_N700), value = 1, flags = RESET_REQUIRED;
+        option text = STRING_TOKEN(STR_PS_N600), value = 2, flags = RESET_REQUIRED;
+        option text = STRING_TOKEN(STR_PS_N500), value = 3, flags = RESET_REQUIRED;
+        option text = STRING_TOKEN(STR_PS_N400), value = 4, flags = RESET_REQUIRED;
+        option text = STRING_TOKEN(STR_PS_N300), value = 5, flags = RESET_REQUIRED;
+        option text = STRING_TOKEN(STR_PS_N200), value = 6, flags = RESET_REQUIRED;
+        option text = STRING_TOKEN(STR_PS_N100), value = 7, flags = RESET_REQUIRED;
+        option text = STRING_TOKEN(STR_PS_0), value = 8, flags = RESET_REQUIRED| MANUFACTURING | DEFAULT;
+        option text = STRING_TOKEN(STR_PS_100), value = 9, flags = RESET_REQUIRED;
+        option text = STRING_TOKEN(STR_PS_200), value = 10, flags = RESET_REQUIRED;
+        option text = STRING_TOKEN(STR_PS_300), value = 11, flags = RESET_REQUIRED;
+        option text = STRING_TOKEN(STR_PS_400), value = 12, flags = RESET_REQUIRED;
+        option text = STRING_TOKEN(STR_PS_500), value = 13, flags = RESET_REQUIRED;
+        option text = STRING_TOKEN(STR_PS_600), value = 14, flags = RESET_REQUIRED;
+        option text = STRING_TOKEN(STR_PS_700), value = 15, flags = RESET_REQUIRED;
+      endoneof;   
+ 
+ 
+     oneof varid = SETUP_DATA.ChipsetCpuBclkControl,
+        prompt      = STRING_TOKEN(STR_CPU_BLK_CTRL),
+        help        = STRING_TOKEN(STR_EMPTY),
+        option text = STRING_TOKEN(STR_FREE_RUN), value = 0, flags = RESET_REQUIRED;
+        option text = STRING_TOKEN(STR_STOPPABLE), value = 1, flags = RESET_REQUIRED| MANUFACTURING | DEFAULT;
+     endoneof; 
+     
+     
+ 
+     oneof varid = SETUP_DATA.CPUSlewRate,
+        prompt      = STRING_TOKEN(STR_CPU_SLEW_RATE),
+        help        = STRING_TOKEN(STR_EMPTY),
+        option text = STRING_TOKEN(STR_AUTO), value = 0, flags = RESET_REQUIRED| MANUFACTURING | DEFAULT;
+        option text = STRING_TOKEN(STR_SLOW), value = 1, flags = RESET_REQUIRED;
+       option text = STRING_TOKEN(STR_FAST), value = 2, flags = RESET_REQUIRED;
+     endoneof;
+        
+     	oneof varid = SETUP_DATA.OnBoard1394ClockControl,
+        prompt      = STRING_TOKEN(STR_1394_CTRL),
+        help        = STRING_TOKEN(STR_1394_CTRL_HELP),
+        option text = STRING_TOKEN(STR_DISABLED), value = 0, flags = RESET_REQUIRED| MANUFACTURING | DEFAULT;
+        option text = STRING_TOKEN(STR_ENABLED),  value = 1, flags = RESET_REQUIRED;          
+      endoneof;       
+              
+/*       oneof varid = SETUP_DATA.DID_VID_LOCK,
+        prompt      = STRING_TOKEN(STR_DID_VID_LOCK),
+        help        = STRING_TOKEN(STR_DID_VID_LOCK_HELP),
+        option text = STRING_TOKEN(STR_DISABLED), value = 0, flags = RESET_REQUIRED| MANUFACTURING | DEFAULT;
+        option text = STRING_TOKEN(STR_ENABLED),  value = 1, flags = RESET_REQUIRED;          
+      endoneof; 
+*/
+       oneof varid = SETUP_DATA.VID_SEL,
+        prompt      = STRING_TOKEN(STR_VID_SELECT),
+        help        = STRING_TOKEN(STR_VID_SELECT_HELP),
+        option text = STRING_TOKEN(STR_ZHAOXIN), value = 0, flags = RESET_REQUIRED| MANUFACTURING | DEFAULT;
+        option text = STRING_TOKEN(STR_VIA),  value = 1, flags = RESET_REQUIRED;          
+      endoneof; 
+ endform;  //end CHIPSET DEBUG FEATURE FORM
+    
+  form formid = AUTO_ID(DEBUGSIGNAL_FORM_ID),
+      title = STRING_TOKEN(STR_DEBUGSIGNAL_FORM);
+
+     oneof varid = SETUP_DATA.DebugMode,
+        prompt      = STRING_TOKEN(STR_DEBUG_MODE),
+        help        = STRING_TOKEN(STR_EMPTY),
+        option text = STRING_TOKEN(STR_DISABLE), value = 0, flags = RESET_REQUIRED| MANUFACTURING | DEFAULT;
+        option text = STRING_TOKEN(STR_DBGMODE_ENABLE),  value = 1, flags = RESET_REQUIRED ;          
+        option text = STRING_TOKEN(STR_SUSPEND_DBGMODE_ENABLE),  value = 2, flags = RESET_REQUIRED ;          
+        option text = STRING_TOKEN(STR_SKIP_DBGMODE),  value = 3, flags = RESET_REQUIRED ;          
+      endoneof;    
+
+    
+   suppressif  ideqval SETUP_DATA.DebugMode==0;
+      oneof varid = SETUP_DATA.DebugOutputSelect,
+        prompt      = STRING_TOKEN(STR_OUT_SEL),
+        help        = STRING_TOKEN(STR_EMPTY),
+        option text = STRING_TOKEN(STR_MDA),        value = 0, flags = RESET_REQUIRED;
+         option text = STRING_TOKEN(STR_MDB),       value = 1, flags = RESET_REQUIRED | MANUFACTURING | DEFAULT;
+          option text = STRING_TOKEN(STR_DVP_LOW),  value = 2, flags = RESET_REQUIRED;
+          option text = STRING_TOKEN(STR_DVP_HIGH), value = 3, flags = RESET_REQUIRED;
+  	  endoneof;        
+        
+  	suppressif NOT ideqval SETUP_DATA.DebugOutputSelect==2 AND NOT ideqval SETUP_DATA.DebugOutputSelect==3;  
+     oneof varid = SETUP_DATA.OutPadSelect,
+        prompt      = STRING_TOKEN(STR_OUT_PAD_SEL),
+        help        = STRING_TOKEN(STR_EMPTY),
+        option text = STRING_TOKEN(STR_OUT_DVP), value = 0, flags = RESET_REQUIRED| MANUFACTURING | DEFAULT;
+        option text = STRING_TOKEN(STR_OUT_SUS),  value = 1, flags = RESET_REQUIRED;        
+      endoneof;    
+		endif;
+		
+      oneof varid = SETUP_DATA.DebugSignalSelect0,
+        prompt      = STRING_TOKEN(STR_DBG_SGNAL0_SEL),
+        help        = STRING_TOKEN(STR_EMPTY),
+        option text = STRING_TOKEN(STR_G0_NBSB), value = 0, flags = RESET_REQUIRED| MANUFACTURING | DEFAULT;
+        option text = STRING_TOKEN(STR_G0_GFX),  value = 1, flags = RESET_REQUIRED;          
+        endoneof; 
+     suppressif  ideqval SETUP_DATA.DebugSignalSelect0==1;  
+       oneof varid = SETUP_DATA.DebugModuleSelect0,
+        prompt      = STRING_TOKEN(STR_SIGANL_OUTSEL0),
+        help        = STRING_TOKEN(STR_EMPTY),
+        option text = STRING_TOKEN(STR_NB), value = 0, flags = RESET_REQUIRED| MANUFACTURING | DEFAULT;
+        option text = STRING_TOKEN(STR_SB),  value = 1, flags = RESET_REQUIRED;          
+        option text = STRING_TOKEN(STR_TOP), value = 2, flags = RESET_REQUIRED;
+        option text = STRING_TOKEN(STR_CPU), value = 3, flags = RESET_REQUIRED ;
+       endoneof;    
+    endif;       
+      
+      oneof varid = SETUP_DATA.DebugSignalSelect1,
+        prompt      = STRING_TOKEN(STR_DBG_SGNAL1_SEL),
+        help        = STRING_TOKEN(STR_EMPTY),
+        option text = STRING_TOKEN(STR_G1_NBSB), value = 0, flags = RESET_REQUIRED| MANUFACTURING | DEFAULT;
+        option text = STRING_TOKEN(STR_G1_GFX),  value = 1, flags = RESET_REQUIRED;          
+        endoneof;       
+      
+      suppressif  ideqval SETUP_DATA.DebugSignalSelect1==1;  
+       oneof varid = SETUP_DATA.DebugModuleSelect1,
+        prompt      = STRING_TOKEN(STR_SIGANL_OUTSEL1),
+        help        = STRING_TOKEN(STR_EMPTY),
+        option text = STRING_TOKEN(STR_NB), value = 0, flags = RESET_REQUIRED| MANUFACTURING | DEFAULT;
+        option text = STRING_TOKEN(STR_SB),  value = 1, flags = RESET_REQUIRED;          
+        option text = STRING_TOKEN(STR_TOP), value = 2, flags = RESET_REQUIRED;
+        option text = STRING_TOKEN(STR_CPU), value = 3, flags = RESET_REQUIRED ;
+       endoneof; 
+      endif;   
+    
+    subtitle text = STRING_TOKEN(STR_EMPTY);   
+    text
+      help   = STRING_TOKEN(STR_EMPTY),
+      text   = STRING_TOKEN(STR_PARTING_LINE),
+      flags  = 0,
+      key    = 0;  
+    
+    text
+      help   = STRING_TOKEN(STR_EMPTY),
+      text   = STRING_TOKEN(STR_NB_SIGNAL_DEBUG),
+      flags  = 0,
+      key    = 0;  
+   
+ suppressif  ideqval SETUP_DATA.DebugSignalSelect0==1;  
+
+   suppressif NOT ideqval SETUP_DATA.DebugModuleSelect0==0;     
+      oneof varid = SETUP_DATA.NBGroup0TopSelcet,
+        prompt      = STRING_TOKEN(STR_NBG0_TOPSEL),
+        help        = STRING_TOKEN(STR_EMPTY),
+        option text = STRING_TOKEN(STR_MCUTRFC), value = 0, flags = RESET_REQUIRED| MANUFACTURING | DEFAULT;
+        option text = STRING_TOKEN(STR_CPUIF),  value = 1, flags = RESET_REQUIRED;          
+        option text = STRING_TOKEN(STR_DRAMCA), value = 2, flags = RESET_REQUIRED;
+        option text = STRING_TOKEN(STR_DRAMCB), value = 3, flags = RESET_REQUIRED ;
+        option text = STRING_TOKEN(STR_PXPTRF), value = 4, flags = RESET_REQUIRED;
+        option text = STRING_TOKEN(STR_RAIDA0), value = 5, flags = RESET_REQUIRED ;
+        option text = STRING_TOKEN(STR_TACTL), value = 6, flags = RESET_REQUIRED;
+        option text = STRING_TOKEN(STR_RAIDA1), value = 7, flags = RESET_REQUIRED ;
+        option text = STRING_TOKEN(STR_GMINTA), value = 8, flags = RESET_REQUIRED;
+        option text = STRING_TOKEN(STR_APICX), value = 9, flags = RESET_REQUIRED ;
+        option text = STRING_TOKEN(STR_NBPMU), value = 10, flags = RESET_REQUIRED;
+        option text = STRING_TOKEN(STR_FSBC), value = 11, flags = RESET_REQUIRED ;
+        option text = STRING_TOKEN(STR_GMINTB), value = 12, flags = RESET_REQUIRED;
+        option text = STRING_TOKEN(STR_SBDBG), value = 13, flags = RESET_REQUIRED ;
+        option text = STRING_TOKEN(STR_PCIE), value = 14, flags = RESET_REQUIRED;
+        option text = STRING_TOKEN(STR_VPI), value = 15, flags = RESET_REQUIRED ;      
+      endoneof; 
+ 
+      numeric varid=SETUP_DATA.NBGroup0ModuleSubSelect,
+        prompt   = STRING_TOKEN(STR_NB_G0_SUBSEL),
+        help   = STRING_TOKEN(STR_EMPTY),
+        flags = DISPLAY_UINT_HEX,
+        minimum=0,
+        maximum=0xfffff,
+        step=0,
+        default=0,
+        endnumeric; 
+    endif; //END  suppressif DebugModuleSelect0==0;
+  endif;
+  
+  suppressif  ideqval SETUP_DATA.DebugSignalSelect1==1;  
+ 
+   suppressif NOT ideqval SETUP_DATA.DebugModuleSelect1==0;    
+      oneof varid = SETUP_DATA.NBGroup1TopSelcet,
+        prompt      = STRING_TOKEN(STR_NBG1_TOPSEL),
+        help        = STRING_TOKEN(STR_EMPTY),
+        option text = STRING_TOKEN(STR_MCUTRFC), value = 0, flags = RESET_REQUIRED| MANUFACTURING | DEFAULT;
+        option text = STRING_TOKEN(STR_CPUIF),  value = 1, flags = RESET_REQUIRED;          
+        option text = STRING_TOKEN(STR_DRAMCA), value = 2, flags = RESET_REQUIRED;
+        option text = STRING_TOKEN(STR_DRAMCB), value = 3, flags = RESET_REQUIRED ;
+        option text = STRING_TOKEN(STR_PXPTRF), value = 4, flags = RESET_REQUIRED;
+        option text = STRING_TOKEN(STR_RAIDA0), value = 5, flags = RESET_REQUIRED ;
+        option text = STRING_TOKEN(STR_TACTL), value = 6, flags = RESET_REQUIRED;
+        option text = STRING_TOKEN(STR_RAIDA1), value = 7, flags = RESET_REQUIRED ;
+        option text = STRING_TOKEN(STR_GMINTA), value = 8, flags = RESET_REQUIRED;
+        option text = STRING_TOKEN(STR_APICX), value = 9, flags = RESET_REQUIRED ;
+        option text = STRING_TOKEN(STR_NBPMU), value = 10, flags = RESET_REQUIRED;
+        option text = STRING_TOKEN(STR_FSBC), value = 11, flags = RESET_REQUIRED ;
+        option text = STRING_TOKEN(STR_GMINTB), value = 12, flags = RESET_REQUIRED;
+        option text = STRING_TOKEN(STR_SBDBG), value = 13, flags = RESET_REQUIRED ;
+        option text = STRING_TOKEN(STR_PCIE), value = 14, flags = RESET_REQUIRED;
+        option text = STRING_TOKEN(STR_VPI), value = 15, flags = RESET_REQUIRED ;      
+      endoneof; 
+      
+       numeric varid=SETUP_DATA.NBGroup1ModuleSubSelect,
+        prompt   = STRING_TOKEN(STR_NB_G1_SUBSEL),
+        help   = STRING_TOKEN(STR_EMPTY),
+        flags = DISPLAY_UINT_HEX,
+        minimum=0,
+        maximum=0xfffff,
+        step=0,
+        default=0,
+       endnumeric;
+     endif;//END  suppressif DebugModuleSelect1==0;
+  endif;
+      
+    text
+      help   = STRING_TOKEN(STR_EMPTY),
+      text   = STRING_TOKEN(STR_PARTING_LINE),
+      flags  = 0,
+      key    = 0;  
+    
+    text
+      help   = STRING_TOKEN(STR_EMPTY),
+      text   = STRING_TOKEN(STR_SB_SIGNAL_DEBUG),
+      flags  = 0,
+      key    = 0;  
+ 
+
+  suppressif NOT ideqval SETUP_DATA.DebugModuleSelect0==1 AND NOT ideqval SETUP_DATA.DebugModuleSelect1==1;      
+    oneof varid = SETUP_DATA.DebugSBSelectByNB,
+        prompt      = STRING_TOKEN(STR_DBG_SB_SELECT),
+        help        = STRING_TOKEN(STR_EMPTY),
+        option text = STRING_TOKEN(STR_SB_SELECT_BY_SB), value = 0, flags = RESET_REQUIRED| MANUFACTURING | DEFAULT;
+        option text = STRING_TOKEN(STR_SB_SELECT_BY_NB),  value = 1, flags = RESET_REQUIRED;  
+       endoneof;
+       
+ suppressif  ideqval SETUP_DATA.DebugSignalSelect0==1;    
+  suppressif NOT ideqval SETUP_DATA.DebugModuleSelect0==1;  
+    subtitle text = STRING_TOKEN(STR_EMPTY);  
+      oneof varid = SETUP_DATA.SBTopDbgMux1,
+        prompt      = STRING_TOKEN(STR_SB_BUS1),
+        help        = STRING_TOKEN(STR_EMPTY),
+        option text = STRING_TOKEN(STR_MIXSB), value = 0, flags = RESET_REQUIRED;
+        option text = STRING_TOKEN(STR_CCA),  value = 1, flags = RESET_REQUIRED| MANUFACTURING | DEFAULT;          
+        option text = STRING_TOKEN(STR_PCI1), value = 2, flags = RESET_REQUIRED;
+        option text = STRING_TOKEN(STR_SMB), value = 4, flags = RESET_REQUIRED;
+        option text = STRING_TOKEN(STR_SDHC), value = 5, flags = RESET_REQUIRED ;
+        option text = STRING_TOKEN(STR_ESPI), value = 6, flags = RESET_REQUIRED;
+        option text = STRING_TOKEN(STR_SPI), value = 7, flags = RESET_REQUIRED ;
+        option text = STRING_TOKEN(STR_LEGACY), value = 8, flags = RESET_REQUIRED;
+        option text = STRING_TOKEN(STR_PMU), value = 9, flags = RESET_REQUIRED ;
+        option text = STRING_TOKEN(STR_AZ), value = 10, flags = RESET_REQUIRED;
+        option text = STRING_TOKEN(STR_HPET), value = 11, flags = RESET_REQUIRED ;
+        option text = STRING_TOKEN(STR_PCIBUS), value = 12, flags = RESET_REQUIRED;
+        option text = STRING_TOKEN(STR_EBMC_OUT1), value = 13, flags = RESET_REQUIRED ;
+        option text = STRING_TOKEN(STR_VART), value = 14, flags = RESET_REQUIRED ;
+        option text = STRING_TOKEN(STR_SDHC_TXRX), value = 15, flags = RESET_REQUIRED ;
+        option text = STRING_TOKEN(STR_SBGB2_SBGB1), value = 16, flags = RESET_REQUIRED;
+        option text = STRING_TOKEN(STR_32H5A5A5A5A), value = 17, flags = RESET_REQUIRED;
+        option text = STRING_TOKEN(STR_32HA5A5A5A5), value = 18, flags = RESET_REQUIRED;
+        option text = STRING_TOKEN(STR_DMAC), value = 19, flags = RESET_REQUIRED;
+        option text = STRING_TOKEN(STR_PNP), value = 20, flags = RESET_REQUIRED;
+      // option text = STRING_TOKEN(STR_CCAG2), value = 21, flags = RESET_REQUIRED;
+      //  option text = STRING_TOKEN(STR_PCI1G2), value = 22, flags = RESET_REQUIRED ;
+      //  option text = STRING_TOKEN(STR_PMUG2), value = 23, flags = RESET_REQUIRED ;
+        option text = STRING_TOKEN(STR_KBDC), value = 24, flags = RESET_REQUIRED ;
+        option text = STRING_TOKEN(STR_TMRC), value = 25, flags = RESET_REQUIRED ;
+        option text = STRING_TOKEN(STR_PIC), value = 26, flags = RESET_REQUIRED ;
+        option text = STRING_TOKEN(STR_PCIBUS_MIXSB), value = 27, flags = RESET_REQUIRED;
+        option text = STRING_TOKEN(STR_LPC), value = 28, flags = RESET_REQUIRED ;
+        option text = STRING_TOKEN(STR_BUSC_MISC), value = 29, flags = RESET_REQUIRED ;
+        option text = STRING_TOKEN(STR_RTC), value = 30, flags = RESET_REQUIRED ;
+        endoneof; 
+      
+    suppressif NOT ideqval SETUP_DATA.SBTopDbgMux1==1;  
+ 	numeric varid   = SETUP_DATA.CCAMux1Sub,
+		prompt  = STRING_TOKEN(STR_CCA_BUS1),
+		help    = STRING_TOKEN(STR_HEX_NUMERIC_HELP),
+		flags   = DISPLAY_UINT_HEX,
+		minimum = 0,
+		maximum = 0xFF,
+		step    = 0,
+		default = 0,
+	endnumeric;
+    endif;   
+      
+     suppressif NOT ideqval SETUP_DATA.SBTopDbgMux1==2;  
+	numeric varid   = SETUP_DATA.PCI1Mux1Sub,
+		prompt  = STRING_TOKEN(STR_PCI1_BUS1),
+		help    = STRING_TOKEN(STR_HEX_NUMERIC_HELP),
+		flags   = DISPLAY_UINT_HEX,
+		minimum = 0,
+		maximum = 0xFF,
+		step    = 0,
+		default = 0,
+	endnumeric;
+      endif;  
+     
+
+      
+      suppressif NOT ideqval SETUP_DATA.SBTopDbgMux1==4;   
+	numeric varid   = SETUP_DATA.SMBMux1Sub,
+		prompt  = STRING_TOKEN(STR_SMB_BUS1_SUB),
+		help    = STRING_TOKEN(STR_HEX_NUMERIC_HELP),
+		flags   = DISPLAY_UINT_HEX,
+		minimum = 0,
+		maximum = 0xFF,
+		step    = 0,
+		default = 0,
+	endnumeric;
+      endif;           
+     
+     suppressif NOT ideqval SETUP_DATA.SBTopDbgMux1==5;   
+        numeric varid=SETUP_DATA.SDHCMux1Sub,
+        prompt   = STRING_TOKEN(STR_SDHC_BUS1_SUB),
+        help   = STRING_TOKEN(STR_EMPTY),
+        flags = DISPLAY_UINT_HEX,
+        minimum=0,
+        maximum=0x7F,
+        step=0,
+        default=0,
+       endnumeric;   
+     endif;
+     
+     suppressif NOT ideqval SETUP_DATA.SBTopDbgMux1==6; 
+
+      numeric varid=SETUP_DATA.ESPIMux1Sub,
+        prompt   = STRING_TOKEN(STR_ESPI_BUS1),
+        help   = STRING_TOKEN(STR_EMPTY),
+        flags = DISPLAY_UINT_HEX,
+        minimum=0,
+        maximum=0x77,
+        step=0,
+        default=0,
+       endnumeric;   
+      endif;       
+        
+        
+     suppressif NOT ideqval SETUP_DATA.SBTopDbgMux1==7; 
+
+	     numeric varid=SETUP_DATA.SPIMux1Sub,
+        prompt   = STRING_TOKEN(STR_SPI_BUS1),
+        help   = STRING_TOKEN(STR_EMPTY),
+        flags = DISPLAY_UINT_HEX,
+        minimum=0,
+        maximum=0x4B,
+        step=0,
+        default=0,
+       endnumeric;   
+      endif;  
+      
+      
+      suppressif NOT ideqval SETUP_DATA.SBTopDbgMux1==9; 
+	numeric varid   = SETUP_DATA.PMUMux1Sub,
+		prompt  = STRING_TOKEN(STR_PMU_BUS1),
+		help    = STRING_TOKEN(STR_HEX_NUMERIC_HELP),
+		flags   = DISPLAY_UINT_HEX,
+		minimum = 0,
+		maximum = 0xFF,
+		step    = 0,
+		default = 0,
+	endnumeric;
+      endif;
+        
+     suppressif NOT ideqval SETUP_DATA.SBTopDbgMux1==10;    
+	numeric varid   = SETUP_DATA.AZMux1Sub,
+		prompt  = STRING_TOKEN(STR_ZA_BUS1),
+		help    = STRING_TOKEN(STR_HEX_NUMERIC_HELP),
+		flags   = DISPLAY_UINT_HEX,
+		minimum = 0,
+		maximum = 0xFF,
+		step    = 0,
+		default = 0,
+	endnumeric;
+      endif;  
+       
+     suppressif NOT ideqval SETUP_DATA.SBTopDbgMux1==11;    
+
+ 	     numeric varid=SETUP_DATA.HPETMux1Sub,
+        prompt   = STRING_TOKEN(STR_HPET_BUS1),
+        help   = STRING_TOKEN(STR_EMPTY),
+        flags = DISPLAY_UINT_HEX,
+        minimum=0,
+        maximum=0xF,
+        step=0,
+        default=0,
+       endnumeric;   
+       endif;  
+       
+
+     
+     suppressif NOT ideqval SETUP_DATA.SBTopDbgMux1==13;    
+       numeric varid=SETUP_DATA.EBMC_OUT1Mux1Sub,
+        prompt   = STRING_TOKEN(STR_EBMC_OUT1_BUS1_SUBSEL),
+        help   = STRING_TOKEN(STR_EMPTY),
+        flags = DISPLAY_UINT_HEX,
+        minimum=0x10000,
+        maximum=0x1ffff,
+        step=0,
+        default=0,
+       endnumeric; 
+      endif; 
+       
+   suppressif NOT ideqval SETUP_DATA.SBTopDbgMux1==14;       
+	numeric varid   = SETUP_DATA.VARTMux1Sub,
+		prompt  = STRING_TOKEN(STR_VART_BUS1),
+		help    = STRING_TOKEN(STR_HEX_NUMERIC_HELP),
+		flags   = DISPLAY_UINT_HEX,
+		minimum = 0,
+		maximum = 0xFF,
+		step    = 0,
+		default = 0,
+	endnumeric;
+      endif;    
+      
+    suppressif NOT ideqval SETUP_DATA.SBTopDbgMux1==15;    
+
+       numeric varid=SETUP_DATA.SDHC_TXRXMux1Sub,
+        prompt   = STRING_TOKEN(STR_SDHC_TXRX_BUS1),
+        help   = STRING_TOKEN(STR_EMPTY),
+        flags = DISPLAY_UINT_HEX,
+        minimum=0x0,
+        maximum=0x17,
+        step=0,
+        default=0,
+       endnumeric;        
+    endif;  
+       
+     suppressif NOT ideqval SETUP_DATA.SBTopDbgMux1==19;    
+       numeric varid=SETUP_DATA.DMACMux1Sub,
+        prompt   = STRING_TOKEN(STR_DMAC_BUS1),
+        help   = STRING_TOKEN(STR_EMPTY),
+        flags = DISPLAY_UINT_HEX,
+        minimum=0x0,
+        maximum=0x1B,
+        step=0,
+        default=0,
+       endnumeric;        
+    endif;          
+    
+    suppressif NOT ideqval SETUP_DATA.SBTopDbgMux1==20;     
+	numeric varid   = SETUP_DATA.PNPMux1Sub,
+		prompt  = STRING_TOKEN(STR_PNP_BUS1),
+		help    = STRING_TOKEN(STR_HEX_NUMERIC_HELP),
+		flags   = DISPLAY_UINT_HEX,
+		minimum = 0,
+		maximum = 0xFF,
+		step    = 0,
+		default = 0,
+	endnumeric;
+    endif;        
+ 
+   suppressif NOT ideqval SETUP_DATA.SBTopDbgMux1==21; 
+	numeric varid   = SETUP_DATA.CCAG2Mux1Sub,
+		prompt  = STRING_TOKEN(STR_CCA_BUS1_G2),
+		help    = STRING_TOKEN(STR_HEX_NUMERIC_HELP),
+		flags   = DISPLAY_UINT_HEX,
+		minimum = 0,
+		maximum = 0xFF,
+		step    = 0,
+		default = 0,
+	endnumeric;
+      endif;   
+    
+    suppressif NOT ideqval SETUP_DATA.SBTopDbgMux1==22; 
+	numeric varid   = SETUP_DATA.PCI1G2Mux1Sub,
+		prompt  = STRING_TOKEN(STR_PCI1_BUS1_G2),
+		help    = STRING_TOKEN(STR_HEX_NUMERIC_HELP),
+		flags   = DISPLAY_UINT_HEX,
+		minimum = 0,
+		maximum = 0xFF,
+		step    = 0,
+		default = 0,
+	endnumeric;
+      endif; 
+       
+     suppressif NOT ideqval SETUP_DATA.SBTopDbgMux1==23; 
+	numeric varid   = SETUP_DATA.PMUG2Mux1Sub,
+		prompt  = STRING_TOKEN(STR_PMU_BUS1_G2),
+		help    = STRING_TOKEN(STR_HEX_NUMERIC_HELP),
+		flags   = DISPLAY_UINT_HEX,
+		minimum = 0,
+		maximum = 0xFF,
+		step    = 0,
+		default = 0,
+	endnumeric;
+      endif; 
+      
+     suppressif NOT ideqval SETUP_DATA.SBTopDbgMux1==24; 
+	numeric varid   = SETUP_DATA.KBDCMux1Sub,
+		prompt  = STRING_TOKEN(STR_KBDC_BUS1),
+		help    = STRING_TOKEN(STR_HEX_NUMERIC_HELP),
+		flags   = DISPLAY_UINT_HEX,
+		minimum = 0,
+		maximum = 0xFF,
+		step    = 0,
+		default = 0,
+	endnumeric;
+      endif; 
+       
+     suppressif NOT ideqval SETUP_DATA.SBTopDbgMux1==25; 
+	numeric varid   = SETUP_DATA.TMRCMux1Sub,
+		prompt  = STRING_TOKEN(STR_TMRC_BUS1),
+		help    = STRING_TOKEN(STR_HEX_NUMERIC_HELP),
+		flags   = DISPLAY_UINT_HEX,
+		minimum = 0,
+		maximum = 0xFF,
+		step    = 0,
+		default = 0,
+	endnumeric;
+      endif;   
+      
+     suppressif NOT ideqval SETUP_DATA.SBTopDbgMux1==26; 
+    numeric varid   = SETUP_DATA.PICMux1Sub,
+		prompt  = STRING_TOKEN(STR_PIC_BUS1),
+		help    = STRING_TOKEN(STR_HEX_NUMERIC_HELP),
+		flags   = DISPLAY_UINT_HEX,
+		minimum = 0,
+		maximum = 0xFF,
+		step    = 0,
+		default = 0,
+	endnumeric;
+ 
+      endif;    
+ 
+      suppressif NOT ideqval SETUP_DATA.SBTopDbgMux1==28; 
+    numeric varid   = SETUP_DATA.LPCMux1Sub,
+		prompt  = STRING_TOKEN(STR_LPC_BUS1),
+		help    = STRING_TOKEN(STR_HEX_NUMERIC_HELP),
+		flags   = DISPLAY_UINT_HEX,
+		minimum = 0,
+		maximum = 0xFF,
+		step    = 0,
+		default = 0,
+	endnumeric;
+      endif;
+     
+     suppressif NOT ideqval SETUP_DATA.SBTopDbgMux1==29; 
+     numeric varid   = SETUP_DATA.BUSC_MISCMux1Sub,
+		prompt  = STRING_TOKEN(STR_BUSC_BUS1),
+		help    = STRING_TOKEN(STR_HEX_NUMERIC_HELP),
+		flags   = DISPLAY_UINT_HEX,
+		minimum = 0,
+		maximum = 0xFF,
+		step    = 0,
+		default = 0,
+	endnumeric; 
+      endif;  
+      
+    suppressif NOT ideqval SETUP_DATA.SBTopDbgMux1==30; 
+     numeric varid   = SETUP_DATA.RTCMux1Sub,
+		prompt  = STRING_TOKEN(STR_RTC_BUS1),
+		help    = STRING_TOKEN(STR_HEX_NUMERIC_HELP),
+		flags   = DISPLAY_UINT_HEX,
+		minimum = 0,
+		maximum = 0xFF,
+		step    = 0,
+		default = 0,
+	endnumeric; 
+      endif; 
+    endif;//end   SETUP_DATA.DebugModuleSelect0==1;
+   endif;
+   
+ suppressif  ideqval SETUP_DATA.DebugSignalSelect1==1;  
+   suppressif NOT ideqval SETUP_DATA.DebugModuleSelect1==1;  
+   	   subtitle text = STRING_TOKEN(STR_EMPTY);
+      
+      oneof varid = SETUP_DATA.SBTopDbgMux2,
+        prompt      = STRING_TOKEN(STR_SB_BUS2),
+        help        = STRING_TOKEN(STR_EMPTY),
+        option text = STRING_TOKEN(STR_PMUG2), value = 0, flags = RESET_REQUIRED;
+        //option text = STRING_TOKEN(STR_CCA),  value = 1, flags = RESET_REQUIRED | MANUFACTURING | DEFAULT;          
+       // option text = STRING_TOKEN(STR_PCI1), value = 2, flags = RESET_REQUIRED;
+        option text = STRING_TOKEN(STR_SDIO_SUS), value = 3, flags = RESET_REQUIRED ;
+        option text = STRING_TOKEN(STR_SMBG2), value = 4, flags = RESET_REQUIRED;
+        option text = STRING_TOKEN(STR_SDHCG2), value = 5, flags = RESET_REQUIRED ;
+        option text = STRING_TOKEN(STR_ESPIG2), value = 6, flags = RESET_REQUIRED ;
+        option text = STRING_TOKEN(STR_SPIG2), value = 7, flags = RESET_REQUIRED ;
+        option text = STRING_TOKEN(STR_LEGACY), value = 8, flags = RESET_REQUIRED;
+        //option text = STRING_TOKEN(STR_PMU), value = 9, flags = RESET_REQUIRED ;
+        option text = STRING_TOKEN(STR_AZ_G2), value = 10, flags = RESET_REQUIRED;
+        option text = STRING_TOKEN(STR_HPET), value = 11, flags = RESET_REQUIRED ;
+        option text = STRING_TOKEN(STR_PCIBUS), value = 12, flags = RESET_REQUIRED;
+        option text = STRING_TOKEN(STR_EBMC_OUT2), value = 13, flags = RESET_REQUIRED ;
+        option text = STRING_TOKEN(STR_VART_G2), value = 14, flags = RESET_REQUIRED ;
+        option text = STRING_TOKEN(STR_SBGB2_SBGB1), value = 16, flags = RESET_REQUIRED;
+        option text = STRING_TOKEN(STR_5A5A5), value = 17, flags = RESET_REQUIRED;
+        option text = STRING_TOKEN(STR_A5A5A), value = 18, flags = RESET_REQUIRED;
+        option text = STRING_TOKEN(STR_DMAC_G2), value =19, flags = RESET_REQUIRED;
+        option text = STRING_TOKEN(STR_PNP_G2), value = 20, flags = RESET_REQUIRED;
+        option text = STRING_TOKEN(STR_CCAG2), value = 21, flags = RESET_REQUIRED;
+        option text = STRING_TOKEN(STR_PCI1G2), value = 22, flags = RESET_REQUIRED ;
+        option text = STRING_TOKEN(STR_MIXSB), value = 23, flags = RESET_REQUIRED ;
+        option text = STRING_TOKEN(STR_KBDCG2), value = 24, flags = RESET_REQUIRED ;
+        option text = STRING_TOKEN(STR_TMRCG2), value = 25, flags = RESET_REQUIRED ;
+        option text = STRING_TOKEN(STR_PICG2), value = 26, flags = RESET_REQUIRED ;
+        option text = STRING_TOKEN(STR_PCIBUS_MIXSB), value = 27, flags = RESET_REQUIRED;
+        option text = STRING_TOKEN(STR_LPCG2), value = 28, flags = RESET_REQUIRED;
+        option text = STRING_TOKEN(STR_BUSC_MISC), value = 29, flags = RESET_REQUIRED;
+        option text = STRING_TOKEN(STR_RTC), value = 30, flags = RESET_REQUIRED;
+      endoneof;
+
+     suppressif NOT ideqval SETUP_DATA.SBTopDbgMux2==0;   
+	numeric varid   = SETUP_DATA.PMUG2Mux2Sub,
+		prompt  = STRING_TOKEN(STR_PMU_G2_BUS2),
+		help    = STRING_TOKEN(STR_HEX_NUMERIC_HELP),
+		flags   = DISPLAY_UINT_HEX,
+		minimum = 0,
+		maximum = 0xFF,
+		step    = 0,
+		default = 0,
+	endnumeric;
+     endif;
+ 
+     suppressif NOT ideqval SETUP_DATA.SBTopDbgMux2==1;  
+	numeric varid   = SETUP_DATA.CCAMux2Sub,
+		prompt  = STRING_TOKEN(STR_CCA_BUS2),
+		help    = STRING_TOKEN(STR_HEX_NUMERIC_HELP),
+		flags   = DISPLAY_UINT_HEX,
+		minimum = 0,
+		maximum = 0xFF,
+		step    = 0,
+		default = 0,
+	endnumeric;
+      endif;  
+       
+    suppressif NOT ideqval SETUP_DATA.SBTopDbgMux2==2;      
+		numeric varid   = SETUP_DATA.PCI1Mux2Sub,
+		prompt  = STRING_TOKEN(STR_PCI1_BUS2),
+		help    = STRING_TOKEN(STR_HEX_NUMERIC_HELP),
+		flags   = DISPLAY_UINT_HEX,
+		minimum = 0,
+		maximum = 0xFF,
+		step    = 0,
+		default = 0,
+	endnumeric;
+      endif;    
+
+     suppressif NOT ideqval SETUP_DATA.SBTopDbgMux2==4; 
+		numeric varid   = SETUP_DATA.SMB_G2Mux2Sub,
+		prompt  = STRING_TOKEN(STR_SMB_G2_BUS2),
+		help    = STRING_TOKEN(STR_HEX_NUMERIC_HELP),
+		flags   = DISPLAY_UINT_HEX,
+		minimum = 0,
+		maximum = 0xFF,
+		step    = 0,
+		default = 0,
+	endnumeric;
+
+     endif;    
+    
+
+     suppressif NOT ideqval SETUP_DATA.SBTopDbgMux2==5;   
+        numeric varid=SETUP_DATA.SDHC_G2Mux2Sub,
+        prompt   = STRING_TOKEN(STR_SDHC_G2_BUS2),
+        help   = STRING_TOKEN(STR_EMPTY),
+        flags = DISPLAY_UINT_HEX,
+        minimum=0,
+        maximum=0x7F,
+        step=0,
+        default=0,
+       endnumeric;   
+     endif;
+     
+     suppressif NOT ideqval SETUP_DATA.SBTopDbgMux2==6; 
+      numeric varid=SETUP_DATA.ESPI_G2Mux2Sub,
+        prompt   = STRING_TOKEN(STR_ESPI_G2_BUS2),
+        help   = STRING_TOKEN(STR_EMPTY),
+        flags = DISPLAY_UINT_HEX,
+        minimum=0,
+        maximum=0x77,
+        step=0,
+        default=0,
+       endnumeric;   
+      endif;       
+        
+        
+     suppressif NOT ideqval SETUP_DATA.SBTopDbgMux2==7; 
+	     numeric varid=SETUP_DATA.SPI_G2Mux2Sub,
+        prompt   = STRING_TOKEN(STR_SPI_G2_BUS2),
+        help   = STRING_TOKEN(STR_EMPTY),
+        flags = DISPLAY_UINT_HEX,
+        minimum=0,
+        maximum=0x4B,
+        step=0,
+        default=0,
+       endnumeric;   
+      endif;  
+      
+         
+      suppressif NOT ideqval SETUP_DATA.SBTopDbgMux2==9; 
+	numeric varid   = SETUP_DATA.PMUMux2Sub,
+		prompt  = STRING_TOKEN(STR_PMU_BUS2),
+		help    = STRING_TOKEN(STR_HEX_NUMERIC_HELP),
+		flags   = DISPLAY_UINT_HEX,
+		minimum = 0,
+		maximum = 0xFF,
+		step    = 0,
+		default = 0,
+	endnumeric;
+      endif; 
+       
+     suppressif NOT ideqval SETUP_DATA.SBTopDbgMux2==10;    
+ 	numeric varid   = SETUP_DATA.AZ_G2Mux2Sub,
+		prompt  = STRING_TOKEN(STR_AZ_G2_BUS2),
+		help    = STRING_TOKEN(STR_HEX_NUMERIC_HELP),
+		flags   = DISPLAY_UINT_HEX,
+		minimum = 0,
+		maximum = 0xFF,
+		step    = 0,
+		default = 0,
+	endnumeric; 
+      endif;  
+       
+    suppressif NOT ideqval SETUP_DATA.SBTopDbgMux2==11;   
+ 	     numeric varid=SETUP_DATA.HPETMux2Sub,
+        prompt   = STRING_TOKEN(STR_HPET_BUS2),
+        help   = STRING_TOKEN(STR_EMPTY),
+        flags = DISPLAY_UINT_HEX,
+        minimum=0,
+        maximum=0xF,
+        step=0,
+        default=0,
+       endnumeric;   
+       endif; 
+     
+     suppressif NOT ideqval SETUP_DATA.SBTopDbgMux2==13;    
+       numeric varid=SETUP_DATA.EBMC_OUT1Mux2Sub,
+        prompt   = STRING_TOKEN(STR_EBMC_OUT1_BUS2_SUBSEL),
+        help   = STRING_TOKEN(STR_EMPTY),
+        flags = DISPLAY_UINT_HEX,
+        minimum=0x10000,
+        maximum=0x1ffff,
+        step=0,
+        default=0,
+       endnumeric; 
+      endif; 
+       
+ 
+        
+    suppressif NOT ideqval SETUP_DATA.SBTopDbgMux2==14;       
+		numeric varid   = SETUP_DATA.VART_G2Mux2Sub,
+		prompt  = STRING_TOKEN(STR_VART_G2_BUS2),
+		help    = STRING_TOKEN(STR_HEX_NUMERIC_HELP),
+		flags   = DISPLAY_UINT_HEX,
+		minimum = 0,
+		maximum = 0xFF,
+		step    = 0,
+		default = 0,
+	endnumeric;
+      endif;    
+      
+      suppressif NOT ideqval SETUP_DATA.SBTopDbgMux2==19;    
+       numeric varid=SETUP_DATA.DMAC_G2Mux2Sub,
+        prompt   = STRING_TOKEN(STR_DMAC_G2_BUS2),
+        help   = STRING_TOKEN(STR_EMPTY),
+        flags = DISPLAY_UINT_HEX,
+        minimum=0x0,
+        maximum=0x1B,
+        step=0,
+        default=0,
+       endnumeric;        
+    endif;          
+    
+    suppressif NOT ideqval SETUP_DATA.SBTopDbgMux2==20;     
+		numeric varid   = SETUP_DATA.PNP_G2Mux2Sub,
+		prompt  = STRING_TOKEN(STR_PNP_G2_BUS2),
+		help    = STRING_TOKEN(STR_HEX_NUMERIC_HELP),
+		flags   = DISPLAY_UINT_HEX,
+		minimum = 0,
+		maximum = 0xFF,
+		step    = 0,
+		default = 0,
+	endnumeric;
+    endif;        
+ 
+   suppressif NOT ideqval SETUP_DATA.SBTopDbgMux2==21; 
+		numeric varid   = SETUP_DATA.CCA_G2Mux2Sub,
+		prompt  = STRING_TOKEN(STR_CCA_BUS2_G2),
+		help    = STRING_TOKEN(STR_HEX_NUMERIC_HELP),
+		flags   = DISPLAY_UINT_HEX,
+		minimum = 0,
+		maximum = 0xFF,
+		step    = 0,
+		default = 0,
+	endnumeric;
+     endif;   
+    
+    suppressif NOT ideqval SETUP_DATA.SBTopDbgMux2==22; 
+		numeric varid   = SETUP_DATA.PCI1_G2Mux2Sub,
+		prompt  = STRING_TOKEN(STR_PCI1_BUS2_G2),
+		help    = STRING_TOKEN(STR_HEX_NUMERIC_HELP),
+		flags   = DISPLAY_UINT_HEX,
+		minimum = 0,
+		maximum = 0xFF,
+		step    = 0,
+		default = 0,
+	endnumeric;
+      endif;
+       
+
+      
+     suppressif NOT ideqval SETUP_DATA.SBTopDbgMux2==24; 
+		numeric varid   = SETUP_DATA.KBDC_G2Mux2Sub,
+		prompt  = STRING_TOKEN(STR_KBDCG2_BUS2),
+		help    = STRING_TOKEN(STR_HEX_NUMERIC_HELP),
+		flags   = DISPLAY_UINT_HEX,
+		minimum = 0,
+		maximum = 0xFF,
+		step    = 0,
+		default = 0,
+	endnumeric;
+      endif; 
+       
+     suppressif NOT ideqval SETUP_DATA.SBTopDbgMux2==25; 
+		numeric varid   = SETUP_DATA.TMRC_G2Mux2Sub,
+		prompt  = STRING_TOKEN(STR_TMRCG2_BUS2),
+		help    = STRING_TOKEN(STR_HEX_NUMERIC_HELP),
+		flags   = DISPLAY_UINT_HEX,
+		minimum = 0,
+		maximum = 0xFF,
+		step    = 0,
+		default = 0,
+	endnumeric;
+      endif;   
+      
+     suppressif NOT ideqval SETUP_DATA.SBTopDbgMux2==26; 
+		numeric varid   = SETUP_DATA.PIC_G2Mux2Sub,
+		prompt  = STRING_TOKEN(STR_PICG2_BUS2),
+		help    = STRING_TOKEN(STR_HEX_NUMERIC_HELP),
+		flags   = DISPLAY_UINT_HEX,
+		minimum = 0,
+		maximum = 0xFF,
+		step    = 0,
+		default = 0,
+	endnumeric;
+      endif;    
+ 
+      suppressif NOT ideqval SETUP_DATA.SBTopDbgMux2==28; 
+		numeric varid   = SETUP_DATA.LPC_G2Mux2Sub,
+		prompt  = STRING_TOKEN(STR_LPCG2_BUS2),
+		help    = STRING_TOKEN(STR_HEX_NUMERIC_HELP),
+		flags   = DISPLAY_UINT_HEX,
+		minimum = 0,
+		maximum = 0xFF,
+		step    = 0,
+		default = 0,
+	endnumeric;
+      endif;  
+      
+     suppressif NOT ideqval SETUP_DATA.SBTopDbgMux2==29; 
+		numeric varid   = SETUP_DATA.BUSC_MISCMux2Sub,
+		prompt  = STRING_TOKEN(STR_BUSC_BUS2),
+		help    = STRING_TOKEN(STR_HEX_NUMERIC_HELP),
+		flags   = DISPLAY_UINT_HEX,
+		minimum = 0,
+		maximum = 0xFF,
+		step    = 0,
+		default = 0,
+	endnumeric;
+      endif;  
+      
+      suppressif NOT ideqval SETUP_DATA.SBTopDbgMux2==30; 
+		numeric varid   = SETUP_DATA.RTCMux2Sub,
+		prompt  = STRING_TOKEN(STR_RTC_BUS2),
+		help    = STRING_TOKEN(STR_HEX_NUMERIC_HELP),
+		flags   = DISPLAY_UINT_HEX,
+		minimum = 0,
+		maximum = 0xFF,
+		step    = 0,
+		default = 0,
+	endnumeric;
+      endif; 
+
+  	endif;//END  suppressif  DebugModuleSelect==1;
+  endif;
+ 	endif;//END NOT ideqval SETUP_DATA.DebugModuleSelect0==1 AND NOT ideqval SETUP_DATA.DebugModuleSelect1==1;      
+  
+    text
+      help   = STRING_TOKEN(STR_EMPTY),
+      text   = STRING_TOKEN(STR_PARTING_LINE),
+      flags  = 0,
+      key    = 0;  
+    
+    text
+      help   = STRING_TOKEN(STR_EMPTY),
+      text   = STRING_TOKEN(STR_TOP_DEBUG),
+      flags  = 0,
+      key    = 0;  
+
+      suppressif NOT ideqval SETUP_DATA.DebugModuleSelect0==2;  
+ 
+     oneof varid = SETUP_DATA.TOPGroup0TopSelcet,
+        prompt      = STRING_TOKEN(STR_TOP_G0_SEL),
+        help        = STRING_TOKEN(STR_EMPTY),
+        option text = STRING_TOKEN(STR_TOP_G0), value = 0, flags = RESET_REQUIRED| MANUFACTURING | DEFAULT;
+        option text = STRING_TOKEN(STR_TOP_G1),  value = 1, flags = RESET_REQUIRED;          
+        option text = STRING_TOKEN(STR_TOP_G2),  value = 2, flags = RESET_REQUIRED;          
+        option text = STRING_TOKEN(STR_TOP_G3),  value = 3, flags = RESET_REQUIRED;          
+       endoneof;     
+   
+   numeric varid   = SETUP_DATA.TOPGroup0ModuleSubSelcet,
+		prompt  = STRING_TOKEN(STR_TOP_G0_MODULE_SEL),
+		help    = STRING_TOKEN(STR_HEX_NUMERIC_HELP),
+		flags   = DISPLAY_UINT_HEX,
+		minimum = 0,
+		maximum = 0xFFFFF,
+		step    = 0,
+		default = 0,
+	endnumeric;   
+ 		endif;
+ 		
+    suppressif NOT ideqval SETUP_DATA.DebugModuleSelect1==2;  
+        oneof varid = SETUP_DATA.TOPGroup1TopSelcet,
+        prompt      = STRING_TOKEN(STR_TOP_G1_SEL),
+        help        = STRING_TOKEN(STR_EMPTY),
+        option text = STRING_TOKEN(STR_TOP_G0), value = 0, flags = RESET_REQUIRED| MANUFACTURING | DEFAULT;
+        option text = STRING_TOKEN(STR_TOP_G1),  value = 1, flags = RESET_REQUIRED;          
+        option text = STRING_TOKEN(STR_TOP_G2),  value = 2, flags = RESET_REQUIRED;          
+        option text = STRING_TOKEN(STR_TOP_G3),  value = 3, flags = RESET_REQUIRED;            
+       endoneof;
+  numeric varid   = SETUP_DATA.TOPGroup1ModuleSubSelcet,
+		prompt  = STRING_TOKEN(STR_TOP_G1_MODULE_SEL),
+		help    = STRING_TOKEN(STR_HEX_NUMERIC_HELP),
+		flags   = DISPLAY_UINT_HEX,
+		minimum = 0,
+		maximum = 0xFFFFF,
+		step    = 0,
+		default = 0,
+	endnumeric;
+     endif;  
+    
+    
+    suppressif NOT ideqval SETUP_DATA.DebugModuleSelect0==3 AND NOT ideqval SETUP_DATA.DebugModuleSelect1==3  ;
+    text
+      help   = STRING_TOKEN(STR_EMPTY),
+      text   = STRING_TOKEN(STR_PARTING_LINE),
+      flags  = 0,
+      key    = 0;  
+    
+    text
+      help   = STRING_TOKEN(STR_EMPTY),
+      text   = STRING_TOKEN(STR_CPU_DEBUG),
+      flags  = 0,
+      key    = 0;  
+      
+    suppressif NOT ideqval SETUP_DATA.DebugModuleSelect0==3;
+     oneof varid = SETUP_DATA.FSBCGroup0TopSelcet,
+        prompt      = STRING_TOKEN(STR_FSBC_GROUP0_SELECT),
+        help        = STRING_TOKEN(STR_EMPTY),
+        option text = STRING_TOKEN(STR_SYS_GROUP0), value = 0, flags = RESET_REQUIRED | MANUFACTURING | DEFAULT;
+        option text = STRING_TOKEN(STR_SYS_GROUP1),     value = 1, flags = RESET_REQUIRED;          
+        option text = STRING_TOKEN(STR_SYS_GROUP2),     value = 2, flags = RESET_REQUIRED;
+        option text = STRING_TOKEN(STR_PLL_GROUP0),     value = 3, flags = RESET_REQUIRED;
+        option text = STRING_TOKEN(STR_PLL_GROUP1),     value = 4, flags = RESET_REQUIRED;     
+        option text = STRING_TOKEN(STR_PLL_GROUP2),     value = 5, flags = RESET_REQUIRED;
+        option text = STRING_TOKEN(STR_PLL_GROUP3),     value = 6, flags = RESET_REQUIRED;
+        endoneof; 
+		endif;
+		
+		      
+    suppressif NOT ideqval SETUP_DATA.DebugModuleSelect1==3;
+     oneof varid = SETUP_DATA.FSBCGroup1TopSelcet,
+        prompt      = STRING_TOKEN(STR_FSBC_GROUP1_SELECT),
+        help        = STRING_TOKEN(STR_EMPTY),
+        option text = STRING_TOKEN(STR_SYS_GROUP0), value = 0, flags = RESET_REQUIRED | MANUFACTURING | DEFAULT;
+        option text = STRING_TOKEN(STR_SYS_GROUP1),     value = 1, flags = RESET_REQUIRED;          
+        option text = STRING_TOKEN(STR_SYS_GROUP2),     value = 2, flags = RESET_REQUIRED;
+        option text = STRING_TOKEN(STR_PLL_GROUP0),     value = 3, flags = RESET_REQUIRED;
+        option text = STRING_TOKEN(STR_PLL_GROUP1),     value = 4, flags = RESET_REQUIRED;     
+        option text = STRING_TOKEN(STR_PLL_GROUP2),     value = 5, flags = RESET_REQUIRED;
+        option text = STRING_TOKEN(STR_PLL_GROUP3),     value = 6, flags = RESET_REQUIRED;
+        endoneof; 
+		endif;
+      
+     numeric varid=SETUP_DATA.CPU_FSBC_DBG_04,
+         prompt   = STRING_TOKEN(STR_CPU_FSBC_DBG_04),
+         help   = STRING_TOKEN(STR_EMPTY),
+         flags = DISPLAY_UINT_HEX,
+         minimum=0,
+         maximum=0xffffffffffffffff,
+         step=0,
+         default=0,
+       endnumeric;
+       
+       numeric varid=SETUP_DATA.CPU_FSBC_DBG_05,
+         prompt   = STRING_TOKEN(STR_CPU_FSBC_DBG_05),
+         help   = STRING_TOKEN(STR_EMPTY),
+         flags = DISPLAY_UINT_HEX,
+         minimum=0,
+         maximum=0xffffffffffffffff,
+         step=0,
+         default=0,
+       endnumeric;
+       
+      numeric varid=SETUP_DATA.CPU_FSBC_DBG_06,
+         prompt   = STRING_TOKEN(STR_CPU_FSBC_DBG_06),
+         help   = STRING_TOKEN(STR_EMPTY),
+         flags = DISPLAY_UINT_HEX,
+         minimum=0,
+         maximum=0xffffffffffffffff,
+         step=0,
+         default=0,
+       endnumeric;
+
+      numeric varid=SETUP_DATA.CPU_FSBC_DBG_07,
+         prompt   = STRING_TOKEN(STR_CPU_FSBC_DBG_07),
+         help   = STRING_TOKEN(STR_EMPTY),
+         flags = DISPLAY_UINT_HEX,
+         minimum=0,
+         maximum=0xffffffffffffffff,
+         step=0,
+         default=0,
+       endnumeric;
+       
+       numeric varid=SETUP_DATA.CPU_FSBC_DBG_08,
+         prompt   = STRING_TOKEN(STR_CPU_FSBC_DBG_08),
+         help   = STRING_TOKEN(STR_EMPTY),
+         flags = DISPLAY_UINT_HEX,
+         minimum=0,
+         maximum=0xffffffffffffffff,
+         step=0,
+         default=0,
+       endnumeric;
+       
+       
+       numeric varid=SETUP_DATA.CPU_FSBC_DBG_09,
+         prompt   = STRING_TOKEN(STR_CPU_FSBC_DBG_09),
+         help   = STRING_TOKEN(STR_EMPTY),
+         flags = DISPLAY_UINT_HEX,
+         minimum=0,
+         maximum=0xffffffffffffffff,
+         step=0,
+         default=0,
+       endnumeric;
+       
+       
+        numeric varid=SETUP_DATA.CPU_FSBC_DBG_0A,
+         prompt   = STRING_TOKEN(STR_CPU_FSBC_DBG_0A),
+         help   = STRING_TOKEN(STR_EMPTY),
+         flags = DISPLAY_UINT_HEX,
+         minimum=0,
+         maximum=0xffffffffffffffff,
+         step=0,
+         default=0,
+       endnumeric;
+       
+       
+       numeric varid=SETUP_DATA.CPU_FSBC_DBG_0B,
+         prompt   = STRING_TOKEN(STR_CPU_FSBC_DBG_0B),
+         help   = STRING_TOKEN(STR_EMPTY),
+         flags = DISPLAY_UINT_HEX,
+         minimum=0,
+         maximum=0xffffffffffffffff,
+         step=0,
+         default=0,
+       endnumeric;
+       
+       
+       numeric varid=SETUP_DATA.CPU_FSBC_DBG_0C,
+         prompt   = STRING_TOKEN(STR_CPU_FSBC_DBG_0C),
+         help   = STRING_TOKEN(STR_EMPTY),
+         flags = DISPLAY_UINT_HEX,
+         minimum=0,
+         maximum=0xffffffffffffffff,
+         step=0,
+         default=0,
+       endnumeric;      
+       
+      oneof varid = SETUP_DATA.SOCCAP_Mem_Size,
+        prompt      = STRING_TOKEN(STR_SOCCAP_MEM_SIZE),
+        help        = STRING_TOKEN(STR_EMPTY),
+        option text = STRING_TOKEN(STR_SIZE_64MB), value = 0, flags = RESET_REQUIRED | MANUFACTURING | DEFAULT;
+        option text = STRING_TOKEN(STR_SIZE_128MB),     value = 1, flags = RESET_REQUIRED;          
+        option text = STRING_TOKEN(STR_SIZE_256MB),     value = 2, flags = RESET_REQUIRED;
+        option text = STRING_TOKEN(STR_SIZE_512MB),     value = 3, flags = RESET_REQUIRED;
+        option text = STRING_TOKEN(STR_SIZE_1GB),     value = 4, flags = RESET_REQUIRED;     
+        option text = STRING_TOKEN(STR_SIZE_2GB),     value = 5, flags = RESET_REQUIRED;
+        endoneof; 
+        
+    
+ 	endif;//END  suppressif DebugModuleSelect==3;  
+
+  endif; //END suppressif  DebugMode!=0;
+
+     text
+      help   = STRING_TOKEN(STR_EMPTY),
+      text   = STRING_TOKEN(STR_PARTING_LINE),
+      flags  = 0,
+      key    = 0;  
+    
+      oneof varid = SETUP_DATA.SB_HS_DBG_SEL,
+        prompt      = STRING_TOKEN(STR_SB_HS_DBG_SEL),
+        help        = STRING_TOKEN(STR_EMPTY),
+        option text = STRING_TOKEN(STR_DISABLE), value = 0, flags = RESET_REQUIRED| MANUFACTURING | DEFAULT;
+        option text = STRING_TOKEN(STR_ENABLE),  value = 1, flags = RESET_REQUIRED;          
+      endoneof;        
+ 
+      suppressif NOT ideqval SETUP_DATA.SB_HS_DBG_SEL==1;  
+
+      oneof varid = SETUP_DATA.SB_HS_PCIE_PORT_SEL,
+        prompt      = STRING_TOKEN(STR_SB_HS_PCIE_PORT_SEL),
+        help        = STRING_TOKEN(STR_EMPTY),
+        option text = STRING_TOKEN(STR_PORTG), value = 0, flags = RESET_REQUIRED| MANUFACTURING | DEFAULT;
+        option text = STRING_TOKEN(STR_PORTG0),  value = 1, flags = RESET_REQUIRED;          
+      endoneof;
+             
+      oneof varid = SETUP_DATA.SB_HS_DBG_CH_SEL,
+        prompt      = STRING_TOKEN(STR_SB_HS_DBG_CH_SEL),
+        help        = STRING_TOKEN(STR_EMPTY),
+        option text = STRING_TOKEN(STR_NORMAL_MODE), value = 0, flags = RESET_REQUIRED| MANUFACTURING | DEFAULT;
+        option text = STRING_TOKEN(STR_DOWNSTREAN),  value = 1, flags = RESET_REQUIRED;          
+        option text = STRING_TOKEN(STR_UPSTREAM_READ), value = 2, flags = RESET_REQUIRED;
+        option text = STRING_TOKEN(STR_UPSTREAM_WRITE), value = 3, flags = RESET_REQUIRED ;
+       endoneof;
+       
+    /*   oneof varid = SETUP_DATA.MCU_UART_SEL,
+        prompt      = STRING_TOKEN(STR_MCU_UART_SEL),
+        help        = STRING_TOKEN(STR_EMPTY),
+        option text = STRING_TOKEN(STR_DISABLE), value = 0, flags = RESET_REQUIRED| MANUFACTURING | DEFAULT;
+        option text = STRING_TOKEN(STR_ENABLE),  value = 1, flags = RESET_REQUIRED;          
+       endoneof;*/
+   
+		endif;
+    endform; //end DEBUGSIGNAL_FORM_ID       
+    
+  form formid = AUTO_ID(ERROR_REPORTING_FORM_ID),
+      title = STRING_TOKEN(STR_ERROR_REPORTING_FORM);     
+      oneof varid = SETUP_DATA.SERRNBControl,
+        prompt      = STRING_TOKEN(STR_SERR_NB_CTRL),
+        help        = STRING_TOKEN(STR_SERR_NB_CTRL_HELP),
+        option text = STRING_TOKEN(STR_DISABLE), value = 0, flags = RESET_REQUIRED | MANUFACTURING | DEFAULT;
+        option text = STRING_TOKEN(STR_SMI),     value = 1, flags = RESET_REQUIRED;          
+        option text = STRING_TOKEN(STR_NMI),     value = 2, flags = RESET_REQUIRED;
+        option text = STRING_TOKEN(STR_SCI),     value = 3, flags = RESET_REQUIRED;
+      endoneof; 
+      
+
+      oneof varid = SETUP_DATA.V4IFErrControl,
+        prompt      = STRING_TOKEN(STR_V4IF_ERROR_CTRL),
+        help        = STRING_TOKEN(STR_V4IF_ERROR_CTRL_HELP),
+        option text = STRING_TOKEN(STR_DISABLE), value = 0, flags = RESET_REQUIRED;
+        option text = STRING_TOKEN(STR_ENABLE),  value = 1, flags = RESET_REQUIRED| MANUFACTURING | DEFAULT;          
+			endoneof;
+			
+      oneof varid = SETUP_DATA.DRAMErrControl,
+        prompt      = STRING_TOKEN(STR_DRAM_ERROR_CTRL),
+        help        = STRING_TOKEN(STR_DRAM_ERROR_CTRL_HELP),
+        option text = STRING_TOKEN(STR_DISABLE), value = 0, flags = RESET_REQUIRED| MANUFACTURING | DEFAULT;
+        option text = STRING_TOKEN(STR_UNEXPECT_ERR),  value = 1, flags = RESET_REQUIRED;          
+        option text = STRING_TOKEN(STR_CORRECT_ERR), value = 2, flags = RESET_REQUIRED;
+        option text = STRING_TOKEN(STR_BOTH), value = 3, flags = RESET_REQUIRED ;
+      endoneof;
+      
+      oneof varid = SETUP_DATA.PEGErrControl,
+        prompt      = STRING_TOKEN(STR_PEG_ERROR_CTRL),
+        help        = STRING_TOKEN(STR_PEG_ERROR_CTRL_HELP),
+        option text = STRING_TOKEN(STR_DISABLE), value = 0, flags = RESET_REQUIRED;
+        option text = STRING_TOKEN(STR_UNEXPECT_ERR),  value = 1, flags = RESET_REQUIRED| MANUFACTURING | DEFAULT;          
+        option text = STRING_TOKEN(STR_CORRECT_ERR), value = 2, flags = RESET_REQUIRED;
+        option text = STRING_TOKEN(STR_BOTH), value = 3, flags = RESET_REQUIRED ;
+      endoneof;
+      
+      oneof varid = SETUP_DATA.PE0ErrControl,
+        prompt      = STRING_TOKEN(STR_PE0_ERROR_CTRL),
+        help        = STRING_TOKEN(STR_PE0_ERROR_CTRL_HELP),
+        option text = STRING_TOKEN(STR_DISABLE), value = 0, flags = RESET_REQUIRED;
+        option text = STRING_TOKEN(STR_UNEXPECT_ERR),  value = 1, flags = RESET_REQUIRED| MANUFACTURING | DEFAULT;          
+        option text = STRING_TOKEN(STR_CORRECT_ERR), value = 2, flags = RESET_REQUIRED;
+        option text = STRING_TOKEN(STR_BOTH), value = 3, flags = RESET_REQUIRED ;
+      endoneof;
+      
+      oneof varid = SETUP_DATA.PE1ErrControl,
+        prompt      = STRING_TOKEN(STR_PE1_ERROR_CTRL),
+        help        = STRING_TOKEN(STR_PE1_ERROR_CTRL_HELP),
+        option text = STRING_TOKEN(STR_DISABLE), value = 0, flags = RESET_REQUIRED;
+        option text = STRING_TOKEN(STR_UNEXPECT_ERR),  value = 1, flags = RESET_REQUIRED| MANUFACTURING | DEFAULT;          
+        option text = STRING_TOKEN(STR_CORRECT_ERR), value = 2, flags = RESET_REQUIRED;
+        option text = STRING_TOKEN(STR_BOTH), value = 3, flags = RESET_REQUIRED ;
+      endoneof;
+      
+      oneof varid = SETUP_DATA.PE2ErrControl,
+        prompt      = STRING_TOKEN(STR_PE2_ERROR_CTRL),
+        help        = STRING_TOKEN(STR_PE2_ERROR_CTRL_HELP),
+        option text = STRING_TOKEN(STR_DISABLE), value = 0, flags = RESET_REQUIRED;
+        option text = STRING_TOKEN(STR_UNEXPECT_ERR),  value = 1, flags = RESET_REQUIRED| MANUFACTURING | DEFAULT;          
+        option text = STRING_TOKEN(STR_CORRECT_ERR), value = 2, flags = RESET_REQUIRED;
+        option text = STRING_TOKEN(STR_BOTH), value = 3, flags = RESET_REQUIRED ;
+      endoneof; 
+      
+      oneof varid = SETUP_DATA.PE3ErrControl,
+        prompt      = STRING_TOKEN(STR_PE3_ERROR_CTRL),
+        help        = STRING_TOKEN(STR_PE3_ERROR_CTRL_HELP),
+        option text = STRING_TOKEN(STR_DISABLE), value = 0, flags = RESET_REQUIRED;
+        option text = STRING_TOKEN(STR_UNEXPECT_ERR),  value = 1, flags = RESET_REQUIRED| MANUFACTURING | DEFAULT;          
+        option text = STRING_TOKEN(STR_CORRECT_ERR), value = 2, flags = RESET_REQUIRED;
+        option text = STRING_TOKEN(STR_BOTH), value = 3, flags = RESET_REQUIRED ;
+      endoneof;
+	  
+      oneof varid = SETUP_DATA.PEG0ErrControl,
+        prompt      = STRING_TOKEN(STR_PEG0_ERROR_CTRL),
+        help        = STRING_TOKEN(STR_PEG0_ERROR_CTRL_HELP),
+        option text = STRING_TOKEN(STR_DISABLE), value = 0, flags = RESET_REQUIRED;
+        option text = STRING_TOKEN(STR_UNEXPECT_ERR),  value = 1, flags = RESET_REQUIRED| MANUFACTURING | DEFAULT;          
+        option text = STRING_TOKEN(STR_CORRECT_ERR), value = 2, flags = RESET_REQUIRED;
+        option text = STRING_TOKEN(STR_BOTH), value = 3, flags = RESET_REQUIRED ;
+      endoneof;
+      
+      oneof varid = SETUP_DATA.PEG1ErrControl,
+        prompt      = STRING_TOKEN(STR_PEG1_ERROR_CTRL),
+        help        = STRING_TOKEN(STR_PEG1_ERROR_CTRL_HELP),
+        option text = STRING_TOKEN(STR_DISABLE), value = 0, flags = RESET_REQUIRED;
+        option text = STRING_TOKEN(STR_UNEXPECT_ERR),  value = 1, flags = RESET_REQUIRED| MANUFACTURING | DEFAULT;          
+        option text = STRING_TOKEN(STR_CORRECT_ERR), value = 2, flags = RESET_REQUIRED;
+        option text = STRING_TOKEN(STR_BOTH), value = 3, flags = RESET_REQUIRED ;
+      endoneof; 
+	oneof varid = SETUP_DATA.PEG2ErrControl,
+	  prompt	  = STRING_TOKEN(STR_PEG2_ERROR_CTRL),
+	  help		  = STRING_TOKEN(STR_PEG2_ERROR_CTRL_HELP),
+	  option text = STRING_TOKEN(STR_DISABLE), value = 0, flags = RESET_REQUIRED;
+	  option text = STRING_TOKEN(STR_UNEXPECT_ERR),  value = 1, flags = RESET_REQUIRED| MANUFACTURING | DEFAULT;		  
+	  option text = STRING_TOKEN(STR_CORRECT_ERR), value = 2, flags = RESET_REQUIRED;
+	  option text = STRING_TOKEN(STR_BOTH), value = 3, flags = RESET_REQUIRED ;
+	endoneof;
+	
+	oneof varid = SETUP_DATA.PEG3ErrControl,
+	  prompt	  = STRING_TOKEN(STR_PEG3_ERROR_CTRL),
+	  help		  = STRING_TOKEN(STR_PEG3_ERROR_CTRL_HELP),
+	  option text = STRING_TOKEN(STR_DISABLE), value = 0, flags = RESET_REQUIRED;
+	  option text = STRING_TOKEN(STR_UNEXPECT_ERR),  value = 1, flags = RESET_REQUIRED| MANUFACTURING | DEFAULT;		  
+	  option text = STRING_TOKEN(STR_CORRECT_ERR), value = 2, flags = RESET_REQUIRED;
+	  option text = STRING_TOKEN(STR_BOTH), value = 3, flags = RESET_REQUIRED ;
+	endoneof;
+    endform;//end ERROR REPORTING FORM 
+    
+   #endif  //end, FORM_SET_FORM
+#endif  //end, ADVANCED_FORM_SET

@@ -1,0 +1,69 @@
+## @file  
+#
+# Copyright (c) 2006 - 2011, Byosoft Corporation.<BR> 
+# All rights reserved.This software and associated documentation (if any)
+# is furnished under a license and may only be used or copied in 
+# accordance with the terms of the license. Except as permitted by such
+# license, no part of this software or documentation may be reproduced, 
+# stored in a retrieval system, or transmitted in any form or by any 
+# means without the express written consent of Byosoft Corporation.
+#
+# File Name:
+#   SmiVariable.inf
+#
+# Abstract: 
+#   Component description file for the SMI Variable Module.
+#
+# Revision History:
+#
+#
+##
+
+[Defines]
+  INF_VERSION                    = 0x00010005
+  BASE_NAME                      = SmiVariableSmm
+  FILE_GUID                      = 5CF912A8-4C37-455f-A2CE-801BBA7ACBA3
+  MODULE_TYPE                    = DXE_SMM_DRIVER
+  VERSION_STRING                 = 1.0
+  ENTRY_POINT                    = SmiVariableSmmEntryPoint
+  PI_SPECIFICATION_VERSION       = 0x0001000A
+
+[Sources]
+  SmiVariableSmm.c
+  SmiVariable.h
+
+[Packages]
+  MdePkg/MdePkg.dec
+  MdeModulePkg/MdeModulePkg.dec
+  ByoModulePkg/ByoModulePkg.dec
+  IntelFrameworkPkg/IntelFrameworkPkg.dec
+  EdkCompatibilityPkg/EdkCompatibilityPkg.dec
+  PlatformPkg/PlatformPkg.dec
+
+[LibraryClasses]
+  PcdLib
+  IoLib
+  BaseMemoryLib
+  DebugLib
+  SmmServicesTableLib
+  UefiDriverEntryPoint
+  UefiBootServicesTableLib
+
+[Guids]
+  gPlatformSetupVariableGuid
+  gSetupPasswordVariableTseGuid
+
+[Protocols]
+  gEfiSmmVariableProtocolGuid           # PROTOCOL ALWAYS_CONSUME
+  gEfiSmmSwDispatch2ProtocolGuid        # PROTOCOL ALWAYS_CONSUME  
+  gEfiSmmCpuProtocolGuid                # PROTOCOL ALWAYS_CONSUME
+  gEfiSmmBaseHelperReadyProtocolGuid    # PROTOCOL ALWAYS_CONSUME
+  
+[Pcd]
+  gEfiMdePkgTokenSpaceGuid.PcdPciExpressBaseAddress
+  
+[Depex]
+  gEfiSmmVariableProtocolGuid AND
+  gEfiSmmSwDispatch2ProtocolGuid AND
+  gEfiSmmCpuProtocolGuid
+

@@ -1,0 +1,31 @@
+
+[Defines]
+  INF_VERSION                    = 0x00010005
+  BASE_NAME                      = ResetSystemLib
+  FILE_GUID                      = 03B92533-992B-4407-9236-D4B5197DA04C
+  MODULE_TYPE                    = BASE
+  VERSION_STRING                 = 1.0
+  LIBRARY_CLASS                  = ResetSystemLib
+
+#
+# The following information is for reference only and not required by the build tools.
+#
+#  VALID_ARCHITECTURES           = IA32 X64 IPF
+#
+
+[Sources]
+  ResetSystemLib.c
+
+[Packages]
+  MdePkg/MdePkg.dec
+  PlatformPkg/PlatformPkg.dec
+
+[LibraryClasses]
+  DebugLib
+  IoLib
+  TimerLib
+
+[Pcd]
+  gPlatformModuleTokenSpaceGuid.AcpiIoPortBaseAddress
+  
+  

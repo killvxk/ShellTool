@@ -1,0 +1,56 @@
+
+[Defines]
+  INF_VERSION                    = 0x00010005
+  BASE_NAME                      = PlatformCommLib
+  FILE_GUID                      = DC8A643C-CD84-4289-980D-20F01F3DDA1C
+  MODULE_TYPE                    = BASE
+  VERSION_STRING                 = 1.0
+  LIBRARY_CLASS                  = PlatformCommLib
+
+
+#
+# The following information is for reference only and not required by the build tools.
+#
+#  VALID_ARCHITECTURES           = IA32 X64 IPF EBC
+#
+
+[Sources]
+  PlatformCommLib.c
+  CodecVerbTable.c
+
+
+[Packages]
+  MdePkg/MdePkg.dec
+  MdeModulePkg/MdeModulePkg.dec
+  PlatformPkg/PlatformPkg.dec
+  UefiCpuPkg/UefiCpuPkg.dec
+
+
+[LibraryClasses]
+  PcdLib
+  IoLib
+  BaseLib
+  TimerLib
+  HobLib
+
+
+[Guids]
+  gEfiPlatformMemInfoGuid
+  gEfiPlatDimmInfoGuid
+  gPlatformSetupVariableGuid
+  gEfiConsoleOutDeviceGuid
+  gCarTopDataHobGuid
+  
+  
+[Protocols]
+  gEfiGraphicsOutputProtocolGuid  
+  
+  
+[Pcd]
+  gEfiMdePkgTokenSpaceGuid.PcdPciExpressBaseAddress
+  gPlatformModuleTokenSpaceGuid.AcpiIoPortBaseAddress
+  gPlatformModuleTokenSpaceGuid.PcdS3RecordAddr
+  gEfiMdeModulePkgTokenSpaceGuid.PcdRealTimeClockUpdateTimeout
+  
+  
+  

@@ -1,0 +1,51 @@
+
+[Defines]
+  INF_VERSION                    = 0x00010005
+  BASE_NAME                      = LogoLib
+  FILE_GUID                      = F5AE5B5C-42E8-4A9B-829D-5B631CD5367A
+  MODULE_TYPE                    = DXE_DRIVER
+  VERSION_STRING                 = 1.0
+  LIBRARY_CLASS                  = LogoLib|DXE_DRIVER UEFI_APPLICATION
+
+#
+# The following information is for reference only and not required by the build tools.
+#
+#  VALID_ARCHITECTURES           = IA32 X64 IPF EBC
+#
+
+[Sources]
+  Logo.c
+  
+[Packages]
+  MdePkg/MdePkg.dec
+  MdeModulePkg/MdeModulePkg.dec
+  IntelFrameworkModulePkg/IntelFrameworkModulePkg.dec
+  ByoModulePkg/ByoModulePkg.dec
+
+[LibraryClasses]
+  BaseLib
+  UefiBootServicesTableLib
+  MemoryAllocationLib
+  UefiLib
+  BaseMemoryLib
+  DebugLib
+  PrintLib
+  PcdLib
+  DxeServicesLib
+
+[Guids]
+
+[Protocols]
+  gEfiGraphicsOutputProtocolGuid                # PROTOCOL SOMETIMES_CONSUMES
+  gEfiUgaDrawProtocolGuid |PcdUgaConsumeSupport # PROTOCOL SOMETIMES_CONSUMES
+  gEfiBootLogoProtocolGuid                      # PROTOCOL SOMETIMES_CONSUMES  
+  gEfiUserManagerProtocolGuid                   # PROTOCOL CONSUMES
+
+####IntelFrameworkModulePkg
+  gEfiOEMBadgingProtocolGuid                    # PROTOCOL CONSUMES
+  gEfiJpegDecoderProtocolGuid
+
+[FeaturePcd]
+  gEfiMdePkgTokenSpaceGuid.PcdUgaConsumeSupport
+
+[Pcd]

@@ -1,0 +1,121 @@
+## @file  
+#
+# Copyright (c) 2006 - 2011, Byosoft Corporation.<BR> 
+# All rights reserved.This software and associated documentation (if any)
+# is furnished under a license and may only be used or copied in 
+# accordance with the terms of the license. Except as permitted by such
+# license, no part of this software or documentation may be reproduced, 
+# stored in a retrieval system, or transmitted in any form or by any 
+# means without the express written consent of Byosoft Corporation.
+#
+# File Name:
+#   FlashUpdate.inf
+#
+# Abstract: 
+#   Component description file for module Flash Update.
+#
+# Revision History:
+#
+# Bug 3145:  Release initial verion bios for ChiefRiver/MahoBay platform base on
+#            Sugarbay Platform core drop.
+# TIME:       2011-11-25
+# $AUTHOR:    Liu Chunling
+# $REVIEWERS:
+# $SCOPE:     ChiefRiver/MahoBay Customer Refernce Board.
+# $TECHNICAL: 
+#   1. Change SnbClientX64Pkg to $(PLATFORM_PACKAGE) in INF file
+#      to fix failure to build other platform.
+#   2. Add the EDK debug libraries for IvyBridge Platform.
+#   3. Use UDK library IoLib in Xhci.c
+#   4. Add the Family ID and Model ID for IvyBridge processor.
+# $END--------------------------------------------------------------------------
+#
+##
+[Defines]
+  INF_VERSION                    = 0x00010005
+  BASE_NAME                      = FlashUpdateDxe
+  FILE_GUID                      = BDCB2EAD-12A3-45ED-A098-A5F41637B297
+  MODULE_TYPE                    = DXE_DRIVER
+  VERSION_STRING                 = 1.0
+  ENTRY_POINT                    = UpdateDriverEntry
+
+#
+# The following information is for reference only and not required by the build tools.
+#
+#  VALID_ARCHITECTURES           = IA32 X64 IPF
+#
+
+[Sources.common]
+  UpdateDriver.c
+  FlashUpdate.c
+  PeRebase.c
+
+[Sources.Ia32]
+
+[Sources.X64]
+
+[Sources.IPF]
+
+[Packages]
+  MdePkg/MdePkg.dec
+  MdeModulePkg/MdeModulePkg.dec
+  ByoNvMediaPkg/ByoNvMediaPkg.dec
+  ByoModulePkg/ByoModulePkg.dec
+
+[LibraryClasses]
+  UefiDriverEntryPoint
+  UefiBootServicesTableLib
+  HobLib
+  DebugLib
+  PrintLib
+  BaseLib
+  MemoryAllocationLib
+  UefiLib
+  PcdLib
+  BaseMemoryLib
+  CacheMaintenanceLib
+  PeCoffLib
+
+[LibraryClasses.IA32]
+
+[LibraryClasses.X64]
+
+[Guids]
+  gRecoveryCapsuleRecordGuid
+  gRecoveryOnDataCdGuid
+  gRecoveryOnFatFloppyDiskGuid
+  gRecoveryOnFatIdeDiskGuid
+  gRecoveryOnFatUsbDiskGuid
+  gEfiCapsuleVendorGuid
+  gEfiFirmwareFileSystem3Guid
+
+
+[Protocols]
+  gEfiNvMediaAccessProtocolGuid
+  gEfiFirmwareVolumeBlockProtocolGuid
+  gEfiSimpleTextInProtocolGuid
+  gUpdateFlashProtocolGuid
+
+
+[Pcd]
+  gEfiByoModulePkgTokenSpaceGuid.PcdFlashFvMainBase
+  gEfiByoModulePkgTokenSpaceGuid.PcdFlashFvMainSize
+  gEfiByoModulePkgTokenSpaceGuid.PcdFlashFvMain2Base
+  gEfiByoModulePkgTokenSpaceGuid.PcdFlashFvMain2Size  
+  gEfiMdeModulePkgTokenSpaceGuid.PcdFlashNvStorageVariableBase
+  gEfiMdeModulePkgTokenSpaceGuid.PcdFlashNvStorageVariableSize
+  gEfiMdeModulePkgTokenSpaceGuid.PcdFlashNvStorageFtwWorkingBase
+  gEfiMdeModulePkgTokenSpaceGuid.PcdFlashNvStorageFtwWorkingSize
+  gEfiMdeModulePkgTokenSpaceGuid.PcdFlashNvStorageFtwSpareBase
+  gEfiMdeModulePkgTokenSpaceGuid.PcdFlashNvStorageFtwSpareSize
+  gEfiByoModulePkgTokenSpaceGuid.PcdFlashNvStorageMicrocodeBase
+  gEfiByoModulePkgTokenSpaceGuid.PcdFlashNvStorageMicrocodeSize
+  gEfiByoModulePkgTokenSpaceGuid.PcdFlashFvRecoveryBase
+  gEfiByoModulePkgTokenSpaceGuid.PcdFlashFvRecoverySize
+  gEfiByoModulePkgTokenSpaceGuid.PcdFlashAreaBaseAddress
+  gEfiByoModulePkgTokenSpaceGuid.PcdFlashAreaSize
+
+
+[Depex]
+  gEfiNvMediaAccessProtocolGuid AND gEfiSimpleTextOutProtocolGuid
+

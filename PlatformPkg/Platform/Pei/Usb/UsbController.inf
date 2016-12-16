@@ -1,0 +1,59 @@
+#
+# Module Name:
+#
+#   UsbController.inf
+#
+# Abstract:
+#
+#
+#--*/
+
+[Defines]
+  INF_VERSION          = 0x00010005
+  BASE_NAME            = SbUsb
+  FILE_GUID            = 6B4FDBD2-47E1-4a09-BA8E-8E041F208B95
+  MODULE_TYPE          = PEIM
+  VERSION_STRING       = 1.0
+  ENTRY_POINT          = InitUsbController
+
+[sources.common]
+  UsbController.c
+  SbUsb.c
+  XhciPei.c
+
+[Packages]
+  MdePkg/MdePkg.dec
+  MdeModulePkg/MdeModulePkg.dec
+  IntelFrameworkPkg/IntelFrameworkPkg.dec
+  ByoModulePkg/ByoModulePkg.dec
+  AsiaPkg/AsiaPkg.dec
+  PlatformPkg/PlatformPkg.dec
+
+[LibraryClasses]
+  HobLib
+  PeimEntryPoint
+  PeiServicesLib
+  BaseMemoryLib
+  DebugLib
+  IoLib
+  PeiServicesTablePointerLib
+  TimerLib
+  PlatformCommLib
+
+[Guids]
+  gPlatformSetupVariableGuid
+
+[Ppis]
+  gEfiPeiReadOnlyVariable2PpiGuid
+  gPeiUsbControllerPpiGuid
+
+[Pcd]
+  gEfiMdePkgTokenSpaceGuid.PcdPciExpressBaseAddress 
+  gPlatformModuleTokenSpaceGuid.PcdXhciHubFwFile 
+  gPlatformModuleTokenSpaceGuid.PcdXhciMcuFwFile
+  gEfiByoModulePkgTokenSpaceGuid.PcdFlashFvMainBase
+
+[Depex]
+  gEfiPeiBootInRecoveryModePpiGuid AND
+  gEfiPeiReadOnlyVariable2PpiGuid
+

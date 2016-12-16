@@ -1,0 +1,42 @@
+
+[Defines]
+  INF_VERSION                    = 0x00010005
+  BASE_NAME                      = SpiSmm
+  FILE_GUID                      = F4B64372-FAF0-457e-918A-4C1CFDD68F23
+  MODULE_TYPE                    = DXE_SMM_DRIVER
+  PI_SPECIFICATION_VERSION       = 0x0001000A
+  VERSION_STRING                 = 1.0
+  ENTRY_POINT                    = InitializeSpiSmm
+
+[Sources]
+  SpiSmm.c
+  SpiCommon.c
+
+[Packages]
+  MdePkg/MdePkg.dec
+  MdeModulePkg/MdeModulePkg.dec
+  ByoNvMediaPkg/ByoNvMediaPkg.dec
+  PlatformPkg/PlatformPkg.dec
+
+[LibraryClasses]
+  BaseLib
+  BaseMemoryLib
+  UefiDriverEntryPoint
+  SmmServicesTableLib
+  UefiBootServicesTableLib
+  DebugLib
+  DxeServicesLib
+  IoLib
+  TimerLib
+  S3BootScriptLib
+
+[Pcd]
+  gEfiMdePkgTokenSpaceGuid.PcdPciExpressBaseAddress
+
+[Protocols]
+  gEfiSmmSpiProtocolGuid
+
+[Depex]
+  TRUE
+
+  

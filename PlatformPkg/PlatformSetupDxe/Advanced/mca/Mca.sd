@@ -1,0 +1,55 @@
+/** @file
+
+Copyright (c) 2006 - 2011,  Corporation.<BR>
+All rights reserved.This software and associated documentation (if any)
+is furnished under a license and may only be used or copied in
+accordance with the terms of the license. Except as permitted by such
+license, no part of this software or documentation may be reproduced,
+stored in a retrieval system, or transmitted in any form or by any
+means without the express written consent of Byosoft Corporation.
+
+File Name:
+  Mca.sd
+
+Abstract:
+  Mca Form Template.
+
+Revision History:
+
+**/
+
+
+#ifdef ADVANCED_FORM_SET
+
+
+  #ifdef FORM_SET_GOTO
+    goto MCA_CTRL_FORM_ID, 
+      prompt = STRING_TOKEN(STR_MCA_CTRL_FORM),
+      help   = STRING_TOKEN(STR_EMPTY);
+  #endif
+
+  #ifdef FORM_SET_FORM
+
+    form formid = AUTO_ID(MCA_CTRL_FORM_ID),
+        title = STRING_TOKEN(STR_MCA_CTRL_FORM);
+        
+        oneof varid = SETUP_DATA.Mca_Msmi_En,
+         prompt      = STRING_TOKEN(STR_MCA_MSMI_EN_FORM),
+         help        = STRING_TOKEN(STR_MCA_MSMI_EN_FORM_HELP),
+         option text = STRING_TOKEN(STR_DISABLED), value = 0, flags = RESET_REQUIRED | MANUFACTURING | DEFAULT;
+         option text = STRING_TOKEN(STR_ENABLED),  value = 1, flags = RESET_REQUIRED;          
+        endoneof;
+	
+         oneof varid = SETUP_DATA.Mca_Csmi_En,
+         prompt      = STRING_TOKEN(STR_MCA_CSMI_EN_FORM),
+         help        = STRING_TOKEN(STR_MCA_CSMI_EN_FORM_HELP),
+         option text = STRING_TOKEN(STR_DISABLED), value = 0, flags = RESET_REQUIRED | MANUFACTURING | DEFAULT;
+         option text = STRING_TOKEN(STR_ENABLED),  value = 1, flags = RESET_REQUIRED;          
+        endoneof;     
+	
+    endform; //end MCA_CTRL_FORM_ID
+    
+  #endif  // FORM_SET_FORM
+#endif  // ADVANCED_FORM_SET
+
+

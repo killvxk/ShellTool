@@ -1,0 +1,122 @@
+
+[Defines]
+  INF_VERSION                    = 0x00010005
+  BASE_NAME                      = PlatformPei
+  FILE_GUID                      = 064987B3-9780-4ce7-A55B-1ADCB3821205
+  MODULE_TYPE                    = PEIM
+  VERSION_STRING                 = 1.0
+  ENTRY_POINT                    = PlatformPeiEntry
+
+#
+# The following information is for reference only and not required by the build tools.
+#
+#  VALID_ARCHITECTURES           = IA32 X64 IPF EBC
+#
+
+[Sources]
+  PlatformPei.c
+  Cache.c
+  MemoryCallBack.c
+  Debug.c
+  BootMode.c
+  CpuCachePpi.c  
+  AsiaConfig.c
+  SmmAccess.c
+  SmmControl.c
+  Recovery.c
+  EnumPci.c
+  Ssid.c
+  PciHotPlug.c
+  
+
+[Packages]
+  MdePkg/MdePkg.dec
+  MdeModulePkg/MdeModulePkg.dec
+  IntelFrameworkPkg/IntelFrameworkPkg.dec
+  ByoModulePkg/ByoModulePkg.dec
+  AsiaPkg/AsiaPkg.dec
+  PlatformPkg/IA32FamilyCpuPkg/IA32FamilyCpuPkg.dec
+  PlatformPkg/PlatformPkg.dec
+  UefiCpuPkg/UefiCpuPkg.dec
+  IntelFrameworkModulePkg/IntelFrameworkModulePkg.dec
+
+
+[LibraryClasses]
+  HobLib
+  PeimEntryPoint
+  PeiServicesLib
+  BaseMemoryLib
+  DebugLib
+  IoLib
+  PeiServicesTablePointerLib
+  MtrrLib
+  TimerLib
+  MultiPlatSupportLib
+  ReportStatusCodeLib
+  PerformanceLib
+  PlatformCommLib
+  
+
+[Guids]
+  gEfiMemoryTypeInformationGuid
+  gEfiPlatformMemInfoGuid
+  gPlatformSetupVariableGuid
+  gMtcVendorGuid
+  gEfiAcpiVariableGuid
+  gEfiPlatformNvInfoGuid
+  gAsiaCpuCfgHobGuid
+  gEfiCapsuleVendorGuid
+  gEfiPlatDimmInfoGuid
+  
+  
+[Ppis]
+  gAsiaSbPpiGuid
+  gAsiaSbLibPpiGuid  
+  gAsiaNbPpiGuid
+  gAsiaDramPpiGuid
+  gAsiaCpuPpiGuid
+  gEfiPeiSmbusPpiGuid
+  gEfiPeiMasterBootModePpiGuid                  # PPI ALWAYS_PRODUCED
+  gEfiPeiBootInRecoveryModePpiGuid              # PPI SOMETIMES_PRODUCED  
+  gEfiPeiReadOnlyVariable2PpiGuid
+  gPeiCachePpiGuid
+  gEfiPeiMemoryDiscoveredPpiGuid
+  gEfiEndOfPeiSignalPpiGuid
+  gPeiSmmAccessPpiGuid
+  gPeiSmmControlPpiGuid
+  gPeiCapsulePpiGuid
+  gPeiAtaControllerPpiGuid
+  gEfiPeiBootInRecoveryModePpiGuid
+  gEfiPeiReadOnlyVariable2PpiGuid
+  gEfiPeiMpServicesPpiGuid
+  gEfiAcpiWakeVectorSignalPpiGuid
+
+
+[Pcd]
+  gEfiMdePkgTokenSpaceGuid.PcdPciExpressBaseAddress 
+  gEfiByoModulePkgTokenSpaceGuid.PcdFlashFvMainBase
+  gEfiByoModulePkgTokenSpaceGuid.PcdFlashFvMainSize
+  gEfiByoModulePkgTokenSpaceGuid.PcdFlashFvMain2Base
+  gEfiByoModulePkgTokenSpaceGuid.PcdFlashFvMain2Size  
+  gEfiByoModulePkgTokenSpaceGuid.PcdFlashFvRecoveryBase  
+  gEfiByoModulePkgTokenSpaceGuid.PcdFlashAreaBaseAddress
+  gEfiByoModulePkgTokenSpaceGuid.PcdFlashAreaSize
+  gPlatformModuleTokenSpaceGuid.AcpiIoPortBaseAddress  
+  gEfiIntelFrameworkModulePkgTokenSpaceGuid.PcdBootState
+  gPlatformModuleTokenSpaceGuid.PcdAcpiWakeupSrc
+  gEfiByoModulePkgTokenSpaceGuid.PcdFlashNvStorageMicrocodeBase
+  gEfiByoModulePkgTokenSpaceGuid.PcdFlashNvStorageMicrocodeSize 
+  gPlatformModuleTokenSpaceGuid.PcdS3RecordAddr
+  gPlatformModuleTokenSpaceGuid.PcdBiosDebugUsePciUart
+  gEfiIntelFrameworkModulePkgTokenSpaceGuid.PcdHighPmmMemorySize
+  gEfiCpuTokenSpaceGuid.PcdCpuCoreEnabled
+  
+[Depex]
+  gAsiaSbPpiGuid   AND
+  gAsiaNbPpiGuid   AND
+  gAsiaDramPpiGuid AND
+  gAsiaCpuPpiGuid  AND
+  gEfiPeiReadOnlyVariable2PpiGuid
+
+
+  

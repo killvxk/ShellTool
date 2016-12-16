@@ -1,0 +1,14 @@
+Build
+Conf/.cache/build.db
+Conf/BiosId.env
+BIOSShellTool.IAB
+BIOSShellTool.IAD
+BIOSShellTool.IMB
+BIOSShellTool.IMD
+BIOSShellTool.PFI
+BIOSShellTool.PO
+BIOSShellTool.PR
+BIOSShellTool.PRI
+BIOSShellTool.PS
+BIOSShellTool.WK3
+BIOSShellTool.SearchResults

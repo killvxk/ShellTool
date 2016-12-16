@@ -1,0 +1,278 @@
+/** @file
+
+Copyright (c) 2006 - 2011, Byosoft Corporation.<BR>
+All rights reserved.This software and associated documentation (if any)
+is furnished under a license and may only be used or copied in
+accordance with the terms of the license. Except as permitted by such
+license, no part of this software or documentation may be reproduced,
+stored in a retrieval system, or transmitted in any form or by any
+means without the express written consent of Byosoft Corporation.
+
+File Name:
+  Cpu.sd
+
+Abstract:
+  CPU Form Template.
+
+Revision History:
+
+**/
+
+
+
+#ifdef ADVANCED_FORM_SET
+
+
+  #ifdef FORM_SET_GOTO
+    goto CPU_FORM_ID, 
+      prompt = STRING_TOKEN(STR_CPU_FORM),
+      help   = STRING_TOKEN(STR_CPU_FORM_HELP);
+  #endif
+
+  #ifdef FORM_SET_FORM
+
+    form formid = AUTO_ID(CPU_FORM_ID),
+      title = STRING_TOKEN(STR_CPU_FORM);
+
+/*
+      oneof varid = SETUP_DATA.CpuCoreMpEn,
+        prompt      = STRING_TOKEN(STR_CPU_CORE_MP_PROMPT),
+        help        = STRING_TOKEN(STR_CPU_CORE_MP_HELP),
+        option text = STRING_TOKEN(STR_DISABLED), value = 0, flags = RESET_REQUIRED;
+        option text = STRING_TOKEN(STR_ENABLED),  value = 1, flags = RESET_REQUIRED | MANUFACTURING | DEFAULT;          
+      endoneof;          
+ */    
+    
+      
+      subtitle text = STRING_TOKEN(STR_EMPTY);
+    
+     text 
+      help   = STRING_TOKEN(STR_EMPTY),
+      text   = STRING_TOKEN(STR_PROCESSOR_VERSION_STRING),
+      text   = STRING_TOKEN(STR_PROCESSOR_VERSION_VALUE),
+      flags  = 0, 
+      key = 0;
+
+    text 
+      help   = STRING_TOKEN(STR_EMPTY),
+      text   = STRING_TOKEN(STR_PROCESSOR_SPEED_STRING),
+      text   = STRING_TOKEN(STR_PROCESSOR_SPEED_VALUE),
+      flags  = 0, 
+      key    = 0;
+
+      
+    text 
+      help   = STRING_TOKEN(STR_EMPTY),
+      text   = STRING_TOKEN(STR_PROCESSOR_CORE_COUNT_STRING),
+      text   = STRING_TOKEN(STR_PROCESSOR_CORE_COUNT_VALUE),
+      flags  = 0, 
+      key = 0;
+ 
+     text 
+      help   = STRING_TOKEN(STR_EMPTY),
+      text   = STRING_TOKEN(STR_PROCESSOR_CLUSTER_COUNT_STRING),
+      text   = STRING_TOKEN(STR_PROCESSOR_CLUSTER_COUNT_VALUE),
+      flags  = 0, 
+      key = 0;
+               
+      text 
+      help   = STRING_TOKEN(STR_EMPTY),
+      text   = STRING_TOKEN(STR_CACHE_L1I_SIZE_STRING),
+      text   = STRING_TOKEN(STR_CACHE_L1I_SIZE_VALUE),
+      flags  = 0, 
+      key = 0;
+      
+   text 
+      help   = STRING_TOKEN(STR_EMPTY),
+      text   = STRING_TOKEN(STR_CACHE_L1D_SIZE_STRING),
+      text   = STRING_TOKEN(STR_CACHE_L1D_SIZE_VALUE),
+      flags  = 0, 
+      key = 0;
+      
+    text 
+      help   = STRING_TOKEN(STR_EMPTY),
+      text   = STRING_TOKEN(STR_CACHE_L2_SIZE_STRING),
+      text   = STRING_TOKEN(STR_CACHE_L2_SIZE_VALUE),
+      flags  = 0, 
+      key = 0;     
+    
+    text 
+        help   = STRING_TOKEN(STR_EMPTY),
+        text   = STRING_TOKEN(STR_CPUID_STRING),
+        text   = STRING_TOKEN(STR_CPUID_VALUE),
+        flags  = 0, 
+        key    = 0; 
+
+      text 
+        help   = STRING_TOKEN(STR_EMPTY),
+        text   = STRING_TOKEN(STR_CPU_MICROCODE_REV_STRING),
+        text   = STRING_TOKEN(STR_CPU_MICROCODE_REV_VALUE),
+        flags  = 0, 
+        key    = 0;  
+                
+      text 
+        help   = STRING_TOKEN(STR_EMPTY),
+        text   = STRING_TOKEN(STR_PMON_STATE),
+        text   = STRING_TOKEN(STR_SUPPORT),
+        flags  = 0, 
+        key    = 0;  
+        
+      text 
+        help   = STRING_TOKEN(STR_EMPTY),
+        text   = STRING_TOKEN(STR_VRM_INFO),
+        text   = STRING_TOKEN(STR_VRM_VALUE),
+        flags  = 0, 
+        key    = 0;  
+        
+      oneof varid = SETUP_DATA.Pmon,
+        prompt      = STRING_TOKEN(STR_CPU_PMON),
+        help        = STRING_TOKEN(STR_CPU_PMON_HELP),
+        option text = STRING_TOKEN(STR_DISABLED), value = 0, flags = RESET_REQUIRED;
+        option text = STRING_TOKEN(STR_AUTO),  value = 1, flags = RESET_REQUIRED | MANUFACTURING | DEFAULT;          
+      endoneof;    
+ 
+
+      
+      oneof varid = SETUP_DATA.EpsEnable,
+        prompt      = STRING_TOKEN(STR_CPU_EPS_EN),
+        help        = STRING_TOKEN(STR_CPU_EPS_EN_HELP),
+        option text = STRING_TOKEN(STR_DISABLED), value = 0, flags = RESET_REQUIRED;
+        option text = STRING_TOKEN(STR_ENABLED),  value = 1, flags = RESET_REQUIRED| MANUFACTURING | DEFAULT ;          
+      endoneof; 
+      
+      
+      oneof varid = SETUP_DATA.SMRREnable,
+        prompt      = STRING_TOKEN(STR_CPU_SMRR_EN),
+        help        = STRING_TOKEN(STR_CPU_SMRR_EN_HELP),
+        option text = STRING_TOKEN(STR_DISABLED), value = 0, flags = RESET_REQUIRED;
+        option text = STRING_TOKEN(STR_WT), value = 1, flags = RESET_REQUIRED;
+        option text = STRING_TOKEN(STR_WB),  value = 2, flags = RESET_REQUIRED| MANUFACTURING | DEFAULT;          
+      endoneof;          
+      
+      #if ZX_SECRET_CODE   
+      oneof varid = SETUP_DATA.KillAp,
+        prompt      = STRING_TOKEN(STR_CPU_KILL_AP),
+        help        = STRING_TOKEN(STR_CPU_KILL_AP_HELP),
+        option text = STRING_TOKEN(STR_DISABLED), value = 0, flags = RESET_REQUIRED| MANUFACTURING | DEFAULT;
+        option text = STRING_TOKEN(STR_1CORE_MAX),  value = 1, flags = RESET_REQUIRED ;          
+        option text = STRING_TOKEN(STR_2CORES_MAX), value = 2, flags = RESET_REQUIRED;
+        option text = STRING_TOKEN(STR_3CORES_MAX), value = 3, flags = RESET_REQUIRED;
+        option text = STRING_TOKEN(STR_4CORES_MAX), value = 4, flags = RESET_REQUIRED;
+        option text = STRING_TOKEN(STR_5CORES_MAX), value = 5, flags = RESET_REQUIRED;
+        option text = STRING_TOKEN(STR_6CORES_MAX), value = 6, flags = RESET_REQUIRED;
+        option text = STRING_TOKEN(STR_7CORES_MAX), value = 7, flags = RESET_REQUIRED;
+      endoneof;    
+  
+      
+      oneof varid = SETUP_DATA.FixCpuRatio,
+        prompt      = STRING_TOKEN(STR_CPU_FIX_RATIO),
+        help        = STRING_TOKEN(STR_EMPTY),
+        option text = STRING_TOKEN(STR_MAX), value = 0, flags = RESET_REQUIRED| MANUFACTURING | DEFAULT;
+        option text = STRING_TOKEN(STR_4X),  value = 1, flags = RESET_REQUIRED ;          
+        option text = STRING_TOKEN(STR_5X), value = 2, flags = RESET_REQUIRED;
+        option text = STRING_TOKEN(STR_6X), value = 3, flags = RESET_REQUIRED;
+        option text = STRING_TOKEN(STR_7X), value = 4, flags = RESET_REQUIRED;
+        option text = STRING_TOKEN(STR_8X), value = 5, flags = RESET_REQUIRED;
+      endoneof;    
+   #endif   
+
+       oneof varid = SETUP_DATA.RoundRobin,
+        prompt      = STRING_TOKEN(STR_ROUND_ROBIN_EN),
+        help        = STRING_TOKEN(STR_ROUND_ROBIN_EN_HELP),
+        option text = STRING_TOKEN(STR_DISABLED), value = 0, flags = RESET_REQUIRED| MANUFACTURING | DEFAULT;
+        option text = STRING_TOKEN(STR_ENABLED),  value = 1, flags = RESET_REQUIRED ;          
+      endoneof;  
+       oneof varid = SETUP_DATA.TPREcho,
+        prompt      = STRING_TOKEN(STR_TPR_ECHO),
+        help        = STRING_TOKEN(STR_TPR_ECHO_HELP),
+        option text = STRING_TOKEN(STR_DISABLED), value = 0, flags = RESET_REQUIRED| MANUFACTURING | DEFAULT ;
+        option text = STRING_TOKEN(STR_ENABLED),  value = 1, flags = RESET_REQUIRED;          
+      endoneof;  
+
+      oneof varid = SETUP_DATA.Msr3A,
+        prompt      = STRING_TOKEN(STR_CPU_MSR3A),
+        help        = STRING_TOKEN(STR_CPU_MSR3A_HELP),
+        option text = STRING_TOKEN(STR_DISABLED), value = 0, flags = RESET_REQUIRED;
+        option text = STRING_TOKEN(STR_ENABLED),  value = 1, flags = RESET_REQUIRED | MANUFACTURING | DEFAULT;          
+      endoneof;
+      
+
+      oneof varid = SETUP_DATA.PartialResetEn,
+        prompt      = STRING_TOKEN(STR_PARTIAL_RESET_EN),
+        help        = STRING_TOKEN(STR_PARTIAL_RESET_EN_HELP),
+        option text = STRING_TOKEN(STR_DISABLED), value = 0, flags = RESET_REQUIRED | MANUFACTURING | DEFAULT;
+        option text = STRING_TOKEN(STR_ENABLED),  value = 1, flags = RESET_REQUIRED;          
+      endoneof;
+      
+      oneof varid = SETUP_DATA.TSC_Deadline_mode,
+        prompt      = STRING_TOKEN(STR_TSC_DEADLINE_MODE),
+        help        = STRING_TOKEN(STR_TSC_DEADLINE_MODE_HELP),
+        option text = STRING_TOKEN(STR_DISABLED), value = 0, flags = RESET_REQUIRED ;
+        option text = STRING_TOKEN(STR_ENABLED),  value = 1, flags = RESET_REQUIRED| MANUFACTURING | DEFAULT;          
+      endoneof;
+
+      oneof varid = SETUP_DATA.ExecuteDisable,
+        prompt      = STRING_TOKEN(STR_EXECUTE_DISABLE),
+        help        = STRING_TOKEN(STR_EXECUTE_DISABLE),
+        option text = STRING_TOKEN(STR_ENABLED), value = 1, flags = RESET_REQUIRED | MANUFACTURING | DEFAULT;
+        option text = STRING_TOKEN(STR_DISABLED),  value = 0, flags = RESET_REQUIRED;          
+      endoneof;
+
+     goto POWER_CX_C4P_FORM_ID, 
+      prompt = STRING_TOKEN(STR_CX_C4P_CTRL),
+      help   = STRING_TOKEN(STR_CX_C4P_CTRL);
+    endform;  // CPU_FORM_ID
+    
+    form formid = POWER_CX_C4P_FORM_ID,
+     title = STRING_TOKEN(STR_CX_C4P_CTRL);
+     oneof varid = SETUP_DATA.CpuCState,
+        prompt      = STRING_TOKEN(STR_CPU_CSTATE_PROMPT),
+        help        = STRING_TOKEN(STR_CPU_CSTATE_HELP),
+        option text = STRING_TOKEN(STR_DISABLED),     value = 0, flags = RESET_REQUIRED| MANUFACTURING | DEFAULT;
+        option text = STRING_TOKEN(STR_CPU_C2),       value = 1, flags = RESET_REQUIRED;
+        option text = STRING_TOKEN(STR_CPU_C2_C3),    value = 2, flags = RESET_REQUIRED; 
+        option text = STRING_TOKEN(STR_CPU_C2_C3_UD), value = 3, flags = RESET_REQUIRED;
+        option text = STRING_TOKEN(STR_CPU_C2_C4),    value = 4, flags = RESET_REQUIRED;   
+        option text = STRING_TOKEN(STR_CPU_C2_C4_UD), value = 5, flags = RESET_REQUIRED ;         
+      endoneof;     
+      
+    oneof varid = SETUP_DATA.ConditionalC4,
+      prompt   = STRING_TOKEN(STR_CONDITIONAL_C4),
+      help     = STRING_TOKEN(STR_CONDITIONAL_C4_HELP),
+      option text = STRING_TOKEN(STR_DISABLED),  value = 0, flags = RESET_REQUIRED;
+      option text = STRING_TOKEN(STR_AUTO), value = 1, flags = RESET_REQUIRED| MANUFACTURING | DEFAULT;
+     endoneof;
+     
+   suppressif NOT ideqval SETUP_DATA.CpuCState==4 AND NOT ideqval SETUP_DATA.CpuCState==5;   
+     oneof varid = SETUP_DATA.C5Control,
+      prompt   = STRING_TOKEN(STR_C5_CTRL),
+      help     = STRING_TOKEN(STR_C5_CTRL_HELP),
+      option text = STRING_TOKEN(STR_DISABLED),  value = 0, flags = RESET_REQUIRED| DEFAULT | MANUFACTURING;
+      option text = STRING_TOKEN(STR_AUTO), value = 1, flags = RESET_REQUIRED ;
+     endoneof;
+     oneof varid = SETUP_DATA.C5L2sizingControl,
+      prompt   = STRING_TOKEN(STR_C5_DYNAMIC_L2SIZE),
+      help     = STRING_TOKEN(STR_C5_DYNAMIC_L2SIZE_HELP),
+      option text = STRING_TOKEN(STR_DISABLED),  value = 0, flags = RESET_REQUIRED;
+      option text = STRING_TOKEN(STR_ENABLED), value = 1, flags = RESET_REQUIRED| DEFAULT | MANUFACTURING ;
+     endoneof;
+      
+      oneof varid = SETUP_DATA.CxIntFilterControl,
+      prompt   = STRING_TOKEN(STR_CXINT_CTRL),
+      help     = STRING_TOKEN(STR_CXINT_CTRL_HELP),
+      option text = STRING_TOKEN(STR_DISABLED),  value = 0, flags = RESET_REQUIRED | DEFAULT | MANUFACTURING;
+      option text = STRING_TOKEN(STR_ENABLED), value = 1, flags = RESET_REQUIRED;
+     endoneof;
+    endif;
+      oneof varid = SETUP_DATA.CxEEnable,
+        prompt      = STRING_TOKEN(STR_CPU_CXE_EN),
+        help        = STRING_TOKEN(STR_EMPTY),
+        option text = STRING_TOKEN(STR_DISABLED), value = 0, flags = RESET_REQUIRED | MANUFACTURING | DEFAULT;
+        option text = STRING_TOKEN(STR_ENABLED),  value = 1, flags = RESET_REQUIRED;          
+      endoneof;    
+      
+  endform;//end POWER_CX_C4P_FORM_ID
+  #endif  // FORM_SET_FORM
+#endif  // ADVANCED_FORM_SET
+
+

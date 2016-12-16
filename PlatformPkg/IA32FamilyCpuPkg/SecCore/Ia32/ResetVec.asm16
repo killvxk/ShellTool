@@ -1,0 +1,254 @@
+;
+; This file contains an 'Intel Pre-EFI Module' and is licensed
+; for Intel CPUs and Chipsets under the terms of your license 
+; agreement with Intel or your vendor.  This file may be      
+; modified by the user, subject to additional terms of the    
+; license agreement                                           
+;
+;------------------------------------------------------------------------------
+;
+; Copyright (c) 2006 - 2010, Intel Corporation. All rights reserved.<BR>
+; This software and associated documentation (if any) is furnished
+; under a license and may only be used or copied in accordance
+; with the terms of the license. Except as permitted by such
+; license, no part of this software or documentation may be
+; reproduced, stored in a retrieval system, or transmitted in any
+; form or by any means without the express written consent of
+; Intel Corporation.
+
+;
+; Module Name:
+;
+;  ResetVec.asm
+;
+; Abstract:
+;
+;  Reset Vector Data structure
+;  This structure is located at 0xFFFFFFA0
+;
+;------------------------------------------------------------------------------
+
+    .model  tiny
+    .686p
+    .stack  0h
+    .code
+
+
+; The layout of this file is fixed. The build tool makes assumption of the layout.
+; CID. PXP ROMSIP . 2015-11-12
+    ORG     0h            ; FFFFFFA0
+   #ifdef HX001EA1_10
+    dd  000000010h
+    dd  000380051h
+    dd  00002AAAAh
+    dd  000000000h
+	#endif	
+
+   #ifdef HX001EB1_10
+    dd  000000010h
+    dd  000380051h
+    dd  00002AAAAh
+    dd  000000000h
+	#endif	
+
+	#ifdef HX001EC1_04
+    dd  000000010h
+    dd  000380021h
+    dd  00002AAAAh
+    dd  000000000h
+	#endif
+	
+	#ifdef HX001EC1_05
+    dd  000000010h
+    dd  000380029h
+    dd  00002AAAAh
+    dd  000000000h
+	#endif
+	
+	#ifdef HX001EC1_08
+    dd  000000010h
+    dd  000380041h
+    dd  00002AAAAh
+    dd  000000000h
+	#endif
+	
+	#ifdef HX001EC1_09
+    dd  000000010h
+    dd  000380049h
+    dd  00002AAAAh
+    dd  000000000h
+	#endif
+	
+	#ifdef HX001EC1_12
+    dd  000000010h
+    dd  000380061h
+    dd  00002AAAAh
+    dd  000000000h
+	#endif
+	
+	#ifdef HX001EC1_13
+    dd  000000010h
+    dd  000380069h
+    dd  00002AAAAh
+    dd  000000000h
+	#endif
+	
+	#ifdef HX001ED0_03
+    dd  000000010h
+    dd  000380019h
+    dd  00002AAAAh
+    dd  000000000h
+	#endif
+	
+	#ifdef HX001EE0_03
+    dd  000000010h
+    dd  000380019h
+    dd  00002AAAAh
+    dd  000000000h
+	#endif
+
+	#ifdef HX001EF0_06
+    dd  000000010h
+    dd  000380031h
+    dd  00002AAAAh
+    dd  000000000h
+	#endif
+		
+	#ifdef HX001EF0_10
+    dd  000000010h
+    dd  000380051h
+    dd  00002AAAAh
+    dd  000000000h
+	#endif	
+
+	#ifdef HX001EF0_14
+    dd  000000010h
+    dd  000380071h
+    dd  00002AAAAh
+    dd  000000000h
+	#endif	
+	
+	#ifdef HX001EG0_09
+    dd  000000010h
+    dd  000380049h
+    dd  00002AAAAh
+    dd  000000000h
+	#endif		
+	
+	#ifdef HX001EG0_10
+    dd  000000010h
+    dd  000380051h
+    dd  00002AAAAh
+    dd  000000000h
+	#endif	
+	
+	#ifdef DHX001EG0_11
+    dd  000000010h
+    dd  000380059h
+    dd  00002AAAAh
+    dd  000000000h
+	#endif	
+	
+	#ifdef HX001EH0_09
+    dd  000000010h
+    dd  000380049h
+    dd  00002AAAAh
+    dd  000000000h
+	#endif
+	
+	#ifdef HX001EH0_10
+    dd  000000010h
+    dd  000380051h
+    dd  00002AAAAh
+    dd  000000000h
+	#endif		
+	
+	#ifdef HX001EH0_11
+    dd  000000010h
+    dd  000380059h
+    dd  00002AAAAh
+    dd  000000000h
+	#endif		
+		
+	
+	#ifdef HX001EI0_01
+    dd  000000010h
+    dd  000380009h
+    dd  00002AAAAh
+    dd  000000000h
+	#endif		
+		
+	#ifdef HX001EI0_02
+    dd  000000010h
+    dd  000380011h
+    dd  00002AAAAh
+    dd  000000000h
+	#endif		
+		
+	#ifdef HX001EI0_03
+    dd  000000010h
+    dd  000380019h
+    dd  00002AAAAh
+    dd  000000000h
+	#endif		
+		
+	  ORG     30h           ; 0FFFFFFD0
+    dd  0FFFFFFA0h        ; CID pointer
+
+    ORG     40h           ; 0xFFFFFFE0
+; Pointer to the entry point of the PEI core
+; It is located at 0xFFFFFFE0, and is fixed up by some build tool
+; So if the value 8..1 appears in the final FD image, tool failure occurs.
+;
+;PeiCoreEntryPoint       DD      87654321h
+PeiCoreEntryPoint        db      '3', '2', 'N', 'o'
+
+;
+; This is the handler for all kinds of exceptions. Since it's for debugging
+; purpose only, nothing except a deadloop would be done here. Developers could
+; analyze the cause of the exception if a debugger had been attached.
+;
+InterruptHandler    PROC
+    jmp     $
+    iret
+InterruptHandler    ENDP
+
+    ORG     50h           ; 0xFFFFFFF0
+;
+; For IA32, the reset vector must be at 0xFFFFFFF0, i.e., 4G-16 byte
+; Execution starts here upon power-on/platform-reset.
+;
+ResetHandler:
+    wbinvd
+ApStartup:
+    ;
+    ; Jmp Rel16 instruction
+    ; Use machine code directly in case of the assembler optimization
+    ; SEC entry point relatvie address will be fixed up by some build tool.
+    ;
+    ; Typically, SEC entry point is the function _ModuleEntryPoint() defined in
+    ; SecEntry.asm
+    ;
+    DB      0e9h
+    DW      -3
+
+
+    ORG     58h           ; 0xFFFFFFF8
+; Ap reset vector segment address is at 0xFFFFFFF8
+; This will be fixed up by some build tool,
+; so if the value 1..8 appears in the final FD image,
+; tool failure occurs
+ApSegAddress    dd      12345678h
+
+    ORG     5ch           ; 0xFFFFFFFC
+; BFV Base is at 0xFFFFFFFC
+; This will be fixed up by some build tool,
+; so if the value 1..8 appears in the final FD image,
+; tool failure occurs.
+BfvBase     DD      12345678h
+
+;
+; Nothing can go here, otherwise the layout of this file would change.
+;
+
+    END

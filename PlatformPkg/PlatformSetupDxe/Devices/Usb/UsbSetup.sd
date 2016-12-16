@@ -1,0 +1,97 @@
+/** @file
+
+Copyright (c) 2006 - 2014, Byosoft Corporation.<BR>
+All rights reserved.This software and associated documentation (if any)
+is furnished under a license and may only be used or copied in
+accordance with the terms of the license. Except as permitted by such
+license, no part of this software or documentation may be reproduced,
+stored in a retrieval system, or transmitted in any form or by any
+means without the express written consent of Byosoft Corporation.
+
+File Name:
+   UsbSetup.sd
+
+Abstract:
+   USB setting.
+
+Revision History:
+
+$END--------------------------------------------------------------------
+
+**/
+
+
+
+
+
+#ifdef DEVICES_FORM_SET
+  #ifdef FORM_SET_GOTO
+      goto CHIPSET_SB_USB_FORM_ID,
+        prompt = STRING_TOKEN(STR_USB_FORM),
+        help = STRING_TOKEN(STR_USB_FORM_HELP);
+  #endif
+
+  #ifdef FORM_SET_FORM
+
+    form formid = CHIPSET_SB_USB_FORM_ID,
+    title = STRING_TOKEN(STR_USB_FORM);
+
+      subtitle text = STRING_TOKEN(STR_COM_EMPTY);
+
+      oneof varid = SETUP_DATA.LegacyUsbEnable,
+        prompt = STRING_TOKEN(STR_LEGACY_USB_EN),
+        help   = STRING_TOKEN(STR_LEGACY_USB_EN_HELP),
+        option text = STRING_TOKEN(STR_DISABLE), value = 0, flags = RESET_REQUIRED;
+        option text = STRING_TOKEN(STR_ENABLED), value = 1, flags = RESET_REQUIRED | MANUFACTURING | DEFAULT;
+       endoneof;
+      //Mike_20160905_S  CHX001 Has not Internal Usb Controller
+      /*oneof varid   = SETUP_DATA.UsbMode,
+        prompt   = STRING_TOKEN(STR_USB_MODE),
+        help   = STRING_TOKEN(STR_USB_MODE_HELP),
+        option text = STRING_TOKEN(STR_DISABLE), value = 0, flags = RESET_REQUIRED ;
+        option text = STRING_TOKEN(STR_MODEA),   value = 1, flags = RESET_REQUIRED;
+        option text = STRING_TOKEN(STR_MODEB),   value = 2, flags = RESET_REQUIRED | MANUFACTURING | DEFAULT;
+        option text = STRING_TOKEN(STR_MODEC),   value = 3, flags = RESET_REQUIRED;
+       endoneof;
+    
+       oneof varid   = SETUP_DATA.TRBCacheBypass,
+        prompt   = STRING_TOKEN(STR_TRB_CACHE),
+        help   = STRING_TOKEN(STR_TRB_CACHE_HELP),
+        option text = STRING_TOKEN(STR_NOT_BYPASS), value = 0, flags =  DEFAULT | MANUFACTURING | RESET_REQUIRED;
+        option text = STRING_TOKEN(STR_BYPASS),     value = 1, flags =RESET_REQUIRED;
+       endoneof;     
+
+       oneof varid   = SETUP_DATA.USBCFLRControl,
+        prompt   = STRING_TOKEN(STR_USBC_FLRSUP),
+        help   = STRING_TOKEN(STR_USBC_FLRSUP_HELP),
+        option text = STRING_TOKEN(STR_DISABLED), value = 0, flags =  RESET_REQUIRED;
+        option text = STRING_TOKEN(STR_ENABLED), value = 1, flags = DEFAULT | MANUFACTURING |RESET_REQUIRED;
+     endoneof;
+		
+      oneof varid   = SETUP_DATA.XHCIFLRControl,
+        prompt   = STRING_TOKEN(STR_XHCI_FLRSUP),
+        help   = STRING_TOKEN(STR_XHCI_FLRSUP_HELP),
+        option text = STRING_TOKEN(STR_DISABLED), value = 0, flags =  RESET_REQUIRED;
+        option text = STRING_TOKEN(STR_ENABLED), value = 1, flags = DEFAULT | MANUFACTURING |RESET_REQUIRED;
+      endoneof; 
+   
+
+     oneof varid   = SETUP_DATA.MCUDMABypass,
+        prompt   = STRING_TOKEN(STR_MCUDMA_BYPASS),
+        help   = STRING_TOKEN(STR_MCUDMA_BYPASS_HELP),
+       option text = STRING_TOKEN(STR_MCU_DMA_NOT_BYPASS), value = 0, flags = DEFAULT | MANUFACTURING |RESET_REQUIRED;
+      option text = STRING_TOKEN(STR_MCU_DMA_BYPASS), value = 1, flags =RESET_REQUIRED;
+      endoneof; */
+  
+   /*  oneof varid   = SETUP_DATA.SwitchHubFw,
+        prompt   = STRING_TOKEN(STR_SWITCH_HUB_FW),
+        help   = STRING_TOKEN(STR_EMPTY),
+       option text = STRING_TOKEN(STR_SWITCH_HUB_FW_DISABLE), value = 0, flags =RESET_REQUIRED;
+      option text = STRING_TOKEN(STR_SWITCH_HUB_FW_ENABLE), value = 1, flags =DEFAULT | MANUFACTURING | RESET_REQUIRED;
+      endoneof; */
+     //Mike_20160905_E
+		  
+    endform;  //end CHIPSET_SB_USB_FORM_ID
+
+  #endif  //end, FORM_SET_FORM
+#endif  //end, DEVICES_FORM_SET

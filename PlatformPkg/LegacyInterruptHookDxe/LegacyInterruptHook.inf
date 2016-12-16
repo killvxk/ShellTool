@@ -1,0 +1,45 @@
+
+[Defines]
+  INF_VERSION                    = 0x00010005
+  BASE_NAME                      = LegacyInterruptHookDxe
+  FILE_GUID                      = F8673422-16DE-449c-8728-AB0361DBF9F0
+  MODULE_TYPE                    = DXE_DRIVER
+  VERSION_STRING                 = 1.0
+  ENTRY_POINT                    = InitializeLegacyInterruptHook
+
+#
+# The following information is for reference only and not required by the build tools.
+#
+#  VALID_ARCHITECTURES           = IA32 X64
+#
+
+[Sources]
+  LegacyInterruptHook.c
+
+[Packages]
+  MdePkg/MdePkg.dec
+  MdeModulePkg/MdeModulePkg.dec
+  IntelFrameworkPkg/IntelFrameworkPkg.dec
+  IntelFrameworkModulePkg/IntelFrameworkModulePkg.dec
+  ByoModulePkg/ByoModulePkg.dec
+  PlatformPkg/PlatformPkg.dec
+
+[LibraryClasses]
+  DebugLib
+  BaseLib
+  UefiBootServicesTableLib
+  UefiDriverEntryPoint
+  UefiLib
+
+[Guids]
+
+[Protocols]
+  gEfiLegacyBiosProtocolGuid    ## CONSUMES
+  gEfiLegacyRegion2ProtocolGuid ## CONSUMES
+  gEfiCpuArchProtocolGuid       ## CONSUMES
+  gEfiLegacyInterruptHandlerProtocolGuid ## CONSUMES
+
+[FixedPcd]
+
+[Depex]
+  gEfiLegacyBiosProtocolGuid

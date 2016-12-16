@@ -1,0 +1,75 @@
+/** @file
+
+Copyright (c) 2006 - 2014, Byosoft Corporation.<BR>
+All rights reserved.This software and associated documentation (if any)
+is furnished under a license and may only be used or copied in
+accordance with the terms of the license. Except as permitted by such
+license, no part of this software or documentation may be reproduced,
+stored in a retrieval system, or transmitted in any form or by any
+means without the express written consent of Byosoft Corporation.
+
+File Name:
+   Sdio.sd
+
+Abstract:
+   Sdio Devices setting.
+
+Revision History:
+
+$END--------------------------------------------------------------------
+
+**/
+
+#ifdef DEVICES_FORM_SET
+  #ifdef FORM_SET_GOTO
+    #ifdef CHX001_PKG_B
+      goto CHIPSET_SDIO_FORM_ID,
+        prompt = STRING_TOKEN(STR_SDIO_FORM),
+        help = STRING_TOKEN(STR_EMPTY);
+    #endif
+  #endif
+
+  #ifdef FORM_SET_FORM
+
+    form formid = CHIPSET_SDIO_FORM_ID,
+    title = STRING_TOKEN(STR_SDIO_FORM);
+
+      subtitle text = STRING_TOKEN(STR_EMPTY);
+      
+      oneof varid   = SETUP_DATA.SdioCtrlEn,
+        prompt   = STRING_TOKEN(STR_SDIO_CTRL_EN),
+        help   = STRING_TOKEN(STR_SDIO_CTRL_EN_HELP),
+        #ifdef CHX001_PKG_B
+          option text = STRING_TOKEN(STR_DISABLED), value = 0, flags = RESET_REQUIRED;
+          option text = STRING_TOKEN(STR_ENABLED),  value = 1, flags = RESET_REQUIRED | DEFAULT | MANUFACTURING;
+        #else
+          option text = STRING_TOKEN(STR_DISABLED), value = 0, flags = RESET_REQUIRED | DEFAULT | MANUFACTURING;
+          option text = STRING_TOKEN(STR_ENABLED),  value = 1, flags = RESET_REQUIRED;
+        #endif
+       endoneof; 
+
+      suppressif NOT ideqval SETUP_DATA.SdioCtrlEn == 1;  
+    
+       oneof varid   = SETUP_DATA.EmmcHs400StrobeMode,
+        prompt   = STRING_TOKEN(STR_EMMC_HS400_MODE),
+        help   = STRING_TOKEN(STR_EMMC_HS400_MODE_HELP),
+        option text = STRING_TOKEN(STR_DISABLED), value = 0, flags =  RESET_REQUIRED;
+        option text = STRING_TOKEN(STR_ENABLED), value = 1, flags =DEFAULT | MANUFACTURING | RESET_REQUIRED;
+       endoneof; 
+      
+          
+    oneof
+      varid       = SETUP_DATA.EmmcCqeEnable,
+      prompt      = STRING_TOKEN(EMMC_CQE_EN),
+      help        = STRING_TOKEN(EMMC_CQE_EN_HELP),
+        option text = STRING_TOKEN(STR_DISABLED), value = 0, flags =  RESET_REQUIRED;
+        option text = STRING_TOKEN(STR_ENABLED), value = 1, flags =DEFAULT | MANUFACTURING | RESET_REQUIRED;
+       endoneof; 
+      
+
+	endif;
+    endform; //end CHIPSET_SDIO_FORM_ID
+    
+
+  #endif  //end, FORM_SET_FORM
+#endif  //end, DEVICES_FORM_SET

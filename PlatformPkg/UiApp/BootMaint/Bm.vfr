@@ -1,0 +1,147 @@
+// 
+// Copyright (c) 2006-2012, Intel Corporation
+// All rights reserved. This program and the accompanying materials
+// are licensed and made available under the terms and conditions of the BSD License
+// which accompanies this distribution.  The full text of the license may be found at
+// http://opensource.org/licenses/bsd-license.php
+// 
+// THE PROGRAM IS DISTRIBUTED UNDER THE BSD LICENSE ON AN "AS IS" BASIS,
+// WITHOUT WARRANTIES OR REPRESENTATIONS OF ANY KIND, EITHER EXPRESS OR IMPLIED.
+// 
+// Module Description:
+//  
+//    Boot Maintenance Utility Formset
+//  
+
+
+//**/
+
+#include "FormGuid.h"
+#include <SetupVariable.h>
+
+formset
+  guid = BOOT_MAINT_FORMSET_GUID,
+  title = STRING_TOKEN(STR_FORM_MAIN_TITLE),
+  help = STRING_TOKEN(STR_NULL_STRING),
+  classguid = EFI_IFR_FRONT_PAGE_GUID,
+  class = 4,
+  subclass = 0,
+
+  efivarstore SETUP_DATA, 
+    varid = 1, 
+    attribute = 0x7, 
+    name  = Setup, 
+    guid  = PLATFORM_SETUP_VARIABLE_GUID;  
+  
+  varstore BMM_FAKE_NV_DATA,
+    varid = VARSTORE_ID_BOOT_MAINT,
+    name = BmmData,
+    guid = BOOT_MAINT_FORMSET_GUID;
+  
+  
+  form formid = FORM_MAIN_ID,
+      title = STRING_TOKEN(STR_FORM_MAIN_TITLE);
+
+      numeric varid = SETUP_DATA.BootTimeout,
+        prompt    = STRING_TOKEN(STR_BOOT_TIMEOUT),
+        help      = STRING_TOKEN(STR_BOOT_TIMEOUT_HELP),
+        minimum   = 0x0,
+        maximum   = 0xffff,
+        step      = 1,
+        default   = DEFAULT_BOOT_TIMEOUT,
+      endnumeric;
+
+      oneof varid   = SETUP_DATA.Numlock,
+        prompt      = STRING_TOKEN(STR_CSM_BOOTUP_NUMLOCK),
+        help        = STRING_TOKEN(STR_CSM_BOOTUP_NUMLOCK_HELP),
+        option text = STRING_TOKEN(STR_CSM_BOOTUP_NUMLOCK_ON),  value = 1, flags = RESET_REQUIRED | DEFAULT | MANUFACTURING;
+        option text = STRING_TOKEN(STR_CSM_BOOTUP_NUMLOCK_OFF), value = 0, flags = RESET_REQUIRED;
+      endoneof;
+    
+      oneof varid  = SETUP_DATA.OpromMessage,
+        prompt = STRING_TOKEN(STR_OPROM_MESSAGE),
+        help = STRING_TOKEN(STR_OPROM_MESSAGE_HELP),
+        option text = STRING_TOKEN(STR_DISABLED), value = 0, flags = DEFAULT | MANUFACTURING | RESET_REQUIRED;
+        option text = STRING_TOKEN(STR_ENABLED),  value = 1, flags = RESET_REQUIRED;
+      endoneof;
+      
+      oneof varid  = SETUP_DATA.Csm,
+        questionid = KEY_VALUE_CSM_CONFIGURATION,
+        prompt = STRING_TOKEN(STR_ENABLE_CSM),
+        help = STRING_TOKEN(STR_ENABLE_CSM_HELP),
+        option text = STRING_TOKEN(STR_ENABLED),  value = 1, flags = RESET_REQUIRED | DEFAULT | MANUFACTURING;
+        option text = STRING_TOKEN(STR_DISABLED), value = 0, flags = RESET_REQUIRED;
+      endoneof;
+
+      suppressif ideqval SETUP_DATA.Csm == 0;
+        oneof varid  = SETUP_DATA.BootModeType,
+          prompt = STRING_TOKEN(STR_BOOT_MODE),
+          help = STRING_TOKEN(STR_BOOT_MODE_HELP),
+          option text = STRING_TOKEN(STR_ALL),         value = 0, flags = RESET_REQUIRED | DEFAULT | MANUFACTURING;
+          option text = STRING_TOKEN(STR_UEFI_ONLY),   value = 1, flags = RESET_REQUIRED;
+          option text = STRING_TOKEN(STR_LEGACY_ONLY), value = 2, flags = RESET_REQUIRED;
+        endoneof;
+      endif;
+
+      suppressif ideqval SETUP_DATA.Csm == 1;
+        text
+          help   = STRING_TOKEN(STR_NULL_STRING),
+          text   = STRING_TOKEN(STR_BOOT_MODE),
+          text   = STRING_TOKEN(STR_UEFI_ONLY),
+          flags  = 0,
+          key    = 0;
+      endif;
+ 
+       //
+       // Create BootOrder List.
+       //
+       subtitle text = STRING_TOKEN(STR_NULL_STRING);	
+       label FORM_BOOT_CHG_ID;
+       label LABEL_END;
+       
+           //
+	   // We will add "Select Legacy Boot Floppy Drive" and "Select Legacy Boot Hard Drive"
+	   // here dynamically
+	   //
+       subtitle text = STRING_TOKEN(STR_NULL_STRING);   
+       label FORM_BOOT_LEGACY_DEVICE_ID;
+       label LABEL_END;
+   
+  endform;
+
+  form formid = FORM_SET_FD_ORDER_ID,
+       title = STRING_TOKEN(STR_FORM_SET_FD_ORDER_TITLE);
+
+       label FORM_SET_FD_ORDER_ID;
+       label LABEL_END;
+  endform;
+
+  form formid = FORM_SET_HD_ORDER_ID,
+       title = STRING_TOKEN(STR_FORM_SET_HD_ORDER_TITLE);
+
+       label FORM_SET_HD_ORDER_ID;
+       label LABEL_END;
+  endform;
+
+  form formid = FORM_SET_CD_ORDER_ID,
+       title = STRING_TOKEN(STR_FORM_SET_CD_ORDER_TITLE);
+
+       label FORM_SET_CD_ORDER_ID;
+       label LABEL_END;
+  endform;
+
+  form formid = FORM_SET_NET_ORDER_ID,
+       title = STRING_TOKEN(STR_FORM_SET_NET_ORDER_TITLE);
+
+       label FORM_SET_NET_ORDER_ID;
+       label LABEL_END;
+  endform;
+
+  form formid = FORM_SET_BEV_ORDER_ID,
+       title = STRING_TOKEN(STR_FORM_SET_BEV_ORDER_TITLE);
+
+       label FORM_SET_BEV_ORDER_ID;
+       label LABEL_END;
+  endform;
+
+endformset;

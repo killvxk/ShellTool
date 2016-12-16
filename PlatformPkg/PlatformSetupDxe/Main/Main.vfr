@@ -1,0 +1,136 @@
+// /*++
+// Copyright (c) 2010 Intel Corporation. All rights reserved.
+// This software and associated documentation (if any) is furnished
+// under a license and may only be used or copied in accordance
+// with the terms of the license. Except as permitted by such
+// license, no part of this software or documentation may be
+// reproduced, stored in a retrieval system, or transmitted in any
+// form or by any means without the express written consent of
+// Intel Corporation.
+//
+// Module Name: Main.vfr
+//
+// Abstract:    Setup script for the "Main" top level setup screen
+// --*/
+
+#include "VfrExtension.h"
+#include "SetupItemId.h"
+#include "PlatformSetupDxeStrDefs.h"
+
+#define MAIN_FORM_SET                        
+
+#define FORM_SET_TYPEDEF
+  #include <SetupDefinitions.h>
+#undef FORM_SET_TYPEDEF
+
+formset guid = MAIN_FORM_SET_GUID,
+  title     = STRING_TOKEN(STR_MAIN),
+  help      = STRING_TOKEN(STR_MAIN_HELP),
+  classguid = EFI_IFR_FRONT_PAGE_GUID,
+  class     = MAIN_FORM_SET_CLASS,
+  subclass  = FRONT_PAGE_SUBCLASS,
+
+  #define FORM_SET_VARSTORE
+    #include <SetupDefinitions.h>
+  #undef FORM_SET_VARSTORE
+
+  form formid = MAIN_PAGE_FORM_ID, 
+    title = STRING_TOKEN(STR_MAIN);
+
+    date 
+      year varid  = Date.Year,
+        prompt  = STRING_TOKEN(STR_DATE),
+        help    = STRING_TOKEN(STR_DATE_HELP),
+        minimum = 2015,
+        maximum = 2099,
+        step    = 1,
+        default = 2015,
+        
+      month varid = Date.Month,
+        prompt  = STRING_TOKEN(STR_DATE),
+        help    = STRING_TOKEN(STR_DATE_HELP),
+        minimum = 1,
+        maximum = 12,
+        step    = 1,
+        default = 1,
+        
+      day varid   = Date.Day,
+        prompt  = STRING_TOKEN(STR_DATE),
+        help    = STRING_TOKEN(STR_DATE_HELP),
+        minimum = 1,
+        maximum = 31,
+        step    = 1,
+        default = 1,
+    enddate;    
+    
+    time
+      hour varid  = Time.Hours,
+        prompt  = STRING_TOKEN(STR_TIME),
+        help    = STRING_TOKEN(STR_TIME_HELP),
+        minimum = 0,
+        maximum = 23,
+        step    = 1, 
+        default = 0,
+      
+      minute varid = Time.Minutes,
+        prompt  = STRING_TOKEN(STR_TIME),
+        help    = STRING_TOKEN(STR_TIME_HELP),
+        minimum = 0,
+        maximum = 59,
+        step    = 1,
+        default = 0,
+        
+      second varid = Time.Seconds,
+        prompt  = STRING_TOKEN(STR_TIME),
+        help    = STRING_TOKEN(STR_TIME_HELP),
+        minimum = 0,
+        maximum = 59,
+        step    = 1,
+        default = 0,
+    endtime;    
+    
+    subtitle text = STRING_TOKEN(STR_EMPTY);    
+
+    text
+      help   = STRING_TOKEN(STR_EMPTY),
+      text   = STRING_TOKEN(STR_BIOS_VENDOR_NAME),
+      text   = STRING_TOKEN(STR_BIOS_VENDOR_VALUE),
+      flags  = 0,
+      key    = 0;  
+    
+    text
+      help   = STRING_TOKEN(STR_EMPTY),
+      text   = STRING_TOKEN(STR_BIOS_REVISION_LEVEL_NAME),
+      text   = STRING_TOKEN(STR_BIOS_REVISION_LEVEL_VALUE),
+      flags  = 0,
+      key    = 0;    
+    
+    text
+      help   = STRING_TOKEN(STR_EMPTY),
+      text   = STRING_TOKEN(STR_BIOS_DATE_NAME),
+      text   = STRING_TOKEN(STR_BIOS_DATE_VALUE),
+      flags  = 0,
+      key    = 0;    
+    
+    #define FORM_SET_ITEM
+      #include <SetupDefinitions.h>
+    #undef FORM_SET_ITEM 
+
+    subtitle text = STRING_TOKEN(STR_EMPTY);
+    
+    suppressif TRUE;    
+      label LABEL_SELECT_LANGUAGE;
+      label LABEL_END;
+    endif;      
+    
+    #define FORM_SET_GOTO
+      #include <SetupDefinitions.h>
+    #undef FORM_SET_GOTO
+        
+  endform;                                // form end
+    
+  #define FORM_SET_FORM
+    #include <SetupDefinitions.h>
+  #undef FORM_SET_FORM
+  
+endformset;

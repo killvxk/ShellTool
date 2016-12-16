@@ -1,0 +1,45 @@
+
+[Defines]
+  INF_VERSION                    = 0x00010005
+  BASE_NAME                      = SpiDxe
+  FILE_GUID                      = 98600595-AE00-45bd-AA1C-78D666E0F74D
+  MODULE_TYPE                    = DXE_RUNTIME_DRIVER
+  VERSION_STRING                 = 1.0
+  ENTRY_POINT                    = InitializeSpiDxe
+
+[Sources]
+  SpiDxe.c
+  SpiCommon.c
+
+[Packages]
+  MdePkg/MdePkg.dec
+  MdeModulePkg/MdeModulePkg.dec
+  ByoNvMediaPkg/ByoNvMediaPkg.dec
+  PlatformPkg/PlatformPkg.dec
+
+[LibraryClasses]
+  UefiRuntimeLib
+  BaseLib
+  BaseMemoryLib
+  UefiDriverEntryPoint
+  UefiBootServicesTableLib
+  DebugLib
+  IoLib
+  TimerLib
+  S3BootScriptLib
+  
+
+[Pcd]
+  gEfiMdePkgTokenSpaceGuid.PcdPciExpressBaseAddress
+
+[Guids]
+  gEfiEventVirtualAddressChangeGuid  
+  
+[Protocols]
+  gEfiSpiProtocolGuid
+  
+
+[Depex]
+  TRUE
+
+  

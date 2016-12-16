@@ -1,0 +1,63 @@
+## @file  
+#
+# Copyright (c) 2006 - 2011, Byosoft Corporation.<BR> 
+# All rights reserved.This software and associated documentation (if any)
+# is furnished under a license and may only be used or copied in 
+# accordance with the terms of the license. Except as permitted by such
+# license, no part of this software or documentation may be reproduced, 
+# stored in a retrieval system, or transmitted in any form or by any 
+# means without the express written consent of Byosoft Corporation.
+#
+# File Name:
+#   MpTableDxe.inf
+#
+# Abstract: 
+#   This module produces Multi Processor table compliant to MP spec 1.4
+#
+# Revision History:
+#
+##
+
+
+[Defines]
+  INF_VERSION                    = 0x00010005
+  BASE_NAME                      = MpTableDxe
+  FILE_GUID                      = 16D0A23E-C09C-407d-A14A-AD058FDD0CA1
+  MODULE_TYPE                    = DXE_DRIVER
+  VERSION_STRING                 = 1.0 
+  ENTRY_POINT                    = MpsTableBuilderInit
+
+  
+[Sources]
+  MpTable.c
+  
+[Packages]
+  MdePkg/MdePkg.dec
+  MdeModulePkg/MdeModulePkg.dec
+  IntelFrameworkPkg/IntelFrameworkPkg.dec
+  IntelFrameworkModulePkg/IntelFrameworkModulePkg.dec
+  PlatformPkg/PlatformPkg.dec
+
+[LibraryClasses]
+  BaseLib
+  BaseMemoryLib
+  UefiDriverEntryPoint
+  DebugLib
+  UefiBootServicesTableLib
+  UefiRuntimeServicesTableLib
+  UefiLib
+  PlatformCommLib
+
+[Guids]
+  gPlatformSetupVariableGuid
+    
+[Protocols]
+  gEfiLegacyBiosProtocolGuid       ## Consumes
+  gEfiPciRootBridgeIoProtocolGuid  ## Consumes
+  gEfiPciIoProtocolGuid            ## Consumes
+  gEfiMpServiceProtocolGuid        ## Consumes
+[Pcd]
+  gEfiMdePkgTokenSpaceGuid.PcdPciExpressBaseAddress 
+   
+[Depex]
+  gEfiMpServiceProtocolGuid AND gEfiLegacyBiosProtocolGuid

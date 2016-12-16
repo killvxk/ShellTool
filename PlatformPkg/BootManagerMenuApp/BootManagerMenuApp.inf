@@ -1,0 +1,40 @@
+
+[Defines]
+  INF_VERSION                    = 0x00010005
+  BASE_NAME                      = BootManagerMenuApp
+  FILE_GUID                      = EEC25BDC-67F2-4D95-B1D5-F81B2039D11D
+  MODULE_TYPE                    = UEFI_APPLICATION
+  VERSION_STRING                 = 1.0 
+  ENTRY_POINT                    = BootManagerMenuEntry
+
+#
+# The following information is for reference only and not required by the build tools.
+#
+#  VALID_ARCHITECTURES           = IA32 X64 IPF EBC
+#
+
+[Sources]
+  BootManagerMenu.c
+  BootManagerMenuStrings.uni
+
+[Packages]
+  MdePkg/MdePkg.dec
+  MdeModulePkg/MdeModulePkg.dec
+  PlatformPkg/PlatformPkg.dec
+
+[LibraryClasses]
+  HiiLib
+  DebugLib
+  UefiLib
+  MemoryAllocationLib
+  UefiBootServicesTableLib
+  UefiApplicationEntryPoint
+  
+  
+[Pcd]
+
+  
+[Protocols]
+  gEfiBootManagerProtocolGuid
+
+

@@ -1,0 +1,109 @@
+///*++
+//Copyright (c) 2009 - 2010 Intel Corporation. All rights reserved.
+//This software and associated documentation (if any) is furnished
+//under a license and may only be used or copied in accordance
+//with the terms of the license. Except as permitted by such
+//license, no part of this software or documentation may be
+//reproduced, stored in a retrieval system, or transmitted in any
+//form or by any means without the express written consent of
+//Intel Corporation.
+//
+//Module Name:  
+//  CSM.SD
+//
+//Abstract:
+//  CSM Setup data definitions, currently go under Boot page
+//--*/
+
+#ifdef SETUP_DATA_DEFINITION
+  UINT8 ExpansionCardText;
+  UINT8   I19Trap;
+  UINT8   Fdbs;
+  UINT8 ZipEmulation;
+#endif
+
+//
+// Select Top level menu itmem (forset) for you pages
+//
+#ifdef BOOT_FORM_SET
+
+#ifdef FORM_SET_TYPEDEF
+//
+// If you need any additional type definitions add them here
+// typedef struct{
+//    UINT8 MyField;
+// } MyVariable;
+//
+#endif
+
+#ifdef FORM_SET_VARSTORE
+//
+// If you need custom varstore's define them here
+// varstore MY_VARIABLE,
+//   varid = AUTO_ID(MY_VARSTORE_ID),
+//   name  = MyVariable,
+//   guid  = PLATFORM_SETUP_VARIABLE_GUID;
+#endif
+
+#ifdef FORM_SET_ITEM
+//
+//  Define controls to be added to the top level page of the formset
+//  checkbox varid = SETUP_DATA.MyCombobox,
+//    prompt = STRING_TOKEN(...),
+//    help = STRING_TOKEN(...),  
+//    flags = 0, // Flags behavior for checkbox is overloaded so that it equals a DEFAULT value.  CHECKBOX_DEFAULT = ON, 0 = off
+//  endcheckbox;  
+//
+  oneof varid     = SETUP_DATA.ExpansionCardText,
+    prompt      = STRING_TOKEN(STR_CSM_OPROM_DISPLAY_MODE),
+    help        = STRING_TOKEN(STR_CSM_OPROM_DISPLAY_MODE_HELP),
+    option text = STRING_TOKEN(STR_CSM_OPROM_DISPLAY_FORCE_BIOS), value = 1, flags = DEFAULT | MANUFACTURING | RESET_REQUIRED;
+    option text = STRING_TOKEN(STR_CSM_OPROM_DISPLAY_KEEP_CURRENT), value = 0, flags = 0;
+  endoneof;
+  
+  oneof varid  = SETUP_DATA.I19Trap,
+    prompt      = STRING_TOKEN(STR_CSM_I19_TRAP),
+    help        = STRING_TOKEN(STR_CSM_I19_TRAP_HELP),
+    option text = STRING_TOKEN(STR_DISABLED), value = 0, flags = DEFAULT | MANUFACTURING | RESET_REQUIRED;
+    option text = STRING_TOKEN(STR_ENABLED), value = 1, flags = RESET_REQUIRED;
+  endoneof;
+  
+#if CSM_VIRUS_PROTECT
+  oneof varid     = SETUP_DATA.Fdbs,
+    prompt      = STRING_TOKEN(STR_CSM_HDD_BOOTSECTOR_WP),
+    help        = STRING_TOKEN(STR_CSM_HDD_BOOTSECTOR_WP_HELP),
+    option text = STRING_TOKEN(STR_CSM_HDD_BOOTSECTOR_NORMAL),  value = 0, flags = DEFAULT | MANUFACTURING | RESET_REQUIRED;
+    option text = STRING_TOKEN(STR_CSM_HDD_BOOTSECTOR_WRITEPROTECT),  value = 1, flags = 0;
+  endoneof;
+#endif
+
+#if CSM_SET_ZIP_EMULATION_TYPE
+  oneof varid     = SETUP_DATA.ZipEmulation,
+    prompt      = STRING_TOKEN(STR_CSM_ZIP_EMULATION_PROMPT),
+    help        = STRING_TOKEN(STR_CSM_ZIP_EMULATION_HELP),
+    option text = STRING_TOKEN(STR_CSM_ZIP_EMULATION_FDD),  value = 0, flags = DEFAULT | MANUFACTURING | RESET_REQUIRED;
+    option text = STRING_TOKEN(STR_CSM_ZIP_EMULATION_HDD),  value = 1, flags = 0;
+  endoneof;
+#endif
+
+#endif
+
+#ifdef FORM_SET_GOTO
+//
+// Define goto commands for the forms defined in this file
+//  goto ID_OF_MY_FORM, 
+//    prompt = STRING_TOKEN(STR_FORM_TITLE),
+//    help = STRING_TOKEN(STR_FORM_HELP);
+//
+#endif
+
+#ifdef FORM_SET_FORM
+//
+// Define forms
+//  form formid = AUTO_ID(ID_OF_MY_FORM),
+//    title = STRING_TOKEN(STR_FORM_TITLE);
+//  endform;
+//
+#endif
+
+#endif

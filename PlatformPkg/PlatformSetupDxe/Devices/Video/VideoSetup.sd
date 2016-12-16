@@ -1,0 +1,301 @@
+/** @file
+
+Copyright (c) 2006 - 2014, Byosoft Corporation.<BR>
+All rights reserved.This software and associated documentation (if any)
+is furnished under a license and may only be used or copied in
+accordance with the terms of the license. Except as permitted by such
+license, no part of this software or documentation may be reproduced,
+stored in a retrieval system, or transmitted in any form or by any
+means without the express written consent of Byosoft Corporation.
+
+File Name:
+   VideoSetup.sd
+
+Abstract:
+   Video devices setting.
+
+Revision History:
+
+$END--------------------------------------------------------------------
+
+**/
+
+#ifdef DEVICES_FORM_SET
+  #ifdef FORM_SET_GOTO
+      goto CHIPSET_NB_VIDEO_FORM_ID,
+        prompt = STRING_TOKEN(STR_VIDEO_FORM),
+        help = STRING_TOKEN(STR_VIDEO_FORM_HELP);
+  #endif
+
+  #ifdef FORM_SET_FORM
+
+    form formid = CHIPSET_NB_VIDEO_FORM_ID,
+    title = STRING_TOKEN(STR_VIDEO_FORM);
+
+      subtitle text = STRING_TOKEN(STR_COM_EMPTY);
+      
+      suppressif TRUE;
+       oneof varid   = SETUP_DATA.UmaFbSize,
+        prompt      = STRING_TOKEN(STR_UMA_FB_SIZE),
+        help        = STRING_TOKEN(STR_UMA_FB_SIZE_HELP),
+        option text = STRING_TOKEN(STR_64MB),  value = 1, flags = RESET_REQUIRED;
+        option text = STRING_TOKEN(STR_128MB), value = 2, flags = RESET_REQUIRED;
+        option text = STRING_TOKEN(STR_256MB), value = 3, flags = DEFAULT | MANUFACTURING | RESET_REQUIRED;
+        option text = STRING_TOKEN(STR_512MB), value = 4, flags = RESET_REQUIRED;        
+      endoneof;      
+      endif; //suppressif
+      
+      oneof varid   = SETUP_DATA.VideoDualVga,
+        prompt      = STRING_TOKEN(STR_VIDEO_DUAL_VGA),
+        help        = STRING_TOKEN(STR_VIDEO_DUAL_VGA_HELP),
+        option text = STRING_TOKEN(STR_COM_DISABLED), value = 0, flags = DEFAULT | MANUFACTURING | RESET_REQUIRED;
+        option text = STRING_TOKEN(STR_COM_ENABLED), value = 1, flags = RESET_REQUIRED;
+      endoneof;
+
+      oneof varid   = SETUP_DATA.VideoPrimaryAdapter,
+        prompt      = STRING_TOKEN(STR_VIDEO_PRIMARY_ADAPTER),
+        help        = STRING_TOKEN(STR_VIDEO_PRIMARY_ADAPTER_HELP),
+        option text = STRING_TOKEN(STR_VIDEO_PRIMARY_ADAPTER_0), value = 0, flags = DEFAULT | MANUFACTURING | RESET_REQUIRED;
+        option text = STRING_TOKEN(STR_VIDEO_PRIMARY_ADAPTER_1), value = 1, flags = RESET_REQUIRED;
+      endoneof;
+       
+     suppressif TRUE;  
+       oneof varid   = SETUP_DATA.UMAEn,
+        prompt   = STRING_TOKEN(STR_UMAENABLE),
+        help   = STRING_TOKEN(STR_EMPTY),
+        option text = STRING_TOKEN(STR_DISABLED), value = 0, flags = RESET_REQUIRED;
+        option text = STRING_TOKEN(STR_ENABLED), value = 1, flags = DEFAULT | MANUFACTURING | RESET_REQUIRED;
+       endoneof; 
+    endif;
+     
+     subtitle text = STRING_TOKEN(STR_EMPTY);   
+       oneof varid   = SETUP_DATA.SelectDisplayDevice,
+        prompt   = STRING_TOKEN(STR_SEL_DISPLAY_DEVICE),
+        help   = STRING_TOKEN(STR_EMPTY),
+        option text = STRING_TOKEN(STR_AUTO), value = 0, flags = RESET_REQUIRED;
+        option text = STRING_TOKEN(STR_MANUAL), value = 1, flags = DEFAULT | MANUFACTURING | RESET_REQUIRED;
+       endoneof;
+       
+      suppressif NOT ideqval SETUP_DATA.SelectDisplayDevice==1;  
+       oneof varid   = SETUP_DATA.DP1,
+        prompt   = STRING_TOKEN(STR_DISPLAY_DEVICE1),
+        help   = STRING_TOKEN(STR_EMPTY),
+			option text = STRING_TOKEN(STR_NONE_DISPLAY), value =0, flags = DEFAULT | MANUFACTURING |RESET_REQUIRED;        
+     		option text = STRING_TOKEN(STR_CRT), value = 0x1, flags = RESET_REQUIRED;
+ 	  		option text = STRING_TOKEN(STR_DVI), value = 0x2, flags = RESET_REQUIRED;
+ 	  		option text = STRING_TOKEN(STR_HDMI), value = 0x4, flags = RESET_REQUIRED;
+        	option text = STRING_TOKEN(STR_LCD), value = 0x20, flags = RESET_REQUIRED;
+  			option text = STRING_TOKEN(STR_DP), value = 0x40, flags = RESET_REQUIRED;
+ 	     endoneof; 
+     
+       oneof varid   = SETUP_DATA.DP2,
+        prompt   = STRING_TOKEN(STR_DISPLAY_DEVICE2),
+        help   = STRING_TOKEN(STR_EMPTY),
+     		option text = STRING_TOKEN(STR_NONE_DISPLAY), value =0, flags = DEFAULT | MANUFACTURING |RESET_REQUIRED;        
+     		option text = STRING_TOKEN(STR_CRT), value = 0x1, flags = RESET_REQUIRED;
+ 	  		option text = STRING_TOKEN(STR_DVI), value = 0x2, flags = RESET_REQUIRED;
+ 	  		option text = STRING_TOKEN(STR_HDMI), value = 0x4, flags = RESET_REQUIRED;
+        	option text = STRING_TOKEN(STR_LCD), value = 0x20, flags = RESET_REQUIRED;
+  			option text = STRING_TOKEN(STR_DP), value = 0x40, flags = RESET_REQUIRED;
+ 	   endoneof; 
+ 	   
+ 	   oneof varid   = SETUP_DATA.DVO,
+        prompt   = STRING_TOKEN(STR_DVO),
+        help   = STRING_TOKEN(STR_EMPTY),
+     		option text = STRING_TOKEN(STR_NONE_DISPLAY), value =0, flags = DEFAULT | MANUFACTURING |RESET_REQUIRED;        
+     		option text = STRING_TOKEN(STR_CRT), value = 0x1, flags = RESET_REQUIRED;
+ 	  		option text = STRING_TOKEN(STR_DVI), value = 0x2, flags = RESET_REQUIRED;
+ 	  		option text = STRING_TOKEN(STR_HDMI), value = 0x4, flags = RESET_REQUIRED;
+        	option text = STRING_TOKEN(STR_LCD), value = 0x20, flags = RESET_REQUIRED;
+  			option text = STRING_TOKEN(STR_DP), value = 0x40, flags = RESET_REQUIRED;
+ 	   endoneof; 
+
+ 	   oneof varid   = SETUP_DATA.CRT,
+        prompt   = STRING_TOKEN(STR_CRT),
+        help   = STRING_TOKEN(STR_EMPTY),
+     		option text = STRING_TOKEN(STR_NONE_DISPLAY), value =0, flags = DEFAULT | MANUFACTURING |RESET_REQUIRED;        
+			option text = STRING_TOKEN(STR_DISPLAY), value =1, flags = RESET_REQUIRED;        
+ 	     endoneof; 
+ 	    endif;
+ 	
+ 	  subtitle text = STRING_TOKEN(STR_EMPTY);   
+      
+      numeric varid=SETUP_DATA.PanelType,
+ 	      prompt   = STRING_TOKEN(STR_PANELTYPE),
+        help   = STRING_TOKEN(STR_EMPTY),
+        minimum=0,
+        maximum=0xf,
+        step=0,
+        default=2,
+      endnumeric;
+        
+       numeric varid=SETUP_DATA.PanelType2,
+      	prompt   = STRING_TOKEN(STR_PANELTYPE2),
+        help   = STRING_TOKEN(STR_EMPTY),
+        minimum=0,
+        maximum=0xf,
+        step=0,
+        default=2,
+       endnumeric;
+     
+      oneof varid   = SETUP_DATA.ECLKCtrl,
+        prompt   = STRING_TOKEN(STR_ECLK_CTRL),
+        help   = STRING_TOKEN(STR_EMPTY),
+        option text = STRING_TOKEN(STR_DISABLED), value = 0, flags = DEFAULT | MANUFACTURING | RESET_REQUIRED;
+        option text = STRING_TOKEN(STR_ENABLED), value = 1, flags =RESET_REQUIRED;
+       endoneof; 
+       
+      suppressif NOT ideqval SETUP_DATA.ECLKCtrl==1;
+       numeric varid=SETUP_DATA.ECLKFreq,
+        prompt  = STRING_TOKEN(STR_ECLK_FREQ),
+        help   = STRING_TOKEN(STR_EMPTY),
+        minimum = 0,
+        maximum = 0xffff,
+        step = 1,
+        default = 350,
+       endnumeric;
+      endif;
+       
+      oneof varid   = SETUP_DATA.VCLKCtrl,
+        prompt   = STRING_TOKEN(STR_VCLK_CTRL),
+        help   = STRING_TOKEN(STR_EMPTY),
+        option text = STRING_TOKEN(STR_DISABLED), value = 0, flags = DEFAULT | MANUFACTURING | RESET_REQUIRED;
+        option text = STRING_TOKEN(STR_ENABLED), value = 1, flags =RESET_REQUIRED;
+       endoneof; 
+       
+      suppressif NOT ideqval SETUP_DATA.VCLKCtrl==1;
+       numeric varid=SETUP_DATA.VCLKFreq,
+        prompt  = STRING_TOKEN(STR_VCLK_FREQ),
+        help   = STRING_TOKEN(STR_EMPTY),
+        minimum = 0,
+        maximum = 0xffff,
+        step = 1,
+        default = 350,
+       endnumeric;
+      endif;
+      
+      oneof varid   = SETUP_DATA.ICLKCtrl,
+        prompt   = STRING_TOKEN(STR_ICLK_CTRL),
+        help   = STRING_TOKEN(STR_EMPTY),
+        option text = STRING_TOKEN(STR_DISABLED), value = 0, flags = DEFAULT | MANUFACTURING | RESET_REQUIRED;
+        option text = STRING_TOKEN(STR_ENABLED), value = 1, flags =RESET_REQUIRED;
+      endoneof; 
+      
+      suppressif NOT ideqval SETUP_DATA.ICLKCtrl==1;
+       numeric varid=SETUP_DATA.ICLKFreq,
+        prompt  = STRING_TOKEN(STR_ICLK_FREQ),
+        help    = STRING_TOKEN(STR_EMPTY),
+        minimum = 0,
+        maximum = 0xffff,
+        step = 1,
+        default = 700,
+       endnumeric;
+      endif;
+       
+       oneof varid   = SETUP_DATA.DP1SSCEn,
+        prompt   = STRING_TOKEN(STR_DP1_SSC_EN),
+        help   = STRING_TOKEN(STR_EMPTY),
+        option text = STRING_TOKEN(STR_DISABLED), value = 0, flags =  RESET_REQUIRED;
+        option text = STRING_TOKEN(STR_ENABLED), value = 1, flags =DEFAULT | MANUFACTURING |RESET_REQUIRED;
+       endoneof;     
+   
+       oneof varid   = SETUP_DATA.DP1SSCMode,
+        prompt   = STRING_TOKEN(STR_DP1_SSC_MODE),
+        help   = STRING_TOKEN(STR_EMPTY),
+        option text = STRING_TOKEN(STR_MODE0), value = 0, flags = DEFAULT | MANUFACTURING | RESET_REQUIRED;
+        option text = STRING_TOKEN(STR_MODE1), value = 1, flags =RESET_REQUIRED;
+        option text = STRING_TOKEN(STR_MODE2), value = 2, flags =RESET_REQUIRED;
+        option text = STRING_TOKEN(STR_MODE3), value = 3, flags =RESET_REQUIRED;
+       endoneof;     
+   
+       oneof varid   = SETUP_DATA.DP2SSCEn,
+        prompt   = STRING_TOKEN(STR_DP2_SSC_EN),
+        help   = STRING_TOKEN(STR_EMPTY),
+        option text = STRING_TOKEN(STR_DISABLED), value = 0, flags =  RESET_REQUIRED;
+        option text = STRING_TOKEN(STR_ENABLED), value = 1, flags =DEFAULT | MANUFACTURING |RESET_REQUIRED;
+       endoneof;    
+     
+       oneof varid   = SETUP_DATA.DP2SSCMode,
+        prompt   = STRING_TOKEN(STR_DP2_SSC_MODE),
+        help   = STRING_TOKEN(STR_EMPTY),
+        option text = STRING_TOKEN(STR_MODE0), value = 0, flags = DEFAULT | MANUFACTURING | RESET_REQUIRED;
+        option text = STRING_TOKEN(STR_MODE1), value = 1, flags =RESET_REQUIRED;
+        option text = STRING_TOKEN(STR_MODE2), value = 2, flags =RESET_REQUIRED;
+        option text = STRING_TOKEN(STR_MODE3), value = 3, flags =RESET_REQUIRED;
+       endoneof; 
+       
+     /*  oneof varid   = SETUP_DATA.LinuxVideoIP,
+        prompt   = STRING_TOKEN(STR_LINUX_VIDEOIP),
+        help   = STRING_TOKEN(STR_EMPTY),
+        option text = STRING_TOKEN(STR_ENABLED), value = 0, flags = DEFAULT | MANUFACTURING | RESET_REQUIRED;
+        option text = STRING_TOKEN(STR_DISABLED), value = 4, flags =RESET_REQUIRED;      
+         endoneof;     
+   */
+       oneof varid   = SETUP_DATA.PWM0OutputEn,
+        prompt   = STRING_TOKEN(STR_PEM0_OUTPUT_EN),
+        help   = STRING_TOKEN(STR_EMPTY),
+        option text = STRING_TOKEN(STR_DISABLED), value = 0, flags =  DEFAULT | MANUFACTURING |RESET_REQUIRED;
+        option text = STRING_TOKEN(STR_ENABLED), value = 1, flags =RESET_REQUIRED;
+       endoneof; 
+
+	 suppressif NOT ideqval SETUP_DATA.PWM0OutputEn == 1;   
+       oneof varid   = SETUP_DATA.PWM0Frequency,
+        prompt   = STRING_TOKEN(STR_PWM0_FREQ),
+        help   = STRING_TOKEN(STR_EMPTY),
+        option text = STRING_TOKEN(STR_96_3640), value = 0, flags = DEFAULT | MANUFACTURING | RESET_REQUIRED;
+        option text = STRING_TOKEN(STR_96_7280), value = 1, flags =RESET_REQUIRED;
+        option text = STRING_TOKEN(STR_96_14560), value = 2, flags =RESET_REQUIRED;
+        option text = STRING_TOKEN(STR_96_29120), value = 3, flags =RESET_REQUIRED;
+        option text = STRING_TOKEN(STR_96_58240), value = 4, flags = RESET_REQUIRED;
+        option text = STRING_TOKEN(STR_96_116480), value = 5, flags =  RESET_REQUIRED;
+        option text = STRING_TOKEN(STR_96_232960), value =6, flags =  RESET_REQUIRED;
+        option text = STRING_TOKEN(STR_96_465920), value =7, flags =  RESET_REQUIRED;  
+       endoneof;   
+	
+	  numeric varid=SETUP_DATA.PWM0DutyCycle,
+        prompt   = STRING_TOKEN(STR_PWMO_DUTY_CYCLE),
+        help   = STRING_TOKEN(STR_EMPTY),
+        minimum=0,
+        maximum=0x3ff,
+        step=0,
+        default=0,
+      endnumeric;  
+	endif;
+	        
+       oneof varid   = SETUP_DATA.PWM1OutputEn,
+        prompt   = STRING_TOKEN(STR_PEM1_OUTPUT_EN),
+        help   = STRING_TOKEN(STR_EMPTY),
+        option text = STRING_TOKEN(STR_DISABLED), value = 0, flags =  DEFAULT | MANUFACTURING |RESET_REQUIRED;
+        option text = STRING_TOKEN(STR_ENABLED), value = 1, flags =RESET_REQUIRED;
+       endoneof;
+    
+
+    suppressif NOT ideqval SETUP_DATA.PWM1OutputEn == 1;   
+       oneof varid   = SETUP_DATA.PWM1Frequency,
+        prompt   = STRING_TOKEN(STR_PWM1_FREQ),
+        help   = STRING_TOKEN(STR_EMPTY),
+        option text = STRING_TOKEN(STR_96_910), value = 0, flags = DEFAULT | MANUFACTURING | RESET_REQUIRED;
+        option text = STRING_TOKEN(STR_96_1365), value = 1, flags =RESET_REQUIRED;
+        option text = STRING_TOKEN(STR_96_1820), value = 2, flags =RESET_REQUIRED;
+        option text = STRING_TOKEN(STR_96_931840), value = 3, flags =RESET_REQUIRED;
+        option text = STRING_TOKEN(STR_96_2730), value = 4, flags = RESET_REQUIRED;
+        option text = STRING_TOKEN(STR_SR37), value = 5, flags =  RESET_REQUIRED;
+        option text = STRING_TOKEN(STR_96_455), value =6, flags =  RESET_REQUIRED;
+        option text = STRING_TOKEN(STR_96_455), value =7, flags =  RESET_REQUIRED;  
+       endoneof;
+ 
+      numeric varid=SETUP_DATA.PWM1DutyCycle,
+        prompt   = STRING_TOKEN(STR_PWM1_DUTY_CYCLE),
+        help   = STRING_TOKEN(STR_EMPTY),
+        minimum=0,
+        maximum=0x3ff,
+        step=0,
+        default=0,
+       endnumeric;
+
+   	endif;         
+
+    endform;  //end, CHIPSET_NB_VIDEO_FORM_ID
+
+  #endif  //end, FORM_SET_FORM
+#endif  //end, DEVICES_FORM_SET

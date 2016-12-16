@@ -1,0 +1,215 @@
+// /*++
+// Copyright (c) 2010 Intel Corporation. All rights reserved.
+// This software and associated documentation (if any) is furnished
+// under a license and may only be used or copied in accordance
+// with the terms of the license. Except as permitted by such
+// license, no part of this software or documentation may be
+// reproduced, stored in a retrieval system, or transmitted in any
+// form or by any means without the express written consent of
+// Intel Corporation.
+//
+// Module Name: Security.vfr
+//
+// Abstract:    Security Form in Setup.
+// --*/
+
+#include "VfrExtension.h"
+#include "SetupItemId.h"
+#include "PlatformSetupDxeStrDefs.h"  
+#include <Guid/TcgConfigHii.h>
+#include <Guid/Tcg2ConfigHii.h>
+#include <Guid/TcmSetupCfgGuid.h>
+#include <Guid/TcSetupCfgGuid.h>
+
+
+#define SECURITY_FORM_SET
+
+#define FORM_SET_TYPEDEF
+  #include <SetupDefinitions.h>
+#undef FORM_SET_TYPEDEF
+
+#define LABEL_SECURITY_INFORMATION     0x1002
+#define LABEL_END                      0xffff
+#define EVENT_LOG_FORMID               0x50
+#define SECURE_BOOT_FORMID             0x51
+
+formset guid  = SECURITY_FORM_SET_GUID,
+  title     = STRING_TOKEN(STR_SECURITY),
+  help      = STRING_TOKEN(STR_SECURITY_HELP),
+  classguid = EFI_IFR_FRONT_PAGE_GUID,
+  class     = SECURITY_FORM_SET_CLASS,
+  subclass  = NON_FRONT_PAGE_SUBCLASS,
+
+  #define FORM_SET_VARSTORE
+    #include <SetupDefinitions.h>
+  #undef FORM_SET_VARSTORE
+
+  form formid = 1,
+    title   = STRING_TOKEN(STR_SECURITY);
+  
+    subtitle text = STRING_TOKEN(STR_SECURITY_BANNER_ONE);
+    subtitle text = STRING_TOKEN(STR_EMPTY);
+    subtitle text = STRING_TOKEN(STR_SECURITY_BANNER_TWO);
+    subtitle text = STRING_TOKEN(STR_SECURITY_BANNER_THREE);
+    subtitle text = STRING_TOKEN(STR_SECURITY_BANNER_FOUR);
+    subtitle text = STRING_TOKEN(STR_SECURITY_BANNER_FIVE);
+    subtitle text = STRING_TOKEN(STR_EMPTY);
+    subtitle text = STRING_TOKEN(STR_EMPTY);
+  
+    grayoutif TRUE;
+       suppressif ideqval TSESETUP.AdminPasswdPresent == 0x00;
+        text 
+          help   = STRING_TOKEN(STR_EMPTY),
+          text   = STRING_TOKEN(STR_ADMIN_PASSWORD),
+          text   = STRING_TOKEN(STR_PASSWORD_INSTALLED),        
+          flags  = 0,
+          key    = 0;
+      endif; 
+      
+      suppressif NOT ideqval TSESETUP.AdminPasswdPresent == 0x00;
+        text 
+          help   = STRING_TOKEN(STR_EMPTY),
+          text   = STRING_TOKEN(STR_ADMIN_PASSWORD),
+          text   = STRING_TOKEN(STR_PASSWORD_UNINSTALLED),        
+          flags  = 0,
+          key    = 0;
+      endif;      
+      
+      suppressif ideqval TSESETUP.UserPasswdPresent == 0x00;
+        text 
+          help   = STRING_TOKEN(STR_EMPTY),
+          text   = STRING_TOKEN(STR_USER_PASSWORD),
+          text   = STRING_TOKEN(STR_PASSWORD_INSTALLED),
+          flags  = 0,
+          key    = 0;
+      endif;
+      
+      suppressif NOT ideqval TSESETUP.UserPasswdPresent == 0x00;
+        text 
+          help   = STRING_TOKEN(STR_EMPTY),
+          text   = STRING_TOKEN(STR_USER_PASSWORD),
+          text   = STRING_TOKEN(STR_PASSWORD_UNINSTALLED),
+          flags  = 0,
+          key    = 0;
+      endif;         
+  endif; // end of grayoutif.  
+  
+  password varid = TSESETUP.AdminPasswdHash,
+    prompt      = STRING_TOKEN(STR_SET_ADMIN_PASSWORD),
+    help        = STRING_TOKEN(STR_ADMIN_PASSWORD_HELP),
+    flags       = RESET_REQUIRED | INTERACTIVE, 
+    key         = KEY_ADMIN_PASSWORD,
+    minsize     = 6,
+    maxsize     = PASSWORD_MAX_SIZE,
+    encoding    = 1,
+  endpassword;
+
+  password varid = TSESETUP.UserPasswdHash,
+    prompt      = STRING_TOKEN(STR_SET_USER_PASSWORD),
+    help        = STRING_TOKEN(STR_USER_PASSWORD_HELP),
+    flags       = RESET_REQUIRED | INTERACTIVE, 
+    key         = KEY_USER_PASSWORD,
+    minsize     = 6,
+    maxsize     = PASSWORD_MAX_SIZE,
+    encoding    = 1,
+  endpassword;
+
+  suppressif TRUE; 
+    oneof varid   = TSESETUP.UserAccessLevel,
+      questionid  = KEY_USER_ACCESS_LEVEL,
+      prompt      = STRING_TOKEN(STR_ACCESS_LEVEL),
+      help        = STRING_TOKEN(STR_ACCESS_LEVEL),
+      flags       = RESET_REQUIRED | INTERACTIVE,   
+      option text = STRING_TOKEN(STR_PASSWORD_ACCESS_FULL),    value = 0, flags = DEFAULT;    
+      option text = STRING_TOKEN(STR_PASSWORD_ACCESS_LIMITED), value = 1, flags = 0;
+      option text = STRING_TOKEN(STR_PASSWORD_ACCESS_NO),      value = 2, flags = 0;
+    endoneof;
+  endif;
+
+  #define FORM_SET_ITEM
+    #include <SetupDefinitions.h>
+  #undef FORM_SET_ITEM
+  
+  #define FORM_SET_GOTO
+    #include <SetupDefinitions.h>
+  #undef FORM_SET_GOTO  
+
+
+    label LABEL_SECURITY_INFORMATION;
+    label LABEL_END;         
+
+    subtitle text = STRING_TOKEN(STR_EMPTY);
+
+    suppressif ideqval SETUP_VOLATILE_DATA.HdpFormsetPresent == 0;	
+      goto
+        formsetguid = HDD_PASSWORD_CONFIG_GUID,
+        formid  = 1011,
+        question = 0x1,
+        prompt  = STRING_TOKEN(STR_SETUP_HDD_PASSWORD_CONFIG),
+        help    = STRING_TOKEN(STR_SETUP_HDD_PASSWORD_CONFIG_HELP);
+    endif;
+
+    suppressif ideqval SETUP_VOLATILE_DATA.TpmFormsetPresent == 0;	
+      goto
+        formsetguid = TCG_CONFIG_FORM_SET_GUID,
+        formid  = 1,
+        question = 0x1,
+        prompt  = STRING_TOKEN(STR_SETUP_TPM_CONFIG),
+        help    = STRING_TOKEN(STR_SETUP_TPM_CONFIG);
+    endif;
+    
+    suppressif ideqval SETUP_VOLATILE_DATA.Tpm2FormsetPresent == 0;	
+      goto
+        formsetguid = TCG2_CONFIG_FORM_SET_GUID,
+        formid      = 1,
+        question    = 0x2001,
+        prompt      = STRING_TOKEN(STR_SETUP_TPM2_CONFIG),
+        help        = STRING_TOKEN(STR_SETUP_TPM2_CONFIG);
+    endif;    
+    
+    suppressif ideqval SETUP_VOLATILE_DATA.TcmFormsetPresent == 0;	
+      goto
+        formsetguid = TCM_SETUP_CONFIG_GUID,
+        formid      = 1,
+        question    = 1000,
+        prompt      = STRING_TOKEN(STR_SETUP_TCM_CONFIG),
+        help        = STRING_TOKEN(STR_SETUP_TCM_CONFIG);
+     
+    endif;
+    
+    suppressif ideqval SETUP_VOLATILE_DATA.TcFormsetPresent == 0;	    
+      goto
+        formsetguid = TRUSTED_COMPUTING_CONFIG_GUID,
+        formid      = 1,
+        question    = 0,        
+        prompt      = STRING_TOKEN(STR_SETUP_TC_CONFIG),
+        help        = STRING_TOKEN(STR_SETUP_TC_CONFIG);        
+    endif;     
+    
+    suppressif ideqval SETUP_VOLATILE_DATA.SecureBootFormsetPresent == 0;	
+      goto
+        formsetguid = SECUREBOOT_CONFIG_FORM_SET_GUID,
+        formid   = 0x1000,
+        question = 0,
+        prompt   = STRING_TOKEN(STR_SECUREBOOT_TITLE),
+        help     = STRING_TOKEN(STR_SECUREBOOT_HELP);
+    endif;    
+  subtitle text = STRING_TOKEN(STR_EMPTY);
+    text
+      help   = STRING_TOKEN(STR_EMPTY),
+      text   = STRING_TOKEN(STR_TXT_CONFIG),
+      flags  = 0,
+      key    = 0;           
+       oneof varid = SETUP_DATA.TXT,
+        prompt      = STRING_TOKEN(STR_TXT),
+        help        = STRING_TOKEN(STR_TXT_HELP),
+        option text = STRING_TOKEN(STR_DISABLED), value = 0, flags = RESET_REQUIRED| MANUFACTURING | DEFAULT;
+        option text = STRING_TOKEN(STR_ENABLED),  value = 1, flags = RESET_REQUIRED;          
+       endoneof;      
+
+  endform;
+  #define FORM_SET_FORM
+     #include <SetupDefinitions.h>
+  #undef FORM_SET_FORM
+   
+endformset;

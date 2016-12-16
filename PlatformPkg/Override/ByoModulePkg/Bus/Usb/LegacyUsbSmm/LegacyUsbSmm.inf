@@ -1,0 +1,172 @@
+#/** @file
+#
+#Copyright (c) 2006 - 2011, Byosoft Corporation.<BR>
+#All rights reserved.This software and associated documentation (if any)
+#is furnished under a license and may only be used or copied in
+#accordance with the terms of the license. Except as permitted by such
+#license, no part of this software or documentation may be reproduced,
+#stored in a retrieval system, or transmitted in any form or by any
+#means without the express written consent of Byosoft Corporation.
+#
+#File Name:
+#  Ehci.c
+#
+#Abstract:
+#  
+#
+#Revision History:
+#
+#Bug 2421:   Fixed the issue that USB keyboard and mouse can't 
+#            work properly after resume from S4
+#TIME:       2011-07-06
+#$AUTHOR:    Chen Daolin
+#$REVIEWERS:
+#$SCOPE:     All Platforms Supporting USB 2.0
+#$TECHNICAL: 
+#  1. During the hand-off of EHCI ownership from BIOS to OS, BIOS needs 
+#     to reset the EHCI controller to one stable state, so that OS can 
+#     successfully initialize the controller. This is only necessary 
+#     during S4 resume path, but to simplify the processing we will do
+#     this in both of S4/S4 boot path.
+#$END--------------------------------------------------------------------
+#
+#Bug 1989:   Changed to use dynamic software SMI value instead of hard coding.
+#TIME:       2011-6-15
+#$AUTHOR:    Peng Xianbing
+#$REVIEWERS:
+#$SCOPE:     Define SwSmi value range build a PolicyData table for csm16 to 
+#            get SwSMI value.
+#$TECHNICAL:
+#$END-------------------------------------------------------------------------
+#--*/
+
+[Defines]
+  INF_VERSION                    = 0x00010005
+  BASE_NAME                      = LegacyUsb
+  FILE_GUID                      = 29378B20-E99F-4e1b-8060-A0CDA8D52088
+  MODULE_TYPE                    = DXE_SMM_DRIVER
+  VERSION_STRING                 = 1.0
+  PI_SPECIFICATION_VERSION       = 0x0001000A
+  
+  ENTRY_POINT                    = LegacyUsbEntryPoint
+
+[sources.common]
+  LegacyUsb.h
+  LegacyUsbEntry.c
+  UsbLib/UsbMem.h
+  UsbLib/UsbMem.c
+  UsbLib/SmmPciIo.h
+  UsbLib/SmmPciIo.c
+  UsbLib/UsbUtility.h
+  UsbLib/UsbUtility.c
+  UsbLib/UsbLib.h
+  UsbLib/UsbLib.c
+  UsbLib/Hid.h
+  UsbLib/Hid.c
+  Ohci/Ohci.h
+  Ohci/Ohci.c
+  Uhci/Uhci.h
+  Uhci/Uhci.c
+  Uhci/UhciDebug.h
+  Uhci/UhciDebug.c
+  Uhci/UhciQueue.h
+  Uhci/UhciQueue.c
+  Uhci/UhciReg.h
+  Uhci/UhciReg.c
+  Uhci/UhciSched.h
+  Uhci/UhciSched.c
+  Ehci/Ehci.h
+  Ehci/Ehci.c
+  Ehci/EhciDebug.h
+  Ehci/EhciDebug.c
+  Ehci/EhciUrb.h
+  Ehci/EhciUrb.c
+  Ehci/EhciReg.h
+  Ehci/EhciReg.c
+  Ehci/EhciSched.h
+  Ehci/EhciSched.c
+  UsbBus/UsbDesc.h
+  UsbBus/UsbDesc.c
+  UsbBus/UsbHub.h
+  UsbBus/UsbHub.c
+  UsbBus/UsbEnumer.h
+  UsbBus/UsbEnumer.c
+  UsbBus/UsbBus.h
+  UsbBus/UsbBus.c
+  UsbKb/UsbKeyboard.h
+  UsbKb/UsbKeyboard.c
+  UsbMouse/UsbMouse.h
+  UsbMouse/UsbMouse.c
+  UsbMassStorage/UsbMassImpl.h
+  UsbMassStorage/UsbMassImpl.c
+  UsbMassStorage/UsbMassBoot.h
+  UsbMassStorage/UsbMassBoot.c
+  UsbMassStorage/UsbMassBot.h
+  UsbMassStorage/UsbMassBot.c
+  UsbMassStorage/UsbMassCbi.h
+  UsbMassStorage/UsbMassCbi.c
+  UsbBoot/UsbBoot.h
+  UsbBoot/UsbBoot.c
+  Xhci/Xhci.h
+  Xhci/Xhci.c
+  Xhci/XhciReg.h
+  Xhci/XhciReg.c
+  Xhci/XhciSched.h
+  Xhci/XhciSched.c
+  Include/Usb.h
+  Include/UsbBlockIo.h
+  Include/UsbHostController.h
+  Include/UsbIo.h
+  UsbVirtualKbc/UsbVirtualKbc.c
+  UsbVirtualKbc/UsbVirtualKbc.h
+
+[Packages]
+  MdePkg/MdePkg.dec
+  MdeModulePkg/MdeModulePkg.dec
+  ByoModulePkg/ByoModulePkg.dec
+  IntelFrameworkPkg/IntelFrameworkPkg.dec
+  EdkCompatibilityPkg/EdkCompatibilityPkg.dec
+ 
+[LibraryClasses]
+  UefiDriverEntryPoint
+  DebugLib
+  PcdLib
+  BaseLib
+  BaseMemoryLib
+  SmmServicesTableLib
+  MemoryAllocationLib
+  DevicePathLib
+  ReportStatusCodeLib
+  TimerLib
+  
+[Protocols]
+  gEfiLegacyUsbInfProtocolGuid                  # PROTOCOL ALWAYS_PRODUCED
+  gEfiSmmPeriodicTimerDispatch2ProtocolGuid     # PROTOCOL ALWAYS_CONSUMED
+  gUsbPolicyGuid                                # PROTOCOL ALWAYS_CONSUMED
+  gEfiSmmUsbDispatch2ProtocolGuid               # PROTOCOL ALWAYS_CONSUMED
+  gEfiSmmCpuProtocolGuid                        # PROTOCOL ALWAYS_CONSUMED
+  gEfiSmmSwDispatch2ProtocolGuid                # PROTOCOL ALWAYS_CONSUMED
+  gEfiSmmIoTrapDispatch2ProtocolGuid            # PROTOCOL ALWAYS_CONSUMED
+  gEfiSmmStatusCodeProtocolGuid                 # PROTOCOL ALWAYS_CONSUMED
+  gSwSmiValuePolicyGuid
+  gEfiUsbVirtualKbcProtocolGuid
+  gEfiSmmBaseHelperReadyProtocolGuid
+  
+  
+[Pcd]
+  gEfiByoModulePkgTokenSpaceGuid.PcdKeepTrap64hEnable
+
+[Guids]
+  
+[Depex]
+  gEfiSmmCpuProtocolGuid AND 
+  gEfiSmmBase2ProtocolGuid AND
+  gEfiSmmSwDispatch2ProtocolGuid AND
+  gEfiSmmAccess2ProtocolGuid AND
+  gEfiSmmUsbDispatch2ProtocolGuid AND
+  gEfiSmmCpuIo2ProtocolGuid
+ 
+[BuildOptions]
+  #*_*_IA32_CC_FLAGS      = $(EDK_EDKII_DSC_FEATURE_BUILD_OPTIONS) /Od /FAsc  
+  #*_*_X64_CC_FLAGS       = $(EDK_EDKII_DSC_FEATURE_BUILD_OPTIONS) /Od /FAsc     
+       

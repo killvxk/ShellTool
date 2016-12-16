@@ -1,0 +1,77 @@
+/*++
+Copyright (c) 2006-2013 Byosoft Corporation. All rights reserved.
+This software and associated documentation (if any) is furnished
+under a license and may only be used or copied in accordance
+with the terms of the license. Except as permitted by such
+license, no part of this software or documentation may be
+reproduced, stored in a retrieval system, or transmitted in any
+form or by any means without the express written consent of
+Byosoft Corporation.
+
+Module Name:
+
+  Network.sd
+
+Abstract:
+
+  NETWORK CONFIGURATION FORM TEMPLATE
+
+--*/
+
+#ifdef DEVICES_FORM_SET
+
+  #ifdef FORM_SET_GOTO
+    //
+    // Define goto commands for the forms defined in this file
+    //
+    goto NETWORK_SETUP_FORM_ID, 
+      prompt = STRING_TOKEN(STR_NETWORK_SETUP_FORM),
+      help = STRING_TOKEN(STR_NETWORK_SETUP_FORM_HELP);
+
+  #endif
+
+  #ifdef FORM_SET_FORM
+    //
+    // Define forms
+    //
+    form formid = AUTO_ID(NETWORK_SETUP_FORM_ID),
+      title = STRING_TOKEN(STR_NETWORK_SETUP_FORM);
+
+      subtitle text = STRING_TOKEN(STR_EMPTY);
+        
+      oneof varid  = SETUP_DATA.OnboardLan,
+        prompt = STRING_TOKEN(STR_ONBOARD_ETHERNET_CONTROLLER),
+        help = STRING_TOKEN(STR_ONBOARD_ETHERNET_CONTROLLER_HELP),
+        option text = STRING_TOKEN(STR_ENABLED),  value = 1, flags = DEFAULT | MANUFACTURING | RESET_REQUIRED;
+        option text = STRING_TOKEN(STR_DISABLED), value = 0, flags = RESET_REQUIRED;
+      endoneof;
+
+      suppressif ideqval SETUP_DATA.OnboardLan == 0;
+      
+        oneof varid = SETUP_DATA.LegacyPxeBoot,
+          prompt   = STRING_TOKEN(STR_BOOT_AGENT),
+          help = STRING_TOKEN(STR_BOOT_AGENT_HELP),
+          option text = STRING_TOKEN(STR_ENABLED),  value = 1, flags = RESET_REQUIRED;
+          option text = STRING_TOKEN(STR_DISABLED), value = 0, flags = RESET_REQUIRED | DEFAULT | MANUFACTURING;
+        endoneof;
+
+        oneof varid  = SETUP_DATA.UefiPxeIPV4,
+          prompt = STRING_TOKEN(STR_PXE_IPV4),
+          help = STRING_TOKEN(STR_PXE_IPV4_HELP),
+          option text = STRING_TOKEN(STR_ENABLED),  value = 1, flags = RESET_REQUIRED;
+          option text = STRING_TOKEN(STR_DISABLED), value = 0, flags = RESET_REQUIRED | DEFAULT | MANUFACTURING;
+        endoneof;
+
+        oneof varid  = SETUP_DATA.UefiPxeIPV6,
+          prompt = STRING_TOKEN(STR_PXE_IPV6),
+          help = STRING_TOKEN(STR_PXE_IPV6_HELP),
+          option text = STRING_TOKEN(STR_ENABLED),  value = 1, flags = RESET_REQUIRED;
+          option text = STRING_TOKEN(STR_DISABLED), value = 0, flags = RESET_REQUIRED | DEFAULT | MANUFACTURING;
+        endoneof;
+      endif;
+      
+    endform;
+
+  #endif
+
+#endif

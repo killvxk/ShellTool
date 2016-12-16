@@ -1,0 +1,89 @@
+/** @file
+
+Copyright (c) 2006 - 2014, Byosoft Corporation.<BR>
+All rights reserved.This software and associated documentation (if any)
+is furnished under a license and may only be used or copied in
+accordance with the terms of the license. Except as permitted by such
+license, no part of this software or documentation may be reproduced,
+stored in a retrieval system, or transmitted in any form or by any
+means without the express written consent of Byosoft Corporation.
+
+File Name:
+   SNMI.sd
+
+Abstract:
+   SNMI Devices setting.
+
+Revision History:
+
+$END--------------------------------------------------------------------
+
+**/
+
+#ifdef DEVICES_FORM_SET
+  #ifdef FORM_SET_GOTO
+      goto CHIPSET_SNMI_FORM_ID,
+        prompt = STRING_TOKEN(STR_SNMI_FORM),
+        help = STRING_TOKEN(STR_EMPTY);
+  #endif
+
+  #ifdef FORM_SET_FORM
+
+    form formid = CHIPSET_SNMI_FORM_ID,
+    title = STRING_TOKEN(STR_SNMI_FORM);
+
+      subtitle text = STRING_TOKEN(STR_EMPTY);
+      
+           oneof varid   = SETUP_DATA.IsoLPC,
+        prompt      = STRING_TOKEN(STR_ISO_LPC),
+        help        = STRING_TOKEN(STR_ISO_LPC_HELP),
+        option text = STRING_TOKEN(STR_DISABLED), value = 0, flags = RESET_REQUIRED| DEFAULT | MANUFACTURING;        
+        option text = STRING_TOKEN(STR_ENABLED),  value = 1, flags = RESET_REQUIRED ;
+      endoneof; 
+           
+       oneof varid   = SETUP_DATA.IsoVART,
+        prompt      = STRING_TOKEN(STR_ISO_VART),
+        help        = STRING_TOKEN(STR_ISO_VART_HELP),
+        option text = STRING_TOKEN(STR_DISABLED), value = 0, flags = RESET_REQUIRED| DEFAULT | MANUFACTURING;        
+        option text = STRING_TOKEN(STR_ENABLED),  value = 1, flags = RESET_REQUIRED ;
+       endoneof;
+       
+       oneof varid   = SETUP_DATA.IsoAZALIA,
+        prompt      = STRING_TOKEN(STR_ISO_AZALIA),
+        help        = STRING_TOKEN(STR_ISO_AZALIA_HELP),
+        option text = STRING_TOKEN(STR_DISABLED), value = 0, flags = RESET_REQUIRED| DEFAULT | MANUFACTURING;        
+        option text = STRING_TOKEN(STR_ENABLED),  value = 1, flags = RESET_REQUIRED ;
+       endoneof; 
+       
+         
+       oneof varid   = SETUP_DATA.IsoESPI,
+        prompt      = STRING_TOKEN(STR_ISO_ESPI),
+        help        = STRING_TOKEN(STR_ISO_ESPI_HELP),
+        option text = STRING_TOKEN(STR_DISABLED), value = 0, flags = RESET_REQUIRED| DEFAULT | MANUFACTURING;        
+        option text = STRING_TOKEN(STR_ENABLED),  value = 1, flags = RESET_REQUIRED ;
+       endoneof; 
+       
+       oneof varid   = SETUP_DATA.IsoSDIO,
+        prompt      = STRING_TOKEN(STR_ISO_SDIO),
+        help        = STRING_TOKEN(STR_ISO_SDIO_HELP),
+        option text = STRING_TOKEN(STR_DISABLED), value = 0, flags = RESET_REQUIRED| DEFAULT | MANUFACTURING;        
+        option text = STRING_TOKEN(STR_ENABLED),  value = 1, flags = RESET_REQUIRED ;
+       endoneof; 
+
+       
+       oneof varid   = SETUP_DATA.IsoSPI,
+        prompt      = STRING_TOKEN(STR_ISO_SPI),
+        help        = STRING_TOKEN(STR_ISO_SPI_HELP),
+        option text = STRING_TOKEN(STR_DISABLED), value = 0, flags = RESET_REQUIRED| DEFAULT | MANUFACTURING;        
+        option text = STRING_TOKEN(STR_ENABLED),  value = 1, flags = RESET_REQUIRED ;
+      endoneof; 
+      
+       oneof varid   = SETUP_DATA.IsoAPIC,
+        prompt      = STRING_TOKEN(STR_ISO_APIC),
+        help        = STRING_TOKEN(STR_ISO_APIC_HELP),
+        option text = STRING_TOKEN(STR_DISABLED), value = 0, flags = RESET_REQUIRED| DEFAULT | MANUFACTURING;        
+        option text = STRING_TOKEN(STR_ENABLED),  value = 1, flags = RESET_REQUIRED ;
+      endoneof;       
+    endform;  //end CHIPSET_SNMI_FORM_ID
+  #endif  //end, FORM_SET_FORM
+#endif  //end, DEVICES_FORM_SET

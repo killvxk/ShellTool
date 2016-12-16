@@ -1,0 +1,90 @@
+## @file  
+#
+# Copyright (c) 2006 - 2011, Byosoft Corporation.<BR> 
+# All rights reserved.This software and associated documentation (if any)
+# is furnished under a license and may only be used or copied in 
+# accordance with the terms of the license. Except as permitted by such
+# license, no part of this software or documentation may be reproduced, 
+# stored in a retrieval system, or transmitted in any form or by any 
+# means without the express written consent of Byosoft Corporation.
+#
+# File Name:
+#   SmmPlatform.inf
+#
+# Abstract: 
+#   Component description file for SMM Platform module
+#
+# Revision History:
+# 
+
+[Defines]
+  INF_VERSION                    = 0x00010005
+  BASE_NAME                      = SmmPlatform
+  FILE_GUID                      = 5ED85695-F91D-43e0-BC62-9B32E401B787
+  MODULE_TYPE                    = DXE_SMM_DRIVER
+  VERSION_STRING                 = 1.0
+  PI_SPECIFICATION_VERSION       = 0x0001000A
+  ENTRY_POINT                    = InitializePlatformSmm
+
+[Sources]
+  SmmPlatform.c
+  Rtc.c
+  Misc.c
+  Debug.c
+  ClearKbLed.c
+  HwPatch.c
+
+[Packages]
+  MdePkg/MdePkg.dec
+  MdeModulePkg/MdeModulePkg.dec
+  IntelFrameworkPkg/IntelFrameworkPkg.dec
+  IntelFrameworkModulePkg/IntelFrameworkModulePkg.dec
+  PlatformPkg/IA32FamilyCpuPkg/IA32FamilyCpuPkg.dec
+  PlatformPkg/PlatformPkg.dec
+  ByoModulePkg/ByoModulePkg.dec
+  UefiCpuPkg/UefiCpuPkg.dec
+  
+  
+[LibraryClasses]
+  UefiDriverEntryPoint
+  DebugLib
+  PcdLib
+  IoLib
+  BaseLib
+  BaseMemoryLib
+  SmmServicesTableLib
+  MemoryAllocationLib
+  UefiRuntimeServicesTableLib
+  HobLib
+  ReportStatusCodeLib
+  TimerLib
+  UefiLib
+  PlatformCommLib
+  
+  
+[Protocols]
+  gEfiSmmCpuProtocolGuid                        # PROTOCOL ALWAYS_CONSUMED
+  gEfiSmmPowerButtonDispatch2ProtocolGuid       # PROTOCOL ALWAYS_CONSUMED
+  gEfiSmmSxDispatch2ProtocolGuid                # PROTOCOL ALWAYS_CONSUMED
+  gEfiSmmSwDispatch2ProtocolGuid                # PROTOCOL ALWAYS_CONSUMED
+  gEfiSmmVariableProtocolGuid
+  gEfiLegacyUsbInfProtocolGuid
+
+[Guids]
+  gPlatformSetupVariableGuid
+  gEfiCapsuleVendorGuid
+  
+[Pcd]
+  gEfiMdePkgTokenSpaceGuid.PcdPciExpressBaseAddress
+  gEfiMdeModulePkgTokenSpaceGuid.PcdProgressCodeS3SuspendStart
+  gEfiMdeModulePkgTokenSpaceGuid.PcdProgressCodeS3SuspendEnd  
+  gPlatformModuleTokenSpaceGuid.AcpiIoPortBaseAddress 
+
+  
+[Depex]
+  gEfiVariableArchProtocolGuid            AND 
+  gEfiSmmCpuProtocolGuid                  AND 
+  gEfiSmmPowerButtonDispatch2ProtocolGuid AND 
+  gEfiSmmSxDispatch2ProtocolGuid          AND 
+  gEfiSmmSwDispatch2ProtocolGuid
+ 

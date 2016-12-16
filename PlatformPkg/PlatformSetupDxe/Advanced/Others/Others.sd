@@ -1,0 +1,181 @@
+/** @file
+
+Copyright (c) 2006 - 2011, Byosoft Corporation.<BR>
+All rights reserved.This software and associated documentation (if any)
+is furnished under a license and may only be used or copied in
+accordance with the terms of the license. Except as permitted by such
+license, no part of this software or documentation may be reproduced,
+stored in a retrieval system, or transmitted in any form or by any
+means without the express written consent of Byosoft Corporation.
+
+File Name:
+  others.sd
+
+Abstract:
+  others Form Template.
+
+Revision History:
+
+**/
+
+
+
+#ifdef ADVANCED_FORM_SET
+
+
+  #ifdef FORM_SET_GOTO
+    goto OTHERS_CTRL_FORM_ID, 
+      prompt = STRING_TOKEN(STR_OTHERS_CTRL_FORM),
+      help   = STRING_TOKEN(STR_EMPTY);
+  #endif
+
+  #ifdef FORM_SET_FORM
+
+    form formid = AUTO_ID(OTHERS_CTRL_FORM_ID),
+        title = STRING_TOKEN(STR_OTHERS_CTRL_FORM);
+          subtitle text = STRING_TOKEN(STR_EMPTY);
+     text
+      help   = STRING_TOKEN(STR_EMPTY),
+      text   = STRING_TOKEN(STR_HIGH_EVENT_TIMER_CONFIG),
+      flags  = 0,
+      key    = 0;  
+        
+      oneof varid = SETUP_DATA.EnableMultimediaTimer,
+        prompt      = STRING_TOKEN(STR_MULTI_MEDIA_EN),
+        help        = STRING_TOKEN(STR_MULTI_MEDIA_EN_HELP),
+        option text = STRING_TOKEN(STR_NO), value = 0, flags = RESET_REQUIRED;
+        option text = STRING_TOKEN(STR_YES),  value = 1, flags = RESET_REQUIRED| MANUFACTURING | DEFAULT ;          
+      endoneof;    
+
+      oneof varid = SETUP_DATA.MultimediaTimerMode,
+        prompt      = STRING_TOKEN(STR_MULTIMEDIA_MODE_SEL),
+        help        = STRING_TOKEN(STR_MULTIMEDIA_MODE_SEL_HELP),
+        option text = STRING_TOKEN(STR_TRIGGER), value = 0, flags = RESET_REQUIRED;
+        option text = STRING_TOKEN(STR_LINE),  value = 1, flags = RESET_REQUIRED| MANUFACTURING | DEFAULT;       
+      endoneof; 
+
+      oneof varid = SETUP_DATA.EnableMultimediaTimerMsi,
+        prompt      = STRING_TOKEN(STR_MULTIMEDIA_TIMER_MSI),
+        help        = STRING_TOKEN(STR_MULTIMEDIA_TIMER_MSI_HELP),
+        option text = STRING_TOKEN(STR_NO), value = 0, flags = RESET_REQUIRED| MANUFACTURING | DEFAULT;
+        option text = STRING_TOKEN(STR_YES),  value = 1, flags = RESET_REQUIRED ;          
+      endoneof; 
+
+
+        subtitle text = STRING_TOKEN(STR_EMPTY);
+     text
+      help   = STRING_TOKEN(STR_EMPTY),
+      text   = STRING_TOKEN(STR_WATCHDOG_TIMER_CONFIG),
+      flags  = 0,
+      key    = 0;  
+        
+        oneof varid = SETUP_DATA.WatchDogTimer,
+         prompt      = STRING_TOKEN(STR_WATCHDOG_TIMER),
+         help        = STRING_TOKEN(STR_EMPTY),
+         option text = STRING_TOKEN(STR_DISABLED), value = 0, flags = RESET_REQUIRED| MANUFACTURING | DEFAULT;
+         option text = STRING_TOKEN(STR_ENABLED),  value = 1, flags = RESET_REQUIRED;          
+        endoneof;
+        
+        oneof varid = SETUP_DATA.WatchDogTimerRunStop,
+         prompt      = STRING_TOKEN(STR_WATCHDOG_TIMER_RUN_STOP),
+         help        = STRING_TOKEN(STR_EMPTY),
+         option text = STRING_TOKEN(STR_STOP), value = 0, flags = RESET_REQUIRED| MANUFACTURING | DEFAULT;
+         option text = STRING_TOKEN(STR_RUN),  value = 1, flags = RESET_REQUIRED;          
+       endoneof; 
+       
+       oneof varid = SETUP_DATA.WatchDogTimerAction,
+        prompt      = STRING_TOKEN(STR_WATCHDOG_TIMER_ACTION),
+        help        = STRING_TOKEN(STR_EMPTY),
+        option text = STRING_TOKEN(STR_RESET), value = 0, flags = RESET_REQUIRED;
+        option text = STRING_TOKEN(STR_POWER_OFF),  value = 1, flags = RESET_REQUIRED| MANUFACTURING | DEFAULT; 
+       endoneof;
+       
+       oneof varid = SETUP_DATA.WatchDogTimerCount,
+        prompt      = STRING_TOKEN(STR_WATCHDOG_TIMER_COUNT),
+        help        = STRING_TOKEN(STR_EMPTY),
+        option text = STRING_TOKEN(STR_72S), value = 0, flags = RESET_REQUIRED;
+        option text = STRING_TOKEN(STR_389S),  value = 1, flags = RESET_REQUIRED;          
+        option text = STRING_TOKEN(STR_706S), value = 2, flags = RESET_REQUIRED;
+        option text = STRING_TOKEN(STR_1023S), value = 3, flags = RESET_REQUIRED | MANUFACTURING | DEFAULT;
+       endoneof; 
+
+
+        subtitle text = STRING_TOKEN(STR_EMPTY);
+      text
+      help   = STRING_TOKEN(STR_EMPTY),
+      text   = STRING_TOKEN(STR_KEY_MOUSE_WAKEUP_CONFIG),
+      flags  = 0,
+      key    = 0;       
+       oneof varid = SETUP_DATA.KBMouseWakeupControl,
+        prompt      = STRING_TOKEN(STR_KBMOUSE_WAKEUP_CTRL),
+        help        = STRING_TOKEN(STR_EMPTY),
+        option text = STRING_TOKEN(STR_DISABLED), value = 0, flags = RESET_REQUIRED;
+        option text = STRING_TOKEN(STR_ENABLED),  value = 1, flags = RESET_REQUIRED| MANUFACTURING | DEFAULT;          
+       endoneof;
+ 
+ 
+ 
+        subtitle text = STRING_TOKEN(STR_EMPTY);
+     text
+      help   = STRING_TOKEN(STR_EMPTY),
+      text   = STRING_TOKEN(STR_SMBUS_CONFIG),
+      flags  = 0,
+      key    = 0;       
+          
+       oneof varid = SETUP_DATA.SMBusControllerUnderOS,
+        prompt      = STRING_TOKEN(STR_SMBUS_UNDER_OS),
+        help        = STRING_TOKEN(STR_EMPTY),
+        option text = STRING_TOKEN(STR_DISABLED), value = 0, flags = RESET_REQUIRED| MANUFACTURING | DEFAULT;
+        option text = STRING_TOKEN(STR_ENABLED),  value = 1, flags = RESET_REQUIRED;          
+       endoneof;
+       
+       oneof varid = SETUP_DATA.SMBusHostClockFrequencySelect,
+        prompt      = STRING_TOKEN(STR_SMBUS_HOST_CLKFREQ_SEL),
+        help        = STRING_TOKEN(STR_EMPTY),
+        option text = STRING_TOKEN(STR_DISABLED), value = 0, flags = RESET_REQUIRED| MANUFACTURING | DEFAULT;
+        option text = STRING_TOKEN(STR_ENABLED),  value = 1, flags = RESET_REQUIRED;          
+       endoneof;
+       
+       numeric varid=SETUP_DATA.SMBusHostClockFrequency,
+        prompt   = STRING_TOKEN(STR_SMBUS_HOST_CLKFREQ),
+        help   = STRING_TOKEN(STR_SMBUS_HOST_CLKFREQ_HELP),
+        minimum=11,
+        maximum=135,
+        step=0,
+        default=22,
+       endnumeric;
+
+
+    subtitle text = STRING_TOKEN(STR_EMPTY);
+    text
+      help   = STRING_TOKEN(STR_EMPTY),
+      text   = STRING_TOKEN(STR_SPI_CONFIG),
+      flags  = 0,
+      key    = 0;           
+       oneof varid = SETUP_DATA.SPIBus0ClockSelect,
+        prompt      = STRING_TOKEN(STR_SPIBUS_CLK_SEL),
+        help        = STRING_TOKEN(STR_EMPTY),
+        option text = STRING_TOKEN(STR_13M), value = 0, flags = RESET_REQUIRED | MANUFACTURING | DEFAULT;
+        option text = STRING_TOKEN(STR_27M), value = 1, flags = RESET_REQUIRED;          
+        option text = STRING_TOKEN(STR_48M), value = 2, flags = RESET_REQUIRED;
+        option text = STRING_TOKEN(STR_66M), value = 3, flags = RESET_REQUIRED;
+       endoneof;         
+       
+     subtitle text = STRING_TOKEN(STR_EMPTY);
+    text
+      help   = STRING_TOKEN(STR_EMPTY),
+      text   = STRING_TOKEN(STR_ESPI_CONFIG),
+      flags  = 0,
+      key    = 0;           
+       oneof varid = SETUP_DATA.ESPI,
+        prompt      = STRING_TOKEN(STR_ESPI),
+        help        = STRING_TOKEN(STR_ESPI_HELP),
+        option text = STRING_TOKEN(STR_DISABLED), value = 0, flags = RESET_REQUIRED| MANUFACTURING | DEFAULT;
+        option text = STRING_TOKEN(STR_ENABLED),  value = 1, flags = RESET_REQUIRED;          
+       endoneof;       
+    endform; //end CHIPSET_ADVANCED_CTRL_FORM_ID
+    
+  #endif  // FORM_SET_FORM
+#endif  // ADVANCED_FORM_SET
+
+

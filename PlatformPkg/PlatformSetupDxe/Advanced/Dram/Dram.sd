@@ -1,0 +1,585 @@
+/** @file
+
+Copyright (c) 2006 - 2011, Byosoft Corporation.<BR>
+All rights reserved.This software and associated documentation (if any)
+is furnished under a license and may only be used or copied in
+accordance with the terms of the license. Except as permitted by such
+license, no part of this software or documentation may be reproduced,
+stored in a retrieval system, or transmitted in any form or by any
+means without the express written consent of Byosoft Corporation.
+
+File Name:
+  Dram.sd
+
+Abstract:
+  DRAM Form Template.
+
+Revision History:
+
+**/
+
+
+
+#ifdef ADVANCED_FORM_SET
+
+
+  #ifdef FORM_SET_GOTO
+    goto DRAM_FORM_ID, 
+      prompt = STRING_TOKEN(STR_DRAMD_FORM),
+      help   = STRING_TOKEN(STR_DRAMD_FORM_HELP);
+  #endif
+
+  #ifdef FORM_SET_FORM
+
+    form formid = AUTO_ID(DRAM_FORM_ID),
+      title = STRING_TOKEN(STR_DRAMD_FORM);
+    subtitle text = STRING_TOKEN(STR_MEM_INFO);
+         
+ 
+    text 
+      help   = STRING_TOKEN(STR_EMPTY),
+      text   = STRING_TOKEN(STR_CURRENT_CPUBUS_FREQ_STRING),
+      text   = STRING_TOKEN(STR_CURRENT_CPUBUS_FREQ_VALUE),
+      flags  = 0, 
+      key = 0;
+
+      text 
+      help   = STRING_TOKEN(STR_EMPTY),
+      text   = STRING_TOKEN(STR_DRAM_CURRENT_FREQ_STRING),
+      text   = STRING_TOKEN(STR_DRAM_CURRENT_FREQ_VALUE),
+      flags  = 0, 
+      key = 0;
+     
+    text 
+      help   = STRING_TOKEN(STR_EMPTY),
+      text   = STRING_TOKEN(STR_TOTAL_MEMORY_NAME),
+      text   = STRING_TOKEN(STR_TOTAL_MEMORY_VALUE),
+      flags  = 0,
+      key    = 0; 
+   
+    text 
+      help   = STRING_TOKEN(STR_EMPTY),
+      text   = STRING_TOKEN(STR_MEMORY_SLOT0_NAME),
+      text   = STRING_TOKEN(STR_MEMORY_SLOT0_VALUE),
+      flags  = 0,
+      key    = 0; 
+
+    text 
+      help   = STRING_TOKEN(STR_EMPTY),
+      text   = STRING_TOKEN(STR_MEMORY_SLOT1_NAME),
+      text   = STRING_TOKEN(STR_MEMORY_SLOT1_VALUE),
+      flags  = 0,
+      key    = 0; 
+   
+    text 
+      help   = STRING_TOKEN(STR_EMPTY),
+      text   = STRING_TOKEN(STR_MEMORY_SLOT2_NAME),
+      text   = STRING_TOKEN(STR_MEMORY_SLOT2_VALUE),
+      flags  = 0,
+      key    = 0; 
+
+
+    text 
+      help   = STRING_TOKEN(STR_EMPTY),
+      text   = STRING_TOKEN(STR_MEMORY_SLOT3_NAME),
+      text   = STRING_TOKEN(STR_MEMORY_SLOT3_VALUE),
+      flags  = 0,
+      key    = 0; 
+   
+   subtitle text = STRING_TOKEN(STR_EMPTY);  
+   subtitle text = STRING_TOKEN(STR_DRAM_CONFIG);  
+   #ifdef ZX_DDR3  
+     oneof varid   = SETUP_DATA.DramClk,
+        prompt   = STRING_TOKEN(STR_DRAMCLK),
+        help   = STRING_TOKEN(STR_EMPTY),
+        option text = STRING_TOKEN(STR_BY_SPD), value = 0,   flags = RESET_REQUIRED;
+        option text = STRING_TOKEN(STR_400M),   value = 4,   flags = RESET_REQUIRED| DEFAULT | MANUFACTURING;
+        option text = STRING_TOKEN(STR_466M),   value = 5,   flags = RESET_REQUIRED;        
+        option text = STRING_TOKEN(STR_533M),   value = 6,   flags = RESET_REQUIRED;
+        option text = STRING_TOKEN(STR_600M),   value = 7,   flags = RESET_REQUIRED;
+        option text = STRING_TOKEN(STR_667M),   value = 8,   flags = RESET_REQUIRED;
+        option text = STRING_TOKEN(STR_733M),   value = 9,   flags = RESET_REQUIRED;
+        option text = STRING_TOKEN(STR_800M),   value = 0xA, flags = RESET_REQUIRED;
+       endoneof;      
+  #endif  
+  #ifdef ZX_DDR4  
+     oneof varid   = SETUP_DATA.DramClk,
+        prompt   = STRING_TOKEN(STR_DRAMCLK),
+        help   = STRING_TOKEN(STR_EMPTY),
+        option text = STRING_TOKEN(STR_BY_SPD), value = 0,   flags = RESET_REQUIRED;
+        option text = STRING_TOKEN(STR_800M),   value = 0xA, flags = RESET_REQUIRED| DEFAULT | MANUFACTURING;
+        option text = STRING_TOKEN(STR_866M),   value = 0xB, flags = RESET_REQUIRED;        
+        option text = STRING_TOKEN(STR_933M),   value = 0xC, flags = RESET_REQUIRED;
+        option text = STRING_TOKEN(STR_1000M),   value = 0xD, flags = RESET_REQUIRED;
+        option text = STRING_TOKEN(STR_1066M),   value = 0xE, flags = RESET_REQUIRED;
+        option text = STRING_TOKEN(STR_1133M),   value = 0xF, flags = RESET_REQUIRED;
+        option text = STRING_TOKEN(STR_1200M),   value = 0x10, flags = RESET_REQUIRED;
+      endoneof;      
+   #endif  
+      oneof varid   = SETUP_DATA.RxIoTimingMethod,
+        prompt   = STRING_TOKEN(STR_RXIO_TIMING_METHOD),
+        help   = STRING_TOKEN(STR_EMPTY),
+        option text = STRING_TOKEN(STR_SI_SI), value = 0, flags =DEFAULT | MANUFACTURING |RESET_REQUIRED;
+        option text = STRING_TOKEN(STR_RREALEV_SI), value = 1, flags = RESET_REQUIRED;
+        option text = STRING_TOKEN(STR_SI_READLEV), value = 2, flags =  RESET_REQUIRED;
+        option text = STRING_TOKEN(STR_READLEV_READLEV), value = 3, flags = RESET_REQUIRED;
+      endoneof; 
+      
+     oneof varid = SETUP_DATA.DQSIByRank,
+        prompt = STRING_TOKEN(STR_DQSI_BY_RANK),
+        help   = STRING_TOKEN(STR_EMPTY),
+        option text = STRING_TOKEN(STR_DISABLED),value = 0, flags = RESET_REQUIRED | DEFAULT | MANUFACTURING;
+        option text = STRING_TOKEN(STR_ENABLED), value = 1, flags = RESET_REQUIRED;
+      endoneof;
+      
+      
+      
+      oneof varid   = SETUP_DATA.TxIoTimingMethod,
+        prompt   = STRING_TOKEN(STR_TXIO_TIMING_METHOD),
+        help   = STRING_TOKEN(STR_EMPTY),
+        option text = STRING_TOKEN(STR_SI_SI), value = 0, flags = DEFAULT | MANUFACTURING | RESET_REQUIRED;
+        option text = STRING_TOKEN(STR_WRITELEV_LCU), value = 1, flags = RESET_REQUIRED;
+        option text = STRING_TOKEN(STR_LCU_LCU), value = 2, flags =RESET_REQUIRED;
+      endoneof; 
+      
+      oneof varid   = SETUP_DATA.LimitRankSize,
+        prompt   = STRING_TOKEN(STR_LIMIT_RANK_SIZE),
+        help   = STRING_TOKEN(STR_EMPTY),
+        option text = STRING_TOKEN(STR_AUTO), value = 0, flags =DEFAULT | MANUFACTURING | RESET_REQUIRED;
+        option text = STRING_TOKEN(STR_256M), value = 1, flags = RESET_REQUIRED;
+        option text = STRING_TOKEN(STR_512M), value = 2, flags = RESET_REQUIRED;
+        option text = STRING_TOKEN(STR_1024M), value = 3, flags = RESET_REQUIRED;
+        option text = STRING_TOKEN(STR_2048M), value = 4, flags = RESET_REQUIRED;
+      endoneof;      
+  
+  
+       oneof varid = SETUP_DATA.DqsiAdjustEn,
+        prompt = STRING_TOKEN(STR_DQSI_ADJUST_EN),
+        help   = STRING_TOKEN(STR_EMPTY),
+        option text = STRING_TOKEN(STR_DISABLED),value = 0, flags = RESET_REQUIRED | DEFAULT | MANUFACTURING;
+        option text = STRING_TOKEN(STR_ENABLED), value = 1, flags = RESET_REQUIRED;
+      endoneof;
+      
+          
+      oneof varid   = SETUP_DATA.BankIntlv,
+        prompt   = STRING_TOKEN(STR_BANK_INTER),
+        help   = STRING_TOKEN(STR_EMPTY),
+        option text = STRING_TOKEN(STR_SPD), value = 0, flags =  DEFAULT | MANUFACTURING | RESET_REQUIRED;
+        option text = STRING_TOKEN(STR_NON_PAGE), value = 1, flags = RESET_REQUIRED;
+        option text = STRING_TOKEN(STR_2_PAGE), value = 2, flags = RESET_REQUIRED;
+        option text = STRING_TOKEN(STR_4_PAGE), value = 3, flags = RESET_REQUIRED;
+        option text = STRING_TOKEN(STR_8_PAGE), value = 4, flags = RESET_REQUIRED;
+      endoneof;      
+     
+     
+ 
+     oneof varid   = SETUP_DATA.MemoryChipODTDebug,
+        prompt   = STRING_TOKEN(STR_MEMCHIP_ODT),
+        help   = STRING_TOKEN(STR_EMPTY),
+        option text = STRING_TOKEN(STR_AUTO), value = 0, flags =DEFAULT | MANUFACTURING | RESET_REQUIRED;
+        option text = STRING_TOKEN(STR_DISABLE), value = 1, flags = RESET_REQUIRED;
+        option text = STRING_TOKEN(STR_20_OHM), value = 2, flags = RESET_REQUIRED;
+        option text = STRING_TOKEN(STR_30_OHM), value = 3, flags = RESET_REQUIRED;
+        option text = STRING_TOKEN(STR_34_OHM), value = 4, flags = RESET_REQUIRED;
+        option text = STRING_TOKEN(STR_40_OHM), value = 5, flags = RESET_REQUIRED;
+        option text = STRING_TOKEN(STR_48_OHM), value = 6, flags = RESET_REQUIRED;
+        option text = STRING_TOKEN(STR_60_OHM), value = 7, flags = RESET_REQUIRED;
+        option text = STRING_TOKEN(STR_80_OHM), value = 8, flags = RESET_REQUIRED;
+        option text = STRING_TOKEN(STR_120_OHM), value = 9, flags = RESET_REQUIRED;
+        option text = STRING_TOKEN(STR_240_OHM), value = 10, flags = RESET_REQUIRED;
+      endoneof;
+      
+      oneof varid   = SETUP_DATA.MemoryChipODTWRDebug,
+        prompt   = STRING_TOKEN(STR_MEMCHIP_ODTWRDEBUG),
+        help   = STRING_TOKEN(STR_EMPTY),
+        option text = STRING_TOKEN(STR_AUTO), value = 0, flags = DEFAULT | MANUFACTURING | RESET_REQUIRED;
+        option text = STRING_TOKEN(STR_DISABLE), value = 1, flags = RESET_REQUIRED;
+        option text = STRING_TOKEN(STR_80_OHM), value = 8, flags = RESET_REQUIRED;
+        option text = STRING_TOKEN(STR_120_OHM), value = 9, flags = RESET_REQUIRED;
+        option text = STRING_TOKEN(STR_240_OHM), value = 10, flags = RESET_REQUIRED;
+      endoneof; 
+
+     oneof varid   = SETUP_DATA.MemoryChipODTParkDebug,
+        prompt   = STRING_TOKEN(STR_MEMCHIP_ODTPARK_DEBUG),
+        help   = STRING_TOKEN(STR_EMPTY),
+        option text = STRING_TOKEN(STR_AUTO), value = 0, flags =DEFAULT | MANUFACTURING | RESET_REQUIRED;
+        option text = STRING_TOKEN(STR_DISABLE), value = 1, flags = RESET_REQUIRED;
+        option text = STRING_TOKEN(STR_20_OHM), value = 2, flags = RESET_REQUIRED;
+        option text = STRING_TOKEN(STR_30_OHM), value = 3, flags = RESET_REQUIRED;
+        option text = STRING_TOKEN(STR_34_OHM), value = 4, flags = RESET_REQUIRED;
+        option text = STRING_TOKEN(STR_40_OHM), value = 5, flags = RESET_REQUIRED;
+        option text = STRING_TOKEN(STR_48_OHM), value = 6, flags = RESET_REQUIRED;
+        option text = STRING_TOKEN(STR_60_OHM), value = 7, flags = RESET_REQUIRED;
+        option text = STRING_TOKEN(STR_80_OHM), value = 8, flags = RESET_REQUIRED;
+        option text = STRING_TOKEN(STR_120_OHM), value = 9, flags = RESET_REQUIRED;
+        option text = STRING_TOKEN(STR_240_OHM), value = 10, flags = RESET_REQUIRED;
+      endoneof;
+      
+     oneof varid = SETUP_DATA.VRInlv,
+        prompt = STRING_TOKEN(STR_VRANK_INTER),
+        help   = STRING_TOKEN(STR_EMPTY),
+        option text = STRING_TOKEN(STR_AUTO), value = 0, flags = RESET_REQUIRED;
+        option text = STRING_TOKEN(STR_DISABLED), value = 1, flags = DEFAULT | MANUFACTURING |RESET_REQUIRED;
+      endoneof;
+      
+     oneof varid = SETUP_DATA.ChannelIntlv,
+        prompt = STRING_TOKEN(STR_CHANNEL_INTER),
+        help   = STRING_TOKEN(STR_EMPTY),
+        option text = STRING_TOKEN(STR_AUTO), value = 0, flags = RESET_REQUIRED;
+        option text = STRING_TOKEN(STR_DISABLED), value = 1, flags =DEFAULT | MANUFACTURING | RESET_REQUIRED;
+      endoneof;
+      
+      
+      oneof varid   = SETUP_DATA.CHdecode,
+        prompt   = STRING_TOKEN(STR_CH_DECODE),
+        help   = STRING_TOKEN(STR_EMPTY),
+        option text = STRING_TOKEN(STR_AUTO), value = 0, flags = DEFAULT | MANUFACTURING | RESET_REQUIRED;
+        option text = STRING_TOKEN(STR_DECODE_A8A9), value = 1, flags = RESET_REQUIRED;
+        option text = STRING_TOKEN(STR_DECODE_A6), value = 2, flags = RESET_REQUIRED;
+      endoneof;
+      
+      oneof varid   = SETUP_DATA.RA0Select,
+        prompt   = STRING_TOKEN(STR_RA0_SEL),
+        help   = STRING_TOKEN(STR_EMPTY),
+        option text = STRING_TOKEN(STR_AUTO), value = 0, flags = DEFAULT | MANUFACTURING | RESET_REQUIRED;
+        option text = STRING_TOKEN(STR_A15), value = 1, flags = RESET_REQUIRED;
+        option text = STRING_TOKEN(STR_A17), value = 2, flags = RESET_REQUIRED;
+        option text = STRING_TOKEN(STR_A19), value = 3, flags = RESET_REQUIRED;
+        option text = STRING_TOKEN(STR_A21), value = 4, flags = RESET_REQUIRED;     
+      endoneof;
+      
+      oneof varid   = SETUP_DATA.RA1Select,
+        prompt   = STRING_TOKEN(STR_RA1_SEL),
+        help   = STRING_TOKEN(STR_EMPTY),
+        option text = STRING_TOKEN(STR_AUTO), value = 0, flags = DEFAULT | MANUFACTURING | RESET_REQUIRED;
+        option text = STRING_TOKEN(STR_A14), value = 1, flags = RESET_REQUIRED;
+        option text = STRING_TOKEN(STR_A16), value = 2, flags = RESET_REQUIRED;
+        option text = STRING_TOKEN(STR_A18), value = 3, flags = RESET_REQUIRED;
+        option text = STRING_TOKEN(STR_A20), value = 4, flags = RESET_REQUIRED;     
+      endoneof;
+       
+      oneof varid   = SETUP_DATA.BASelect,
+        prompt   = STRING_TOKEN(STR_BA_SEL),
+        help   = STRING_TOKEN(STR_EMPTY),
+        option text = STRING_TOKEN(STR_A16), value = 0, flags = DEFAULT | MANUFACTURING | RESET_REQUIRED;
+        option text = STRING_TOKEN(STR_A18), value = 1, flags = RESET_REQUIRED;
+      endoneof;
+
+      oneof varid   = SETUP_DATA.SwapChAB,
+        prompt   = STRING_TOKEN(STR_SWAP_CHANNELA_CHANNELB),
+        help   = STRING_TOKEN(STR_EMPTY),
+        option text = STRING_TOKEN(STR_DISABLED), value = 0, flags =DEFAULT | MANUFACTURING |  RESET_REQUIRED;
+        option text = STRING_TOKEN(STR_ENABLED), value = 1, flags = RESET_REQUIRED;
+      endoneof;    
+	     
+    oneof varid   = SETUP_DATA.DramECC,
+        prompt   = STRING_TOKEN(STR_DRAM_ECC),
+        help   = STRING_TOKEN(STR_EMPTY),
+        option text = STRING_TOKEN(STR_DISABLED), value = 0, flags = DEFAULT | MANUFACTURING | RESET_REQUIRED;
+        option text = STRING_TOKEN(STR_AUTO), value = 1, flags = RESET_REQUIRED;
+      endoneof;     
+     
+    oneof varid   = SETUP_DATA.ASPDI,
+        prompt   = STRING_TOKEN(STR_DRAM_ASPDI),
+        help   = STRING_TOKEN(STR_EMPTY),
+        option text = STRING_TOKEN(STR_AUTO), value = 0, flags = DEFAULT | MANUFACTURING | RESET_REQUIRED;
+        option text = STRING_TOKEN(STR_INFO1), value = 1, flags =RESET_REQUIRED;
+        option text = STRING_TOKEN(STR_INFO2), value = 2, flags = RESET_REQUIRED;
+        option text = STRING_TOKEN(STR_DISABLED), value = 3, flags = RESET_REQUIRED;
+      endoneof;     
+          
+
+
+        
+      oneof varid   = SETUP_DATA.VDD,
+        prompt   = STRING_TOKEN(STR_VDD_SEL),
+        help   = STRING_TOKEN(STR_EMPTY),
+        option text = STRING_TOKEN(STR_VDD_0_9), value = 0, flags =  RESET_REQUIRED;
+        option text = STRING_TOKEN(STR_VDD_1), value = 1, flags =DEFAULT | MANUFACTURING |RESET_REQUIRED;
+      endoneof;     
+        
+ 
+      oneof varid   = SETUP_DATA.DataScmb,
+        prompt   = STRING_TOKEN(STR_DATA_SCMB),
+        help   = STRING_TOKEN(STR_EMPTY),
+        option text = STRING_TOKEN(STR_DISABLED), value = 0, flags =  DEFAULT | MANUFACTURING | RESET_REQUIRED;
+        option text = STRING_TOKEN(STR_ENABLED), value = 1, flags = RESET_REQUIRED;
+      endoneof;
+         
+
+      
+      oneof varid   = SETUP_DATA.RequestInorder,
+        prompt   = STRING_TOKEN(STR_REQUEST_INORDER),
+        help   = STRING_TOKEN(STR_EMPTY),
+        option text = STRING_TOKEN(STR_DISABLED), value = 0, flags =  DEFAULT | MANUFACTURING | RESET_REQUIRED;
+        option text = STRING_TOKEN(STR_ENABLED), value = 1, flags = RESET_REQUIRED;
+      endoneof;
+       
+     oneof varid   = SETUP_DATA.RFW2W,
+        prompt   = STRING_TOKEN(STR_RFW2W),
+        help   = STRING_TOKEN(STR_EMPTY),
+        option text = STRING_TOKEN(STR_DISABLED), value = 0, flags =DEFAULT | MANUFACTURING |  RESET_REQUIRED;
+        option text = STRING_TOKEN(STR_ENABLED), value = 1, flags = RESET_REQUIRED;
+      endoneof; 
+
+     oneof varid   = SETUP_DATA.RFR2R,
+        prompt   = STRING_TOKEN(STR_RFR2R),
+        help   = STRING_TOKEN(STR_EMPTY),
+        option text = STRING_TOKEN(STR_DISABLED), value = 0, flags =DEFAULT | MANUFACTURING |  RESET_REQUIRED;
+        option text = STRING_TOKEN(STR_ENABLED), value = 1, flags = RESET_REQUIRED;
+      endoneof; 
+      
+    oneof varid   = SETUP_DATA.RFR2W,
+        prompt   = STRING_TOKEN(STR_RFR2W),
+        help   = STRING_TOKEN(STR_EMPTY),
+        option text = STRING_TOKEN(STR_DISABLED), value = 0, flags =DEFAULT | MANUFACTURING |  RESET_REQUIRED;
+        option text = STRING_TOKEN(STR_ENABLED), value = 1, flags = RESET_REQUIRED;
+      endoneof; 
+      
+    oneof varid   = SETUP_DATA.RDFW2R,
+        prompt   = STRING_TOKEN(STR_RDFW2R),
+        help   = STRING_TOKEN(STR_EMPTY),
+        option text = STRING_TOKEN(STR_DISABLED), value = 0, flags =DEFAULT | MANUFACTURING |  RESET_REQUIRED;
+        option text = STRING_TOKEN(STR_ENABLED), value = 1, flags = RESET_REQUIRED;
+     endoneof; 
+    
+ 
+      oneof varid   = SETUP_DATA.BL,
+        prompt   = STRING_TOKEN(STR_BL),
+        help   = STRING_TOKEN(STR_EMPTY),
+        option text = STRING_TOKEN(STR_BL8), value = 0, flags = DEFAULT | MANUFACTURING | RESET_REQUIRED;
+        option text = STRING_TOKEN(STR_ON_FLY), value = 1, flags = RESET_REQUIRED;
+      endoneof; 
+      
+      oneof varid   = SETUP_DATA.CmdRate,
+        prompt   = STRING_TOKEN(STR_CMD_RATE),
+        help   = STRING_TOKEN(STR_EMPTY),
+        option text = STRING_TOKEN(STR_2T), value = 0, flags = DEFAULT | MANUFACTURING | RESET_REQUIRED;
+        option text = STRING_TOKEN(STR_1T), value = 1, flags = RESET_REQUIRED;
+      endoneof;
+      
+            
+      oneof varid   = SETUP_DATA.VGAShareMemory,
+        prompt   = STRING_TOKEN(STR_VGA_SHAREMEM),
+        help   = STRING_TOKEN(STR_EMPTY),
+        option text = STRING_TOKEN(STR_64M), value = 1, flags =RESET_REQUIRED;
+        option text = STRING_TOKEN(STR_128M), value = 2, flags = RESET_REQUIRED;
+        option text = STRING_TOKEN(STR_256M), value = 3, flags =  DEFAULT | MANUFACTURING | RESET_REQUIRED;
+        option text = STRING_TOKEN(STR_512M), value = 4, flags = RESET_REQUIRED;
+        option text = STRING_TOKEN(STR_1024M), value = 5, flags = RESET_REQUIRED;
+      endoneof;
+      
+      oneof varid   = SETUP_DATA.DramInitMethod ,
+        prompt   = STRING_TOKEN(STR_INIT_METHOD),
+        help   = STRING_TOKEN(STR_EMPTY),
+        option text = STRING_TOKEN(STR_AUTO), value = 0, flags = DEFAULT | MANUFACTURING | RESET_REQUIRED;
+        option text = STRING_TOKEN(STR_SOFT_FORCE), value = 1, flags = RESET_REQUIRED;
+      endoneof;
+     
+      oneof varid   = SETUP_DATA.DramSelfRefresh,
+        prompt   = STRING_TOKEN(STR_PSELF_REFRESH),
+        help   = STRING_TOKEN(STR_EMPTY),
+        option text = STRING_TOKEN(STR_DISABLE), value = 0, flags = RESET_REQUIRED;
+        option text = STRING_TOKEN(STR_ENABLE), value = 1, flags = DEFAULT | MANUFACTURING | RESET_REQUIRED;
+      endoneof;
+ 
+      oneof varid   = SETUP_DATA.DynamicCKE,
+        prompt   = STRING_TOKEN(STR_DYNAMIC_CKE),
+        help   = STRING_TOKEN(STR_EMPTY),
+        option text = STRING_TOKEN(STR_DISABLE), value = 0, flags = RESET_REQUIRED;
+        option text = STRING_TOKEN(STR_ENABLE), value = 1, flags = DEFAULT | MANUFACTURING | RESET_REQUIRED;
+      endoneof;
+      
+ 
+      oneof varid   = SETUP_DATA.RemapEn,
+        prompt   = STRING_TOKEN(STR_REMAP_FUNC),
+        help   = STRING_TOKEN(STR_REMAP_FUNC),
+        option text = STRING_TOKEN(STR_DISABLE), value = 0, flags = RESET_REQUIRED;
+        option text = STRING_TOKEN(STR_ENABLE), value = 1, flags = DEFAULT | MANUFACTURING | RESET_REQUIRED;
+      endoneof;
+      
+    oneof varid   = SETUP_DATA.DramFastBoot,
+        prompt   = STRING_TOKEN(STR_DRAM_FAST_BOOT),
+        help   = STRING_TOKEN(STR_EMPTY),
+        option text = STRING_TOKEN(STR_AUTO), value = 0, flags = RESET_REQUIRED;
+        option text = STRING_TOKEN(STR_DISABLE), value = 1, flags = DEFAULT | MANUFACTURING | RESET_REQUIRED;
+      endoneof;
+ 
+       oneof varid   = SETUP_DATA.CRCEn,
+        prompt   = STRING_TOKEN(STR_DRAM_CRCEN),
+        help   = STRING_TOKEN(STR_EMPTY),
+        option text = STRING_TOKEN(STR_DISABLE), value = 0, flags =DEFAULT | MANUFACTURING | RESET_REQUIRED;
+        option text = STRING_TOKEN(STR_ENABLE), value = 1, flags =  RESET_REQUIRED;
+      endoneof;
+
+      oneof varid   = SETUP_DATA.CAParEn,
+        prompt   = STRING_TOKEN(STR_DRAM_CAPAR_EN),
+        help   = STRING_TOKEN(STR_EMPTY),
+        option text = STRING_TOKEN(STR_DISABLE), value = 0, flags = DEFAULT | MANUFACTURING | RESET_REQUIRED;
+        option text = STRING_TOKEN(STR_ENABLE), value = 1, flags = RESET_REQUIRED;
+      endoneof;
+
+      oneof varid   = SETUP_DATA.CAParPerEn,
+        prompt   = STRING_TOKEN(STR_DRAM_CAPAR_PER_EN),
+        help   = STRING_TOKEN(STR_EMPTY),
+        option text = STRING_TOKEN(STR_DISABLE), value = 0, flags =DEFAULT | MANUFACTURING | RESET_REQUIRED;
+        option text = STRING_TOKEN(STR_ENABLE), value = 1, flags =  RESET_REQUIRED;
+      endoneof;
+
+      oneof varid   = SETUP_DATA.WPREA,
+        prompt   = STRING_TOKEN(STR_DRAM_WPREA),
+        help   = STRING_TOKEN(STR_EMPTY),
+        option text = STRING_TOKEN(STR_WPREA1CLK), value = 0, flags = DEFAULT | MANUFACTURING | RESET_REQUIRED;
+        option text = STRING_TOKEN(STR_WPREA2CLK), value = 1, flags = RESET_REQUIRED;
+      endoneof;
+
+      oneof varid   = SETUP_DATA.RPREA,
+        prompt   = STRING_TOKEN(STR_DRAM_RPREA),
+        help   = STRING_TOKEN(STR_EMPTY),
+        option text = STRING_TOKEN(STR_RPREA1CLK), value = 0, flags =DEFAULT | MANUFACTURING | RESET_REQUIRED;
+        option text = STRING_TOKEN(STR_RPREA2CLK), value = 1, flags =  RESET_REQUIRED;
+      endoneof;
+ 
+       oneof varid   = SETUP_DATA.CALEn,
+        prompt   = STRING_TOKEN(STR_DRAM_CALEN),
+        help   = STRING_TOKEN(STR_EMPTY),
+        option text = STRING_TOKEN(STR_DISABLE), value = 0, flags = DEFAULT | MANUFACTURING | RESET_REQUIRED;
+        option text = STRING_TOKEN(STR_ENABLE), value = 1, flags = RESET_REQUIRED;
+      endoneof;
+
+
+ 
+      oneof varid   = SETUP_DATA.ACTimingOption,
+        questionid  = KEY_ACTIMING_OPTION,
+        prompt   = STRING_TOKEN(STR_AC_TIMING_OPTION),
+        help   = STRING_TOKEN(STR_EMPTY),
+        option text = STRING_TOKEN(STR_ACTIMING_AUTO), value = 0, flags = DEFAULT |INTERACTIVE;
+        option text = STRING_TOKEN(STR_ACTIMING_MANUAL), value = 1, flags = INTERACTIVE;
+      endoneof;
+    suppressif  ideqval SETUP_DATA.ACTimingOption == 1; 
+       text 
+        help   = STRING_TOKEN(STR_EMPTY),
+        text   = STRING_TOKEN(STR_DRAMCL),
+        text   = STRING_TOKEN(STR_DRAN_CL_VALUE),
+        flags  = 0, 
+        key    = 0; 
+    text 
+        help   = STRING_TOKEN(STR_EMPTY),
+        text   = STRING_TOKEN(STR_DRAMTRP),
+        text   = STRING_TOKEN(STR_DRAMTRP_VALUE),
+        flags  = 0, 
+        key    = 0; 
+  text 
+        help   = STRING_TOKEN(STR_EMPTY),
+        text   = STRING_TOKEN(STR_DRAMTRCD),
+        text   = STRING_TOKEN(STR_DRAMTRCD_VALUE),
+        flags  = 0, 
+        key    = 0; 
+    text 
+        help   = STRING_TOKEN(STR_EMPTY),
+        text   = STRING_TOKEN(STR_DRAMTRAS),
+        text   = STRING_TOKEN(STR_DRAMTRAS_VALUE),
+        flags  = 0, 
+        key    = 0;  
+ endif;   
+    suppressif  ideqval SETUP_DATA.ACTimingOption == 0;
+     oneof varid   = SETUP_DATA.DramCL,
+        prompt   = STRING_TOKEN(STR_DRAMCL),
+        help   = STRING_TOKEN(STR_EMPTY),
+         option text = STRING_TOKEN(STR_04), value = 4, flags = DEFAULT | MANUFACTURING | RESET_REQUIRED;
+        option text = STRING_TOKEN(STR_05), value = 5, flags =  RESET_REQUIRED;
+        option text = STRING_TOKEN(STR_06), value = 6, flags =  RESET_REQUIRED;
+        option text = STRING_TOKEN(STR_07), value = 7, flags =  RESET_REQUIRED;
+        option text = STRING_TOKEN(STR_08), value = 8, flags =  RESET_REQUIRED;
+        option text = STRING_TOKEN(STR_09), value = 9, flags =  RESET_REQUIRED;
+        option text = STRING_TOKEN(STR_010), value = 10, flags =  RESET_REQUIRED;
+        option text = STRING_TOKEN(STR_011), value = 11, flags =  RESET_REQUIRED;  
+      endoneof; 
+      oneof varid   = SETUP_DATA.DramTrp,
+        prompt   = STRING_TOKEN(STR_DRAMTRP),
+        help   = STRING_TOKEN(STR_EMPTY),
+        option text = STRING_TOKEN(STR_04), value = 4, flags = DEFAULT | MANUFACTURING | RESET_REQUIRED;
+        option text = STRING_TOKEN(STR_05), value = 5, flags =  RESET_REQUIRED;
+        option text = STRING_TOKEN(STR_06), value = 6, flags =  RESET_REQUIRED;
+        option text = STRING_TOKEN(STR_07), value = 7, flags =  RESET_REQUIRED;
+        option text = STRING_TOKEN(STR_08), value = 8, flags =  RESET_REQUIRED;
+        option text = STRING_TOKEN(STR_09), value = 9, flags =  RESET_REQUIRED;
+        option text = STRING_TOKEN(STR_010), value = 10, flags =  RESET_REQUIRED;
+        option text = STRING_TOKEN(STR_011), value = 11, flags =  RESET_REQUIRED;  
+      endoneof;      
+     oneof varid   = SETUP_DATA.DramTrcd,
+        prompt   = STRING_TOKEN(STR_DRAMTRCD),
+        help   = STRING_TOKEN(STR_EMPTY),
+          option text = STRING_TOKEN(STR_04), value = 4, flags =DEFAULT | MANUFACTURING |  RESET_REQUIRED;
+        option text = STRING_TOKEN(STR_05), value = 5, flags =  RESET_REQUIRED;
+        option text = STRING_TOKEN(STR_06), value = 6, flags =  RESET_REQUIRED;
+        option text = STRING_TOKEN(STR_07), value = 7, flags =  RESET_REQUIRED;
+        option text = STRING_TOKEN(STR_08), value = 8, flags =  RESET_REQUIRED;
+        option text = STRING_TOKEN(STR_09), value = 9, flags =  RESET_REQUIRED;
+        option text = STRING_TOKEN(STR_010), value = 10, flags =  RESET_REQUIRED;
+        option text = STRING_TOKEN(STR_011), value = 11, flags =  RESET_REQUIRED;  
+      endoneof;       
+      oneof varid   = SETUP_DATA.DramTras,
+        prompt   = STRING_TOKEN(STR_DRAMTRAS),
+        help   = STRING_TOKEN(STR_EMPTY),
+        option text = STRING_TOKEN(STR_015), value = 15, flags =DEFAULT | MANUFACTURING |  RESET_REQUIRED;
+        option text = STRING_TOKEN(STR_016), value = 16, flags =  RESET_REQUIRED;
+        option text = STRING_TOKEN(STR_017), value = 17, flags =  RESET_REQUIRED;
+        option text = STRING_TOKEN(STR_018), value = 18, flags =  RESET_REQUIRED;
+        option text = STRING_TOKEN(STR_019), value = 19, flags =  RESET_REQUIRED;
+        option text = STRING_TOKEN(STR_020), value = 20, flags =  RESET_REQUIRED;
+        option text = STRING_TOKEN(STR_021), value = 21, flags =  RESET_REQUIRED;  
+        option text = STRING_TOKEN(STR_022), value = 22, flags =  RESET_REQUIRED;
+        option text = STRING_TOKEN(STR_023), value = 23, flags =  RESET_REQUIRED;
+        option text = STRING_TOKEN(STR_024), value = 24, flags =  RESET_REQUIRED;
+        option text = STRING_TOKEN(STR_025), value = 25, flags =  RESET_REQUIRED;
+        option text = STRING_TOKEN(STR_026), value = 26, flags =  RESET_REQUIRED;
+        option text = STRING_TOKEN(STR_027), value = 27, flags =  RESET_REQUIRED;
+        option text = STRING_TOKEN(STR_028), value = 28, flags =  RESET_REQUIRED;  
+        option text = STRING_TOKEN(STR_029), value = 29, flags =  RESET_REQUIRED;
+        option text = STRING_TOKEN(STR_030), value = 30, flags =  RESET_REQUIRED;      
+     endoneof; 
+     endif;  
+     oneof varid   = SETUP_DATA.CRCParRetryEn,
+        prompt   = STRING_TOKEN(STR_CRC_PAR_RETRY_EN),
+        help   = STRING_TOKEN(STR_EMPTY),
+        option text = STRING_TOKEN(STR_DISABLED), value = 0, flags =DEFAULT | MANUFACTURING |RESET_REQUIRED;
+        option text = STRING_TOKEN(STR_ENABLED), value = 1, flags =RESET_REQUIRED;
+      endoneof;
+
+     oneof varid   = SETUP_DATA.ParErrControl,
+        prompt   = STRING_TOKEN(STR_PAR_ERR_CTRL),
+        help   = STRING_TOKEN(STR_EMPTY),
+        option text = STRING_TOKEN(STR_DISABLED), value = 0, flags =DEFAULT | MANUFACTURING |RESET_REQUIRED;
+        option text = STRING_TOKEN(STR_ENABLED), value = 1, flags =RESET_REQUIRED;
+      endoneof;
+
+
+     oneof varid   = SETUP_DATA.CRCErrControl,
+        prompt   = STRING_TOKEN(STR_CRC_ERROR_CTRL),
+        help   = STRING_TOKEN(STR_EMPTY),
+        option text = STRING_TOKEN(STR_DISABLED), value = 0, flags =DEFAULT | MANUFACTURING |RESET_REQUIRED;
+        option text = STRING_TOKEN(STR_ENABLED), value = 1, flags =RESET_REQUIRED;
+      endoneof;
+
+
+     oneof varid   = SETUP_DATA.EccRetry,
+        prompt   = STRING_TOKEN(STR_ECC_RETRY),
+        help   = STRING_TOKEN(STR_EMPTY),
+        option text = STRING_TOKEN(STR_DISABLED), value = 0, flags =DEFAULT | MANUFACTURING |RESET_REQUIRED;
+        option text = STRING_TOKEN(STR_ENABLED), value = 1, flags =RESET_REQUIRED;
+      endoneof;
+
+     oneof varid   = SETUP_DATA.EccPatrolScrub,
+        prompt   = STRING_TOKEN(STRECC_PATROL_SCRUB),
+        help   = STRING_TOKEN(STR_EMPTY),
+        option text = STRING_TOKEN(STR_DISABLED), value = 0, flags =DEFAULT | MANUFACTURING |RESET_REQUIRED;
+        option text = STRING_TOKEN(STR_ENABLED), value = 1, flags =RESET_REQUIRED;
+      endoneof; 
+   
+
+     endform; //end DRAM_FORM_ID    
+  #endif  // FORM_SET_FORM
+#endif  // ADVANCED_FORM_SET
+
+

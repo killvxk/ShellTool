@@ -1,0 +1,66 @@
+/** @file
+
+Copyright (c) 2006 - 2014, Byosoft Corporation.<BR>
+All rights reserved.This software and associated documentation (if any)
+is furnished under a license and may only be used or copied in
+accordance with the terms of the license. Except as permitted by such
+license, no part of this software or documentation may be reproduced,
+stored in a retrieval system, or transmitted in any form or by any
+means without the express written consent of Byosoft Corporation.
+
+File Name:
+   Audio.sd
+
+Abstract:
+   Audio setting.
+
+Revision History:
+
+$END--------------------------------------------------------------------
+
+**/
+
+
+
+
+
+#ifdef DEVICES_FORM_SET
+
+  #ifdef FORM_SET_GOTO
+      goto CHIPSET_SB_AUDIO_FORM_ID,
+        prompt = STRING_TOKEN(STR_AUDIO_FORM),
+        help = STRING_TOKEN(STR_AUDIO_FORM_HELP);
+  #endif
+
+  #ifdef FORM_SET_FORM
+
+    form formid = CHIPSET_SB_AUDIO_FORM_ID,
+    title = STRING_TOKEN(STR_AUDIO_FORM);
+
+      oneof varid   = SETUP_DATA.ObAudioEn,
+        prompt      = STRING_TOKEN(STR_OB_AUDIO_CONTROLLER),
+        help        = STRING_TOKEN(STR_OB_AUDIO_CONTROLLER_HELP),
+        option text = STRING_TOKEN(STR_DISABLED), value = 0, flags = RESET_REQUIRED| DEFAULT | MANUFACTURING;        
+        option text = STRING_TOKEN(STR_ENABLED),  value = 1, flags = RESET_REQUIRED ;
+      endoneof;      
+
+        suppressif NOT  ideqval SETUP_DATA.ObAudioEn==1;
+       oneof varid   = SETUP_DATA.GoNonSnoopPath,
+        prompt   = STRING_TOKEN(STR_GO_NOSNOOPPATH),
+        help   = STRING_TOKEN(STR_GO_NOSNOOPPATH_HELP),
+        option text = STRING_TOKEN(STR_DISABLED), value = 0, flags =  RESET_REQUIRED;
+        option text = STRING_TOKEN(STR_ENABLED), value = 1, flags = DEFAULT | MANUFACTURING |RESET_REQUIRED;
+       endoneof;
+
+       oneof varid   = SETUP_DATA.HDACFLREn,
+        prompt   = STRING_TOKEN(STR_HDAC_FLR_EN),
+        help   = STRING_TOKEN(STR_HDAC_FLR_EN_HELP),
+        option text = STRING_TOKEN(STR_DISABLED), value = 0, flags =  RESET_REQUIRED;
+        option text = STRING_TOKEN(STR_ENABLED), value = 1, flags = DEFAULT | MANUFACTURING |RESET_REQUIRED;
+       endoneof;
+       endif;
+    endform;  //end CHIPSET_SB_AUDIO_FORM_ID
+
+  #endif  //end, FORM_SET_FORM
+#endif  //end, DEVICES_FORM_SET
+

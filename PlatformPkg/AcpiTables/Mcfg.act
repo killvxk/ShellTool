@@ -1,0 +1,98 @@
+
+
+//
+// Statements that include other files
+//
+
+#include <IndustryStandard/Acpi.h>
+#include <IndustryStandard/MemoryMappedConfigurationSpaceAccessTable.h>
+
+//
+// MCFG Definitions
+//
+
+#define EFI_ACPI_OEM_MCFG_REVISION 0x00000001
+
+//
+// Define the number of allocation structures so that we can build the table structure.
+//
+
+#define EFI_ACPI_ALLOCATION_STRUCTURE_COUNT           1
+
+//
+// MCFG structure
+//
+
+//
+// Ensure proper structure formats
+//
+#pragma pack (1)
+
+//
+// MCFG Table structure
+//
+typedef struct {
+  EFI_ACPI_DESCRIPTION_HEADER      Header;
+  UINT64                           Reserved;
+#if EFI_ACPI_ALLOCATION_STRUCTURE_COUNT > 0
+  EFI_ACPI_MEMORY_MAPPED_ENHANCED_CONFIGURATION_SPACE_BASE_ADDRESS_ALLOCATION_STRUCTURE  AllocationStructure[EFI_ACPI_ALLOCATION_STRUCTURE_COUNT];
+#endif
+} EFI_ACPI_MEMORY_MAPPED_CONFIGURATION_SPACE_ACCESS_DESCRIPTION_TABLE;
+
+#pragma pack ()
+
+
+
+
+//
+// Multiple APIC Description Table
+//
+
+EFI_ACPI_MEMORY_MAPPED_CONFIGURATION_SPACE_ACCESS_DESCRIPTION_TABLE Madt = {
+  EFI_ACPI_3_0_PCI_EXPRESS_MEMORY_MAPPED_CONFIGURATION_SPACE_BASE_ADDRESS_DESCRIPTION_TABLE_SIGNATURE,
+  sizeof (EFI_ACPI_MEMORY_MAPPED_CONFIGURATION_SPACE_ACCESS_DESCRIPTION_TABLE),
+  EFI_ACPI_MEMORY_MAPPED_CONFIGURATION_SPACE_ACCESS_TABLE_REVISION,
+
+  //
+  // Checksum will be updated at runtime
+  //
+  0x00,
+  
+  //
+  // It is expected that these values will be programmed at runtime
+  //
+  ' ', ' ', ' ', ' ', ' ', ' ',
+  
+  0,
+  EFI_ACPI_OEM_MCFG_REVISION,
+  0,
+  0,
+  
+  //
+  // Reserved
+  //
+  0x0000000000000000,
+  
+  //
+  // MCFG specific fields
+  //
+  0x00000000E0000000,                                           // BaseAddress
+  0x0000,                                                       // PciSegmentGroupNumber
+  0x00,                                                         // StartBusNumber
+  0xFF,                                                         // EndBusNumber
+  0x00000000                                                    // Reserved
+
+};
+
+VOID *
+ReferenceAcpiTable (
+  VOID
+  )
+
+{
+  //
+  // Reference the table being generated to prevent the optimizer from removing the 
+  // data structure from the exeutable
+  //
+  return (VOID*)&Madt;
+}

@@ -1,0 +1,105 @@
+## @file  
+#
+# Copyright (c) 2006 - 2011, Byosoft Corporation.<BR> 
+# All rights reserved.This software and associated documentation (if any)
+# is furnished under a license and may only be used or copied in 
+# accordance with the terms of the license. Except as permitted by such
+# license, no part of this software or documentation may be reproduced, 
+# stored in a retrieval system, or transmitted in any form or by any 
+# means without the express written consent of Byosoft Corporation.
+#
+# File Name:
+#   AtaAtapiPassThru.inf
+#
+# Abstract: 
+#   AtaAtapiPassThru driver to provide native IDE/AHCI mode support.
+#
+# Revision History:
+#
+# Bug 2909:   Add some port 80 status codes into EDKII code.
+# TIME:       2011-09-23
+# $AUTHOR:    Liu Chunling
+# $REVIEWERS:
+# $SCOPE:     All Platforms
+# $TECHNICAL: 
+#   1. Improve Port80 map table.
+#   2. Add Port80 status codes in the corresponding position to report status code.
+#   3. Change the seconed REPORT_STATUS_CODE_WITH_EXTENDED_DATA macro's parameter
+#      to EFI_SW_PC_INIT_END from EFI_SW_PC_INIT_BEGIN.
+# $END--------------------------------------------------------------------
+#
+##
+## @file
+#  AtaAtapiPassThru driver to provide native IDE/AHCI mode support.
+#
+#  This driver installs AtaPassThru and ExtScsiPassThru protocol in each ide/sata controller
+#  to access to all attached Ata/Atapi devices.
+#
+#  Copyright (c) 2010, Intel Corporation. All rights reserved.<BR>
+#
+#  This program and the accompanying materials
+#  are licensed and made available under the terms and conditions of the BSD License
+#  which accompanies this distribution. The full text of the license may be found at
+#  http://opensource.org/licenses/bsd-license.php
+#  THE PROGRAM IS DISTRIBUTED UNDER THE BSD LICENSE ON AN "AS IS" BASIS,
+#  WITHOUT WARRANTIES OR REPRESENTATIONS OF ANY KIND, EITHER EXPRESS OR IMPLIED.
+#
+##
+
+[Defines]
+  INF_VERSION                    = 0x00010005
+  BASE_NAME                      = AtaAtapiPassThruDxe
+  FILE_GUID                      = 5E523CB4-D397-4986-87BD-A6DD8B22F455
+  MODULE_TYPE                    = UEFI_DRIVER
+  VERSION_STRING                 = 1.0
+  ENTRY_POINT                    = InitializeAtaAtapiPassThru
+
+#
+# The following information is for reference only and not required by the build tools.
+#
+#  VALID_ARCHITECTURES           = IA32 X64 IPF EBC
+#
+#  DRIVER_BINDING                =  gAtaAtapiPassThruDriverBinding                         
+#  COMPONENT_NAME                =  gAtaAtapiPassThruComponentName
+#  COMPONENT_NAME2               =  gAtaAtapiPassThruComponentName2                         
+#
+#
+
+[Sources]
+  AtaAtapiPassThru.c
+  AtaAtapiPassThru.h
+  AhciMode.c
+  AhciMode.h
+  IdeMode.c
+  IdeMode.h
+  ComponentName.c
+  
+[Packages]
+  MdePkg/MdePkg.dec
+  MdeModulePkg/MdeModulePkg.dec
+  IntelFrameworkPkg/IntelFrameworkPkg.dec
+
+[LibraryClasses]
+  DevicePathLib
+  UefiBootServicesTableLib
+  MemoryAllocationLib
+  BaseMemoryLib
+  UefiLib
+  BaseLib
+  UefiDriverEntryPoint
+  DebugLib
+  TimerLib
+  ReportStatusCodeLib
+
+[Protocols]
+  gEfiAtaPassThruProtocolGuid                   # BY_START
+  gEfiExtScsiPassThruProtocolGuid               # BY_START
+  gEfiIdeControllerInitProtocolGuid             # TO_START
+  gEfiDevicePathProtocolGuid                    # TO_START
+  gEfiPciIoProtocolGuid                         # TO_START
+
+[Pcd]  
+  gEfiMdeModulePkgTokenSpaceGuid.PcdSetActiveForAhciCommand
+  gEfiMdeModulePkgTokenSpaceGuid.PcdDetectIdeDeviceUseDiagCmd
+  gEfiMdeModulePkgTokenSpaceGuid.PcdScsiTestUnitReadyReadBufferPatch
+  gEfiMdeModulePkgTokenSpaceGuid.PcdAhciPxSCTLSPD

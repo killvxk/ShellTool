@@ -1,0 +1,7 @@
+# autogen file, do not edit ...          
+DEFINE ASIA_MBTYPE  = HX001EA1_10       
+DEFINE ASIA_CPUTYPE = ACpu      
+DEFINE ASIA_NBTYPE  = CHX001     
+DEFINE HX001EA1_10  = TRUE  
+DEFINE CHX001_A0  = TRUE  
+DEFINE ZX_DDR4  = TRUE  

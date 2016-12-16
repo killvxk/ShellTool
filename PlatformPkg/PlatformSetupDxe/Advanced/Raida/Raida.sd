@@ -1,0 +1,65 @@
+/** @file
+
+Copyright (c) 2006 - 2011, Byosoft Corporation.<BR>
+All rights reserved.This software and associated documentation (if any)
+is furnished under a license and may only be used or copied in
+accordance with the terms of the license. Except as permitted by such
+license, no part of this software or documentation may be reproduced,
+stored in a retrieval system, or transmitted in any form or by any
+means without the express written consent of Byosoft Corporation.
+
+File Name:
+  Raida.sd
+
+Abstract:
+  Raida Form Template.
+
+Revision History:
+
+**/
+
+
+
+#ifdef ADVANCED_FORM_SET
+
+ 
+  #ifdef FORM_SET_GOTO
+    goto RAIDA_CTRL_FORM_ID, 
+      prompt = STRING_TOKEN(STR_RAIDA_CTRL_FORM),
+      help   = STRING_TOKEN(STR_EMPTY);
+  #endif
+
+  #ifdef FORM_SET_FORM
+
+    form formid = AUTO_ID(RAIDA_CTRL_FORM_ID),
+        title = STRING_TOKEN(STR_RAIDA_CTRL_FORM);
+        
+        oneof varid = SETUP_DATA.RAIDA0En,
+         prompt      = STRING_TOKEN(STR_RAIDA0_CTRL_EN),
+         help        = STRING_TOKEN(STR_RAIDA0_CTRL_EN_HELP),
+         option text = STRING_TOKEN(STR_DISABLED), value = 0, flags = RESET_REQUIRED| MANUFACTURING | DEFAULT;
+         option text = STRING_TOKEN(STR_ENABLED),  value = 1, flags = RESET_REQUIRED;          
+        endoneof;
+
+        oneof varid = SETUP_DATA.RAIDA1En,
+         prompt      = STRING_TOKEN(STR_RAIDA1_CTRL_EN),
+         help        = STRING_TOKEN(STR_RAIDA1_CTRL_EN_HELP),
+         option text = STRING_TOKEN(STR_DISABLED), value = 0, flags = RESET_REQUIRED| MANUFACTURING | DEFAULT;
+         option text = STRING_TOKEN(STR_ENABLED),  value = 1, flags = RESET_REQUIRED;          
+        endoneof;      
+        
+     suppressif ideqval SETUP_DATA.RAIDA0En==0 AND ideqval SETUP_DATA.RAIDA1En==0;  
+
+       oneof varid = SETUP_DATA.RAIDASIDLock,
+         prompt      = STRING_TOKEN(STR_RAIDA_SID_LOCK_EN),
+         help        = STRING_TOKEN(STR_RAIDA_SID_LOCK_EN_HELP),
+         option text = STRING_TOKEN(STR_DISABLED), value = 0, flags = RESET_REQUIRED;
+         option text = STRING_TOKEN(STR_ENABLED),  value = 1, flags = RESET_REQUIRED| MANUFACTURING | DEFAULT;          
+        endoneof; 
+      endif;
+    endform; //end RAIDA_CTRL_FORM_ID    
+    
+  #endif  // FORM_SET_FORM
+#endif  // ADVANCED_FORM_SET
+
+

@@ -1,0 +1,53 @@
+// /*++
+// Copyright (c) 2010 Intel Corporation. All rights reserved.
+// This software and associated documentation (if any) is furnished
+// under a license and may only be used or copied in accordance
+// with the terms of the license. Except as permitted by such
+// license, no part of this software or documentation may be
+// reproduced, stored in a retrieval system, or transmitted in any
+// form or by any means without the express written consent of
+// Intel Corporation.
+//
+// Module Name: Devices.vfr
+//
+// --*/
+
+#include "VfrExtension.h"
+#include "SetupItemId.h"
+#include "PlatformSetupDxeStrDefs.h"
+
+#define DEVICES_FORM_SET
+
+#define FORM_SET_TYPEDEF
+  #include <SetupDefinitions.h>
+#undef FORM_SET_TYPEDEF
+
+formset guid = DEVICES_FORM_SET_GUID,
+  title     = STRING_TOKEN(STR_DEVICES),
+  help      = STRING_TOKEN(STR_DEVICES_HELP),
+  classguid = EFI_IFR_FRONT_PAGE_GUID,
+  class     = DEVICES_FORM_SET_CLASS,
+  subclass  = NON_FRONT_PAGE_SUBCLASS,
+
+  #define FORM_SET_VARSTORE
+    #include <SetupDefinitions.h>
+  #undef FORM_SET_VARSTORE
+
+  form formid = DEVICES_MAIN_FORM_ID,
+    title = STRING_TOKEN(STR_DEVICES);
+
+    #define FORM_SET_GOTO
+      #include <SetupDefinitions.h>
+    #undef FORM_SET_GOTO
+
+    subtitle text = STRING_TOKEN(STR_COM_EMPTY);
+
+    label 0x1234;
+    label LABEL_END;
+    
+  endform;
+  
+  #define FORM_SET_FORM
+    #include <SetupDefinitions.h>
+  #undef FORM_SET_FORM
+endformset;

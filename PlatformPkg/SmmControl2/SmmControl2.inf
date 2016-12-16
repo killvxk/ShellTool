@@ -1,0 +1,43 @@
+
+[Defines]
+  INF_VERSION                    = 0x00010005
+  BASE_NAME                      = SmmControl2
+  FILE_GUID                      = 41D094ED-DC5E-45fd-8154-0A3F4C8FE02B
+  MODULE_TYPE                    = DXE_RUNTIME_DRIVER
+  VERSION_STRING                 = 1.0
+  ENTRY_POINT                    = SmmControl2Install
+
+[Sources]
+  SmmControl2.c
+
+[Packages]
+  MdePkg/MdePkg.dec
+  MdeModulePkg/MdeModulePkg.dec
+  PlatformPkg/PlatformPkg.dec 
+
+
+[LibraryClasses]
+  UefiRuntimeLib
+  BaseLib
+  BaseMemoryLib
+  UefiDriverEntryPoint
+  UefiBootServicesTableLib
+  DebugLib
+  IoLib
+
+[Pcd]
+  gEfiMdePkgTokenSpaceGuid.PcdPciExpressBaseAddress
+  gPlatformModuleTokenSpaceGuid.AcpiIoPortBaseAddress  
+
+[Guids]
+  gEfiEventVirtualAddressChangeGuid  
+
+  
+[Protocols]
+  gEfiSmmControl2ProtocolGuid
+  
+
+[Depex]
+  TRUE
+
+  
